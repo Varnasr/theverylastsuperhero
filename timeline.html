@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline | Postheroic.World</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      font-family: 'IBM Plex Mono', monospace;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+    }
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 4rem auto;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: #ffcb6b;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -2px;
+    }
+    .container {
+      padding: 1rem 2rem;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+    .left {
+      left: 0;
+    }
+    .right {
+      left: 50%;
+    }
+    .container::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      right: -10px;
+      background-color: #ffcb6b;
+      border: 2px solid #fff;
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .right::after {
+      left: -10px;
+    }
+    .content {
+      padding: 1rem;
+      background-color: #2a2a2a;
+      border-radius: 6px;
+    }
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      .container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      .container::after {
+        left: 15px;
+      }
+      .right {
+        left: 0%;
+      }
+    }
+    a {
+      color: #ffcb6b;
+      text-decoration: none;
+    }
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Collapse & Resistance Timeline</h1>
+  <div class="timeline">
+    <div class="container left">
+      <div class="content">
+        <h3>2065</h3>
+        <p>P.A.I. launched across major metros to regulate behavior and track movement.</p>
+      </div>
+    </div>
+    <div class="container right">
+      <div class="content">
+        <h3>2069</h3>
+        <p>Massive Yamuna breach floods Delhi. Urban evacuation begins. Archival collapse starts.</p>
+      </div>
+    </div>
+    <div class="container left">
+      <div class="content">
+        <h3>2070</h3>
+        <p>Sabotage of p.ai whisper network. Multiple arrests and lockdown zones created.</p>
+      </div>
+    </div>
+    <div class="container right">
+      <div class="content">
+        <h3>2072</h3>
+        <p>Disappearance of Rohan Kapoor. Salt Lamp network begins to shut down.</p>
+      </div>
+    </div>
+    <div class="container left">
+      <div class="content">
+        <h3>2073</h3>
+        <p>All known Resistance archives go silent. Firebird symbol spotted in South Zone graffiti.</p>
+      </div>
+    </div>
+    <div class="container right">
+      <div class="content">
+        <h3>2075</h3>
+        <p>Sumati activates a dormant Salt Lamp. Lore transmission resumes.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <a href="index.html">← Back to Home</a>
+  </footer>
+</body>
+</html>
