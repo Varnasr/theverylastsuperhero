@@ -1,4 +1,3 @@
-/* Global setup */
 html, body {
   margin: 0;
   padding: 0;
@@ -8,39 +7,32 @@ html, body {
   color: #f0f0f0;
 }
 
-/* Hero banner */
+/* Hero image — stable across devices */
 .hero {
-  background: url('assets/hero.jpg') no-repeat center center;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('assets/hero.jpg');
   background-size: cover;
   background-position: center;
-  width: 100%;
-  height: 100vh;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-/* Mobile fix: remove fixed scroll weirdness */
-@media (max-width: 768px) {
-  .hero {
-    background-attachment: scroll;
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-  }
-}
-
-/* Optional: legacy hero text (if used) */
+/* Optional: if using HTML text over hero */
 .hero h1 {
   font-family: 'Merriweather', serif;
   font-size: 4rem;
-  color: #fff;
+  color: #ffffff;
+  margin: 0;
 }
 
 .hero p {
   font-size: 1.5rem;
-  color: #ddd;
+  color: #dddddd;
+  margin-top: 1rem;
 }
 
 /* Navigation */
@@ -57,15 +49,15 @@ nav a {
   font-weight: bold;
 }
 
-/* Sections */
+/* Page sections */
 section {
   padding: 4rem 2rem;
 }
 
-/* Lore preview layout */
+/* Lore preview */
 .lore-preview {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
@@ -75,11 +67,13 @@ section {
   margin: 1rem;
   border-radius: 8px;
   width: 300px;
+  box-sizing: border-box;
 }
 
 .lore-card img {
   width: 100%;
   border-radius: 4px;
+  display: block;
 }
 
 /* Footer */
@@ -88,4 +82,20 @@ footer {
   text-align: center;
   padding: 2rem;
   color: #f0f0f0;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .hero {
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
 }
