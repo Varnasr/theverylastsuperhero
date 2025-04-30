@@ -105,3 +105,13 @@ footer {
     width: 90%;
   }
 }
+
+/* Global link styling for all non-nav <a> tags */
+a:not(nav a) {
+  color: #ffcb6b;
+  text-decoration: underline;
+}
+
+a:not(nav a):hover {
+  color: #ffd580;
+}
