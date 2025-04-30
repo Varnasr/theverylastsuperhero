@@ -1,28 +1,91 @@
+/* Global setup */
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: 'IBM Plex Mono', monospace;
   background-color: #1a1a1a;
   color: #f0f0f0;
 }
 
+/* Hero banner */
 .hero {
   background: url('assets/hero.jpg') no-repeat center center;
   background-size: cover;
+  background-position: center;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-attachment: fixed;
 }
 
+/* Mobile fix: remove fixed scroll weirdness */
 @media (max-width: 768px) {
   .hero {
     background-attachment: scroll;
     background-size: cover;
-    background-position: center center;
+    background-position: center;
+    height: 100vh;
   }
+}
+
+/* Optional: legacy hero text (if used) */
+.hero h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 4rem;
+  color: #fff;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  color: #ddd;
+}
+
+/* Navigation */
+nav {
+  background-color: #333;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav a {
+  color: #f0f0f0;
+  margin: 0 1rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Sections */
+section {
+  padding: 4rem 2rem;
+}
+
+/* Lore preview layout */
+.lore-preview {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.lore-card {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.lore-card img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  text-align: center;
+  padding: 2rem;
+  color: #f0f0f0;
 }
