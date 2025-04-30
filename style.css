@@ -1,4 +1,4 @@
-/* Reset and layout */
+/* Global reset */
 html, body {
   margin: 0;
   padding: 0;
@@ -9,32 +9,33 @@ html, body {
   color: #f0f0f0;
 }
 
-/* HERO SECTION — Scales beautifully across screen sizes */
+/* Hero image for desktop */
 .hero {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-image: url('assets/hero.jpg');
+  background: url('assets/hero.jpg') no-repeat center center;
   background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Mobile fallback (initially hidden) */
+.hero-mobile {
+  display: none;
+  padding: 3rem 2rem;
   text-align: center;
+  background-color: #1a1a1a;
 }
 
-/* Optional hero overlay text */
-.hero h1 {
+.hero-mobile h1 {
   font-family: 'Merriweather', serif;
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   color: #fff;
-  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
-.hero p {
-  font-size: 1.3rem;
-  color: #ddd;
-  margin-top: 1rem;
+.hero-mobile p {
+  font-size: 1rem;
+  color: #ccc;
 }
 
 /* Navigation */
@@ -56,7 +57,7 @@ section {
   padding: 4rem 2rem;
 }
 
-/* Lore card previews */
+/* Lore card layout */
 .lore-preview {
   display: flex;
   justify-content: center;
@@ -86,15 +87,14 @@ footer {
   color: #f0f0f0;
 }
 
-/* Mobile scaling */
+/* Mobile behavior */
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.2rem;
+  .hero {
+    display: none; /* hide background image */
   }
 
-  .hero p {
-    font-size: 1rem;
-    padding: 0 1rem;
+  .hero-mobile {
+    display: block;
   }
 
   section {
