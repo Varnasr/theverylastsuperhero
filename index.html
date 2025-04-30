@@ -1,1 +1,86 @@
-<!DOCTYPE html><html><head><title>The Very Last Superhero</title></head><body><h1>Welcome to The Very Last Superhero</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postheroic World</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Lato&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="hero">
+    <h1>Postheroic.World</h1>
+    <p class="tagline">A story of memory, collapse, and what comes after the age of heroes.</p>
+    <nav>
+      <ul>
+        <li><a href="#about">The Book</a></li>
+        <li><a href="#characters">Characters & Lore</a></li>
+        <li><a href="#archive">Explore the Archive</a></li>
+        <li><a href="#extras">Extras</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="about">
+      <h2>The Very Last Superhero</h2>
+      <p class="intro">An illustrated speculative fiction novel set in the ruins of Delhi, <em>The Very Last Superhero</em> follows 14-year-old Sumati through climate collapse, surveillance, and the rebirth of memory.</p>
+    </section>
+
+    <section id="characters">
+      <h2>Characters & Lore</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Sumati</h3>
+          <p>The 14-year-old protagonist who carries the Salt Lamp and rekindles the Resistance archive.</p>
+        </div>
+        <div class="card">
+          <h3>Chandra</h3>
+          <p>A mysterious crow who watches over the group and guides Sumati.</p>
+        </div>
+        <div class="card">
+          <h3>The Firebird</h3>
+          <p>A symbol of reawakening that only returns when everything else has failed. It marks the rebirth of truth and memory.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="archive">
+      <h2>Explore the Archive</h2>
+      <p>Click on a Salt Lamp to reveal a memory...</p>
+      <div class="salt-lamps">
+        <button class="lamp" onclick="revealMemory('memory1')">Salt Lamp 1</button>
+        <button class="lamp" onclick="revealMemory('memory2')">Salt Lamp 2</button>
+        <button class="lamp" onclick="revealMemory('memory3')">Salt Lamp 3</button>
+      </div>
+      <div id="memory-display" class="memory-box"></div>
+    </section>
+
+    <section id="extras">
+      <h2>Extras</h2>
+      <p>Coming soon: wallpapers, maps, reader art, and memory downloads.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact / Contribute</h2>
+      <p>Want to share your memory, theory, or artwork? Reach out at <a href="mailto:varna.sr@gmail.com">varna.sr@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 StoryWell Books. Built with care and memory.</p>
+  </footer>
+
+  <script>
+    function revealMemory(id) {
+      const memories = {
+        memory1: "A flickering reel of protest chants, whispered through broken radios.",
+        memory2: "Footsteps in waterlogged tunnels — the last path to the archive.",
+        memory3: "A firebird feather scorched into paper, passed from hand to trembling hand."
+      };
+      document.getElementById('memory-display').innerText = memories[id];
+    }
+  </script>
+</body>
+</html>
