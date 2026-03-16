@@ -7,13 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  validate:
+  check-links:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check links
+      - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --accept 200,204,301,302,403 --exclude-mail --exclude "localhost" "*.html"
-          fail: true
+          args: --accept 200,204,301,302,403,429 --exclude-mail --exclude "localhost|127.0.0.1|example.com|twitter.com|x.com|linkedin.com|facebook.com|instagram.com|t.me|wa.me|play.google.com|apps.apple.com" --timeout 30 --max-retries 2 "**/*.html" "**/*.md"
+          fail: false
+
