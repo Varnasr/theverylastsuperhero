@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this project in your research, please cite it as below."
+type: software
+title: "The Very Last Superhero: Illustrated Speculative Fiction"
+authors:
+  - family-names: Raman
+    given-names: Varna Sri
+url: "https://github.com/Varnasr/theverylastsuperhero"
+repository-code: "https://github.com/Varnasr/theverylastsuperhero"
+license: MIT
+keywords:
+  - fiction
+  - climate
+  - india
+  - speculative-fiction
+  - illustrated-novel
+
+date-released: "2025-01-01"
