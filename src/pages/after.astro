@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BuyButton from '../components/BuyButton.astro';
+import SecondEdition from '../components/SecondEdition.astro';
 
 /**
  * The epilogue, five years on.
@@ -132,6 +133,8 @@ const people = [
         <BuyButton />
       </div>
     </section>
+
+    <SecondEdition />
   </div>
 </BaseLayout>
 
