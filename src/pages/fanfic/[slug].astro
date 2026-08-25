@@ -1,0 +1,159 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Newsletter from '../../components/Newsletter.astro';
+
+export const getStaticPaths = (async () => {
+  const stories = (await getCollection('fanfic')).filter((s) => !s.data.draft);
+  return stories.map((s) => ({ params: { slug: s.id }, props: { story: s } }));
+}) satisfies GetStaticPaths;
+
+const { story } = Astro.props;
+const { Content } = await render(story);
+const d = story.data;
+
+const related = (
+  await Promise.all(d.related.map((r) => getEntry(r)))
+).filter((e): e is NonNullable<typeof e> => Boolean(e));
+
+const fmt = (dt: Date) =>
+  dt.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={d.title} description={d.summary} readingProgress>
+  <div class="shell section">
+    <p class="back"><a href="/fanfic">← Reader Fiction</a></p>
+
+    <header class="page-head stack">
+      <h1>{d.title}</h1>
+      <p class="by">
+        by {
+          d.authorUrl ? (
+            <a href={d.authorUrl} rel="noopener nofollow">
+              {d.author}
+            </a>
+          ) : (
+            d.author
+          )
+        }
+        {d.setting && <span class="sep"> · {d.setting}</span>}
+        {d.length && <span class="sep"> · {d.length}</span>}
+      </p>
+      <p class="text-muted lede">{d.summary}</p>
+    </header>
+
+    {
+      d.notes && (
+        <aside class="notes">
+          <p class="notes__label">Content notes</p>
+          <p>{d.notes}</p>
+        </aside>
+      )
+    }
+
+    <article class="prose story">
+      <Content />
+    </article>
+
+    <footer class="foot">
+      <p class="text-muted">
+        Written by {d.author} in the world of <em>The Very Last Superhero</em>, and published here
+        with their permission. Added {fmt(d.added)}. The author retains all rights to their work.
+      </p>
+      {
+        related.length > 0 && (
+          <p class="text-muted">
+            Leans on:{' '}
+            {related.map((e, i) => (
+              <>
+                {i > 0 && ', '}
+                <a href={`/lore/${e.id}`}>{e.data.title}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
+      <p><a href="/fanfic#submit">Send a piece of your own →</a></p>
+    </footer>
+
+    <Newsletter
+      heading="Word when new pieces land"
+      blurb="Reader fiction, new archive entries and news about the book."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .back {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-block-end: var(--space-l);
+  }
+
+  .back a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back a:hover {
+    color: var(--amber);
+  }
+
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .by {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--amber);
+  }
+
+  .by .sep {
+    color: var(--text-faint);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .notes {
+    max-width: 58ch;
+    margin-block-end: var(--space-xl);
+    padding: var(--space-s) var(--space-m);
+    border-inline-start: 2px solid var(--border-strong);
+    background: var(--bg-sunken);
+    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  }
+
+  .notes__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-block-end: var(--space-3xs);
+  }
+
+  .notes p:last-child {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .story {
+    max-width: 66ch;
+  }
+
+  .foot {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 66ch;
+    font-size: var(--step--1);
+  }
+
+  .foot p + p {
+    margin-block-start: var(--space-xs);
+  }
+</style>

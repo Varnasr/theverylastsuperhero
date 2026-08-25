@@ -7,6 +7,23 @@ order: 24
 related: [p-a-i, p-ai, the-treasure-room, salt-lamps, sumati, aasma]
 image: ../../assets/illustrations/professor-with-books.webp
 imageAlt: A tall thin man with silver hair stepping down from an old train, reading, his arms full of books
+testimony:
+  src: /audio/testimony-mehta.mp3
+  title: Sometimes our ancestors return to us
+  speaker: Kishore Mehta
+  recorded: The Treasure Room
+  duration: "0:09"
+  kind: testimony
+  transcript:
+    - lang: hi-IN
+      text: >
+        कभी-कभी हमारे पूर्वज हमारे पास लौट आते हैं, चींटियों या कौवों के रूप
+        में, हमें राह दिखाने। जैसे चंद्रमा रात भर तारों को राह दिखाता है।
+    - lang: en-IN
+      text: >
+        Sometimes our dear ancestors return to us, in the form of ants or crows,
+        to guide us through life — just as the moon, Chandra, guides the stars
+        through the night sky.
 ---
 
 A librarian who has worked at the same library for over thirty years. He pours

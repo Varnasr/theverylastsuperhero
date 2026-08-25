@@ -46,6 +46,21 @@ export const site = {
    * See docs/SUBMISSIONS.md for setup.
    */
   formEndpoint: '' as string,
+  /**
+   * Analytics, off by default.
+   *
+   * Set `plausibleDomain` to the site's domain and every page gets the Plausible
+   * script — cookieless, no personal data, no consent banner required, and the
+   * outbound-links extension so clicks on the Buy button are counted. Leave it
+   * empty and no analytics of any kind are loaded; the privacy page reads
+   * correctly either way.
+   *
+   * Netlify Analytics is the alternative: server-side, nothing in the page at
+   * all, but it cannot see Buy clicks — which is the number that matters here.
+   */
+  analytics: {
+    plausibleDomain: '' as string,
+  },
 } as const;
 
 /**
@@ -70,6 +85,7 @@ export const navMore = [
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
   { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
   { href: '/memory', label: 'Memory Wall', note: 'Reader artwork and testimony' },
+  { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
   { href: '/wallpapers', label: 'Wallpapers', note: 'The Sumati Series' },
   { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
   { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },

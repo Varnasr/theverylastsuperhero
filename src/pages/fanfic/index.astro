@@ -1,0 +1,335 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { site } from '../../lib/site';
+
+/**
+ * Reader fiction — the Archive Annexure, open.
+ *
+ * Same moderated pipeline as the Memory Wall: submissions arrive through
+ * Netlify Forms, a person reads them, and approved pieces are committed as
+ * markdown. Static hosting cannot run a live forum, and a moderated queue is
+ * the right shape anyway for work published under someone else's world.
+ */
+
+const stories = (await getCollection('fanfic'))
+  .filter((s) => !s.data.draft)
+  .sort((a, b) => b.data.added.valueOf() - a.data.added.valueOf());
+
+const formLive = site.formEndpoint.length > 0;
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title="Reader Fiction"
+  description="Stories written in the world of The Very Last Superhero by its readers — the corners of Kishanganj, Serenity Junction and the Resistance the novel never had room for."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive annexure</p>
+      <h1>Reader Fiction</h1>
+      <p class="text-muted lede">
+        The book covers one girl, one search, and about a year. The world is older and wider than
+        that — decommissioned prototypes, bio-robots with shrines nobody marks, thirty years of a
+        librarian's life before Sumati walked in. If you want to write in it, this is the door.
+      </p>
+    </header>
+
+    {
+      stories.length ? (
+        <ul class="stories">
+          {stories.map((s) => (
+            <li class="story">
+              <h2>
+                <a href={`/fanfic/${s.id}`}>{s.data.title}</a>
+              </h2>
+              <p class="by">
+                {s.data.authorUrl ? (
+                  <a href={s.data.authorUrl} rel="noopener nofollow">
+                    {s.data.author}
+                  </a>
+                ) : (
+                  s.data.author
+                )}
+                {s.data.setting && <span class="sep"> · {s.data.setting}</span>}
+                {s.data.length && <span class="sep"> · {s.data.length}</span>}
+              </p>
+              <p class="text-muted">{s.data.summary}</p>
+              <p class="added">Added {fmt(s.data.added)}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="empty">
+          <p>Nothing here yet. The first piece will be somebody's.</p>
+          <p class="text-muted">
+            There is no bar to clear beyond writing something and sending it. Short is fine. A
+            single scene is fine. The archive is made of fragments — that is the premise.
+          </p>
+        </div>
+      )
+    }
+
+    <section class="submit" id="submit">
+      <h2>Send a piece</h2>
+      <p class="text-muted submit__lede">
+        Everything is read by a person before it appears. Expect a reply either way.
+      </p>
+
+      <form
+        class="form"
+        name="fanfic"
+        method="POST"
+        action={site.formEndpoint || undefined}
+        data-netlify="true"
+        netlify-honeypot="_gotcha"
+        data-fallback={formLive ? undefined : 'mailto'}
+      >
+        <input type="hidden" name="form-name" value="fanfic" />
+        <p class="hp" aria-hidden="true">
+          <label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="field">
+          <label for="ff-author">Your name, or the name you write under</label>
+          <input id="ff-author" name="author" type="text" required autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="ff-email">Email</label>
+          <input id="ff-email" name="email" type="email" required autocomplete="email" />
+          <p class="hint">Used only to reply about your piece.</p>
+        </div>
+
+        <div class="field">
+          <label for="ff-title">Title</label>
+          <input id="ff-title" name="title" type="text" required />
+        </div>
+
+        <div class="field">
+          <label for="ff-setting">Where and when it sits</label>
+          <input id="ff-setting" name="setting" type="text" placeholder="Kishanganj, 2076" />
+          <p class="hint">
+            Anywhere in the world, any year. It does not have to touch the novel's plot.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="ff-notes">Content notes</label>
+          <input id="ff-notes" name="notes" type="text" />
+          <p class="hint">Anything a reader should know before starting. Optional.</p>
+        </div>
+
+        <div class="field">
+          <label for="ff-story">The piece</label>
+          <textarea id="ff-story" name="story" rows="12" required></textarea>
+          <p class="hint">Paste it in full, or paste a link if it lives somewhere else.</p>
+        </div>
+
+        <button type="submit">Send it in</button>
+      </form>
+
+      <div class="terms">
+        <h3>The short version of the rules</h3>
+        <ul>
+          <li>
+            You keep everything you write. Publishing here is permission to host it, nothing more,
+            and it comes down whenever you ask.
+          </li>
+          <li>
+            Credit goes as you give it — real name, handle, or a link to wherever you'd rather
+            readers land.
+          </li>
+          <li>Sumati is fourteen. Nothing sexual involving her or any other child, in any framing.</li>
+          <li>
+            No hate directed at real groups. The book has a politics; work that inverts it into
+            cruelty is not a reading, it is a different book.
+          </li>
+          <li>
+            Write your own sentences. Reworked chapters of the novel, or anything a machine
+            generated and you did not shape, are not what this is for.
+          </li>
+          <li>
+            It does not have to be canon-compliant. Contradict the book if the story is better for
+            it — the archive already contradicts itself in places.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <Newsletter
+      heading="Word when new pieces land"
+      blurb="Reader fiction, new archive entries and news about the book."
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-2xl);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .stories {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .story h2 {
+    font-size: var(--step-1);
+    margin-block-end: var(--space-3xs);
+  }
+
+  .story h2 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .story h2 a:hover {
+    color: var(--amber);
+  }
+
+  .by {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--amber);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .by .sep {
+    color: var(--text-faint);
+  }
+
+  .story p {
+    max-width: 60ch;
+  }
+
+  .added {
+    margin-block-start: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .empty {
+    padding: var(--space-l);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    max-width: 60ch;
+  }
+
+  .empty p + p {
+    margin-block-start: var(--space-s);
+    font-size: var(--step--1);
+  }
+
+  .submit {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .submit__lede {
+    max-width: 56ch;
+    margin-block: var(--space-2xs) var(--space-l);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-m);
+    max-width: 40rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg-sunken);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 12rem;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+  }
+
+  .hint {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  button {
+    justify-self: start;
+    padding: 0.65rem 1.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--bg);
+    background: var(--amber);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: color-mix(in srgb, var(--amber) 85%, white);
+  }
+
+  .terms {
+    margin-block-start: var(--space-2xl);
+    max-width: 60ch;
+  }
+
+  .terms h3 {
+    font-size: var(--step-0);
+  }
+
+  .terms ul {
+    margin-block-start: var(--space-s);
+    padding-inline-start: 1.1rem;
+    display: grid;
+    gap: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

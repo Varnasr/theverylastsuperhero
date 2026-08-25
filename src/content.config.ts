@@ -140,6 +140,31 @@ const wallpapers = defineCollection({
  * submission arrives by email via the form, a human reviews it, and it becomes a
  * markdown file. That keeps the site static and unmoderatable-by-strangers.
  */
+const fanfic = defineCollection({
+  loader: glob({ base: './src/content/fanfic', pattern: '**/*.md' }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    /** Optional link the writer wants readers to follow — their blog, AO3, wherever. */
+    authorUrl: z.string().url().optional(),
+    /** One-line hook shown on the index. */
+    summary: z.string(),
+    /**
+     * Where in the world it sits. Free text rather than an enum: readers will
+     * find corners the book never named, and the point is to let them.
+     */
+    setting: z.string().optional(),
+    /** Lore entries the piece leans on, so it cross-links into the archive. */
+    related: z.array(reference('lore')).default([]),
+    added: z.coerce.date(),
+    /** Roughly how long a read, e.g. "1,800 words". */
+    length: z.string().optional(),
+    /** Content notes, shown before the piece. */
+    notes: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 const memory = defineCollection({
   loader: glob({ base: './src/content/memory', pattern: '**/*.md' }),
   schema: ({ image }) =>
@@ -148,6 +173,8 @@ const memory = defineCollection({
       contributor: z.string(),
       location: z.string().optional(),
       kind: z.enum(['artwork', 'testimony']),
+      /** Contributors often give an age rather than a place; both are optional. */
+      age: z.number().int().positive().optional(),
       image: image().optional(),
       imageAlt: z.string().optional(),
       added: z.coerce.date(),
@@ -163,4 +190,4 @@ const memory = defineCollection({
 });
 
 export const collections = {
-  glossary, lore, timeline, archive, wallpapers, memory };
+  glossary, fanfic, lore, timeline, archive, wallpapers, memory };

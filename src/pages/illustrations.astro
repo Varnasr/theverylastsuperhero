@@ -99,12 +99,22 @@ const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) :
     <header class="page-head stack">
       <p class="eyebrow">The artwork</p>
       <h1>Illustrations</h1>
+      <blockquote class="frame">
+        <p>
+          The illustrations in this book were made through generative tools, manual curation, and
+          narrative revision. Each image holds part of the story. Some are memories the characters
+          never see. Some are false. Some are true. They are not illustrations. They are records.
+        </p>
+        <footer>
+          Varna Sri Raman, <a href="/making">On the Making of <em>The Very Last Superhero</em></a>
+        </footer>
+      </blockquote>
+
       <p class="text-muted lede">
-        {images.length} pieces made while writing the book. Some were printed; others were rooms
-        described and then cut, characters who lost their scene, versions that were nearly right.
-        They are all here, because the world is bigger than the book that came out of it. Where a
-        plate carries the book's own figure legend, it is quoted underneath — {withLegend} so far,
-        transcribed from the manuscript as more of it becomes readable.
+        All {images.length} of them, printed and unprinted alike. Captions describe what is in the
+        frame; where a plate carries the book's own figure legend, it is quoted underneath — {
+          withLegend
+        } so far.
       </p>
     </header>
 
@@ -143,6 +153,32 @@ const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) :
 </BaseLayout>
 
 <style>
+  /* The author's own framing for the gallery, set as an epigraph rather than
+     body copy — it is a quotation from the book, not site voice. */
+  .frame {
+    margin: var(--space-m) 0 0;
+    padding-inline-start: var(--space-m);
+    border-inline-start: 2px solid var(--amber);
+    max-width: 58ch;
+  }
+
+  .frame p {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    text-wrap: pretty;
+  }
+
+  .frame footer {
+    margin-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  .frame footer a {
+    color: inherit;
+  }
+
   .page-head {
     margin-block-end: var(--space-xl);
   }

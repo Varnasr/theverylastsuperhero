@@ -7,6 +7,22 @@ image: ../../assets/illustrations/vision-board.jpg
 imageAlt: A board of maps, photographs and sticky notes strung together around one portrait
 order: 6
 related: [sumati, meera, waste-to-energy, mr-joshi, salt-lamps, obj-v078]
+testimony:
+  src: /audio/testimony-rohan.mp3
+  title: Sometimes we just have to live next to it
+  speaker: Rohan Kapoor
+  recorded: Oral record, untransmitted
+  duration: "0:09"
+  kind: testimony
+  transcript:
+    - lang: hi-IN
+      text: >
+        कभी-कभी हमें समस्या हल करने को नहीं मिलती। कभी-कभी हमें बस उसके पास
+        रहना होता है, और फिर भी कोशिश करते रहना होता है।
+    - lang: en-IN
+      text: >
+        Sometimes we don't get to solve the problem. Sometimes we just have to
+        live next to it and keep trying anyway.
 ---
 
 Twenty years of research on climate adaptation, and the technology still
