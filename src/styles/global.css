@@ -244,6 +244,55 @@
     width: min(100%, var(--measure));
   }
 
+  /* Tables in markdown — the environmental snapshots and figure blocks.
+     Rendered as a key/value ledger rather than a grid: the archive's data is
+     nearly always two columns, and borders on every cell fight the page. The
+     wrapper scrolls on its own so a wide table never pushes the body sideways. */
+  .prose table {
+    width: 100%;
+    margin-block: var(--space-m);
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  .prose table :is(th, td) {
+    padding: 0.55rem 0.9rem 0.55rem 0;
+    text-align: start;
+    vertical-align: baseline;
+    border-block-end: 1px solid var(--border);
+  }
+
+  .prose table th {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* First column is the label, second the value — the value is the thing
+     being read, so it carries the emphasis. */
+  .prose table td:first-child {
+    color: var(--text-muted);
+    padding-inline-end: var(--space-m);
+  }
+
+  .prose table td:last-child {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose table tr:last-child :is(th, td) {
+    border-block-end: 0;
+  }
+
+  /* A header row of empty cells (a two-column ledger written without one)
+     would otherwise leave a stray rule across the top. */
+  .prose table thead:has(th:empty) {
+    display: none;
+  }
+
   .stack > * + * {
     margin-block-start: var(--space-m);
   }
