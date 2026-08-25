@@ -10,10 +10,9 @@ related: [salt-lamps, hysterons, nandini-maa, p-ai, virtual-layer-flooring]
 The tech sage from the early Resistance, and the mind that designed the lamps.
 
 Not pretty pink rock: precision-carved crystalline lattices of halite blended
-with [hysterons](/lore/hysterons). IKS texts, oral and written, have long spoken
-of stones that remember, and of ancient temples aligned not only to the stars
-but to sound. Myaknju took that wisdom and combined it with acoustic resonance
-and some rather nifty nanoscale tuning.
+with [hysterons](/lore/hysterons). Halite will hold a vibrational pattern if you
+build the lattice precisely enough; Myaknju worked out how precisely, and paired
+it with acoustic resonance and some rather nifty nanoscale tuning.
 
 The result picks up history, not just heat.
 

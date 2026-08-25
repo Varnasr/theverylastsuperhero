@@ -175,7 +175,22 @@ const sizes = [
         ctx.bezierCurveTo(dir * 20, -34, dir * 44, -40, dir * 54, -28);
         ctx.bezierCurveTo(dir * 46, -26, dir * 38, -20, dir * 33, -12);
         ctx.bezierCurveTo(dir * 42, -14, dir * 48, -10, dir * 50, -2);
-        ctx.bezierCurveTo(dir * 36, -2, dir * 20, 4, dir * 8, 10);
+
+        if (dir === -1) {
+          // One feather always missing — the detail every bad copy leaves out.
+          // The notch is built into the outline rather than cut out afterwards:
+          // the lower edge is the same curve split in two, with a V taken out
+          // of the silhouette at the join. Subtracting a shape instead (evenodd
+          // or destination-out) either fills the region outside the wing or
+          // punches through the background behind it.
+          ctx.bezierCurveTo(dir * 43, -2, dir * 35.5, -0.5, dir * 28.25, 1.75);
+          ctx.lineTo(dir * 30, -5);
+          ctx.lineTo(dir * 26, 2.4);
+          ctx.bezierCurveTo(dir * 21, 4, dir * 14, 7, dir * 8, 10);
+        } else {
+          ctx.bezierCurveTo(dir * 36, -2, dir * 20, 4, dir * 8, 10);
+        }
+
         ctx.closePath();
         ctx.fill();
       }

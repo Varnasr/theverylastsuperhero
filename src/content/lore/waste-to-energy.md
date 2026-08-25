@@ -26,6 +26,10 @@ Consultations around going back to the old Belgian waste-to-energy system that
 worked in Gazipur in the 2020s. New pilot models, reviewed for emissions
 integrity.
 
+The plants have a name on them. *Waste to Energy by Thakur Green Developers* —
+on a street sign Rohan passes leaving the station, where it stirs a memory he
+cannot quite reach.
+
 > The new WTE systems could revolutionise Delhi's energy grid if the emissions
 > controls work as promised.
 

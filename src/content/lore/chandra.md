@@ -2,7 +2,7 @@
 title: Chandra
 category: Character
 designation: Crow Guardian
-summary: A large crow that does not scatter. IKS texts hold that ancestors return to us as ants or crows, to guide us through life — as the moon guides the stars.
+summary: A large crow that does not scatter. An ancient manuscript in the Treasure Room holds that ancestors return to us as ants or crows, to guide us through life — as the moon, Chandra, guides the stars.
 order: 7
 image: ../../assets/illustrations/chased-by-crow.webp
 imageAlt: A girl in kurta and leggings running down a train platform chased by a giant black crow, a brown dog running alongside

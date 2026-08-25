@@ -18,9 +18,12 @@ Not magic salt. Magic in a very real, very engineered way.
 
 The lamps are precision-carved crystalline lattices, and the engineering came
 from [Myaknju](/lore/myaknju), the tech sage of the early Resistance, who
-combined acoustic resonance with nanoscale tuning. IKS texts — oral and written —
-have long spoken of stones that remember, and of temples aligned not only to the
-stars but to sound. The lamps are that idea, built.
+combined acoustic resonance with nanoscale tuning. That distinction matters more
+than it looks. In this India the state had already replaced science teaching with
+[a curriculum of astrology, myth and revisionism](/lore/indigenous-knowledge-systems)
+and called it heritage. The lamps are the opposite move: not a claim that the
+ancients had it all along, but measurement, materials science and a great deal of
+failed prototyping.
 
 Record, reflect, relay. They pick up history, not just heat.
 
