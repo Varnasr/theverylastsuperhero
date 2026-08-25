@@ -271,3 +271,53 @@ node scripts/check-links.mjs   # verifies every internal link resolves
 
 Both run in CI on every pull request. A mistyped `related` slug or a missing
 image is a build failure, not a silently broken page.
+
+## Canon sources, and what is still missing
+
+The archive is deliberately larger than the novel — see the note above on the
+world extending past the book. But where the two overlap, the book decides.
+This section records what has actually been checked against the manuscript, so
+the same ground is not re-guessed.
+
+### What the manuscript settled
+
+Checked against the full-text export (August 2025). Corrections made:
+
+- **Indigenous Knowledge Systems** are a state curriculum in this world — "a
+  blend of astrology, myth, and nationalist revisionism", used to erode critical
+  thinking, with dissenters labelled anti-national. Never cite IKS approvingly.
+  Three entries did, and were fixed. The crow's ancestor belief comes from *an
+  ancient manuscript* in the Treasure Room, not from IKS.
+- **The Firebird** has a fixed form: wings mid-rise, one feather always missing.
+  Charcoal, code, surveillance scrap. Not on uniforms — there were none. Not on
+  government records — they were erased.
+- **Vikram and Sanil are two people.** VIKRAM-09 was the last state-designed
+  environmental hero. Sanil was a Climate Brigade support technician who took
+  the dead hero's name "to mark the risk of forgetting". Do not merge them.
+- **Prahlad** appears twice: the archive keeper, and a decommissioned prototype
+  who refused to displace coastal communities. Whether they are one man is not
+  established. Left unmerged on purpose.
+- **Captain Indra**'s rescue is the 2055 Bangladesh flooding and the Teesta.
+  Twelve other heroes signed the same corporate contracts.
+- **P.A.I.** is Predictive Autonomous Interface, also read as Pandemonium
+  Algorithmic Indoctrination. **p.ai** is Public Access Intelligence. The
+  broadcast audio said "Public Artificial Intelligence" once; it was wrong and
+  has been regenerated. Debrief file: 61.PAI.SUPPRESS.
+
+### What is not reachable
+
+The manuscript's back matter has never been extractable. The Doc's own contents
+page lists it — On the Making (p345), **Glossary and Notes for the Curious
+Reader (p349)**, Characters and Creatures (p377), Timeline of Events (p411),
+Further Reading (p455) — but every export stops at the same sentence on p141
+("Wait outside, Buddy… right here").
+
+This was verified four ways, all byte-identical or word-identical at 21,945
+words: Drive API export as txt, as html, as rtf, and a plain-text file
+downloaded client-side by the author. The truncation is in the source document,
+not in the export path — so re-exporting will not help.
+
+The glossary is the one worth chasing: it is the book's own tech index, and
+would settle most remaining questions in one pass. Until it is reachable, the
+Technology entries are built from the body text plus the author's earlier lore
+pages, and should be treated as provisional where the two are silent.
