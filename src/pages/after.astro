@@ -18,12 +18,17 @@ const rendered = await Promise.all(
   entries.map(async (e) => ({ ...e, Body: (await render(e)).Content }))
 );
 
-const groups: { name: string; items: typeof rendered }[] = [];
-for (const e of rendered) {
-  const last = groups.at(-1);
-  if (last?.name === e.data.group) last.items.push(e);
-  else groups.push({ name: e.data.group, items: [e] });
+function groupBy<T extends { data: { group: string } }>(items: T[]) {
+  const map = new Map<string, T[]>();
+  for (const item of items) {
+    const bucket = map.get(item.data.group);
+    if (bucket) bucket.push(item);
+    else map.set(item.data.group, [item]);
+  }
+  return [...map].map(([name, items]) => ({ name, items }));
 }
+
+const groups = groupBy(rendered);
 
 const people = [
   {

@@ -14,22 +14,22 @@ import { site } from '../lib/site';
 
 const steps = (await getCollection('act-steps')).sort((a, b) => a.data.order - b.data.order);
 const rsteps = await Promise.all(steps.map(async (s) => ({ ...s, Body: (await render(s)).Content })));
-const stepGroups: { name: string; steps: typeof rsteps }[] = [];
-for (const s of rsteps) {
-  const last = stepGroups.at(-1);
-  if (last?.name === s.data.group) last.steps.push(s);
-  else stepGroups.push({ name: s.data.group, steps: [s] });
+function groupBy<T extends { data: { group: string } }>(items: T[]) {
+  const map = new Map<string, T[]>();
+  for (const item of items) {
+    const bucket = map.get(item.data.group);
+    if (bucket) bucket.push(item);
+    else map.set(item.data.group, [item]);
+  }
+  return [...map].map(([name, items]) => ({ name, items }));
 }
+
+const stepGroups = groupBy(rsteps);
 
 const orgs = (await getCollection('action')).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(orgs.map(async (o) => ({ ...o, Body: (await render(o)).Content })));
 
-const groups: { name: string; orgs: typeof rendered }[] = [];
-for (const o of rendered) {
-  const last = groups.at(-1);
-  if (last?.name === o.data.group) last.orgs.push(o);
-  else groups.push({ name: o.data.group, orgs: [o] });
-}
+const groups = groupBy(rendered);
 ---
 
 <BaseLayout
@@ -70,7 +70,7 @@ for (const o of rendered) {
           <div class="tier">
             <p class="tier__name">{group.name}</p>
             <ol class="tier__list">
-              {group.steps.map(({ data, Body }) => (
+              {group.items.map(({ data, Body }) => (
                 <li class="step">
                   <h3>{data.title}</h3>
                   <div class="step__note prose">
@@ -108,7 +108,7 @@ for (const o of rendered) {
         <section class="group">
           <h2 class="group__name">{group.name}</h2>
           <ul class="orgs">
-            {group.orgs.map(({ data, Body }) => (
+            {group.items.map(({ data, Body }) => (
               <li class="org">
                 <h3>
                   <a href={data.url} rel="noopener">
