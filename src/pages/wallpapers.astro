@@ -35,11 +35,18 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
               rel="noopener"
               aria-label={`Open ${w.data.title} at full size`}
             >
+              {
+                /* The grid is auto-fill minmax(15rem), so a card is about 18rem
+                   on a wide screen and near full width on a phone. The old
+                   sizes claimed 15rem/45vw, which had the browser fetch a 240px
+                   file for a slot needing 576px at 2x — and 1050px on a 3x
+                   phone. That upscaling was the "grain", not the artwork. */
+              }
               <Image
                 src={w.data.image}
                 alt={w.data.imageAlt}
-                widths={[240, 400, 600]}
-                sizes="(max-width: 40rem) 45vw, 15rem"
+                widths={[320, 480, 640, 960, 1280]}
+                sizes="(max-width: 40rem) 92vw, 22rem"
                 loading="lazy"
               />
             </a>
