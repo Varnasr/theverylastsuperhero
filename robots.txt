@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The search page is a client-side view over the index below; there is
+# nothing there for a crawler that is not already in the sitemap.
+Disallow: /search
+
+Sitemap: https://www.postheroic.world/sitemap-index.xml
