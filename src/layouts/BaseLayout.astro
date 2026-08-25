@@ -91,6 +91,43 @@ const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${tit
         }
       })();
     </script>
+
+    {
+      /*
+       * Analytics, all optional and all off unless a key is set in site.ts.
+       * Whichever is configured, none of them set cookies or collect personal
+       * data, so the site still needs no consent banner. See the notes in
+       * src/lib/site.ts for what each one can and cannot measure.
+       */
+      site.analytics.cloudflareToken && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${site.analytics.cloudflareToken}"}`}
+        />
+      )
+    }
+    {
+      site.analytics.umamiWebsiteId && (
+        <script
+          is:inline
+          defer
+          src={site.analytics.umamiSrc}
+          data-website-id={site.analytics.umamiWebsiteId}
+        />
+      )
+    }
+    {
+      site.analytics.plausibleDomain && (
+        <script
+          is:inline
+          defer
+          data-domain={site.analytics.plausibleDomain}
+          src="https://plausible.io/js/script.outbound-links.js"
+        />
+      )
+    }
   </head>
 
   <body>

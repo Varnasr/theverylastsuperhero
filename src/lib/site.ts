@@ -59,6 +59,29 @@ export const site = {
    * all, but it cannot see Buy clicks — which is the number that matters here.
    */
   analytics: {
+    /**
+     * Free. Cloudflare Web Analytics — no cookies, no consent banner, works on
+     * any host (you do not need to use Cloudflare for anything else). Gives
+     * visitors, pages, referrers and countries. Sign up, add the site, paste
+     * the token here.
+     *
+     * It cannot see outbound clicks, so it will not tell you how many people
+     * clicked Buy.
+     */
+    cloudflareToken: '' as string,
+
+    /**
+     * Free tier. Umami Cloud — cookieless, and it does track custom events, so
+     * Buy clicks are counted (the buttons carry data-umami-event). Paste the
+     * website ID here; set umamiSrc too if you self-host.
+     */
+    umamiWebsiteId: '' as string,
+    umamiSrc: 'https://cloud.umami.is/script.js' as string,
+
+    /**
+     * Paid (~$9/mo). Plausible — cookieless, and its outbound-links extension
+     * counts Buy clicks automatically. Set this to the site's domain.
+     */
     plausibleDomain: '' as string,
   },
 } as const;

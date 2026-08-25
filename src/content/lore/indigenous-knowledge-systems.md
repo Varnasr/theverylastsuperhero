@@ -6,6 +6,8 @@ summary: The curriculum public universities were pushed to adopt — a blend of 
 order: 6
 related: [p-a-i, the-collapse, kishore-mehta, hysterons]
 mapZone: curriculum-office
+image: ../../assets/lore/myaknju.webp
+imageAlt: An elderly man laying seeds and dried herbs across a star chart while two young people watch, an anemometer behind them
 ---
 
 During that time, science was under siege in India.

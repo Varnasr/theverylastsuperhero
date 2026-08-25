@@ -5,8 +5,8 @@ designation: Underground Memory Movement
 summary: Formed by librarians, scientists, elders and teens — built on preserving truth.
 order: 15
 related: [salt-lamps, the-firebird, p-ai, the-treasure-room]
-image: ../../assets/lore/salt-relay.webp
-imageAlt: A glowing crystalline lamp in a back room, wired by hand to a ring of feature phones and old radios
+image: ../../assets/lore/rooftop-operative.webp
+imageAlt: A woman on a rooftop with a handset and a field case beside a solar panel and a mast, the old city behind her
 ---
 
 Formed by librarians, scientists, elders and teens, and built on preserving

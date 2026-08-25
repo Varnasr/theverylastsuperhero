@@ -1,4 +1,10 @@
 ---
+/*
+ * The data-umami-event attributes below are read by Umami when it is
+ * configured, so a Buy click is counted rather than just the page view.
+ * Plausible picks outbound clicks up on its own, and with no analytics enabled
+ * they are inert attributes. See src/lib/site.ts.
+ */
 import { site } from '../lib/site';
 
 interface Props {
@@ -28,6 +34,8 @@ const text = label ?? (variant === 'compact' ? 'Buy' : 'Buy the book');
   rel="noopener"
   target="_blank"
   data-buy
+  data-umami-event="buy-click"
+  data-umami-event-placement={variant}
 >
   <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
     <path

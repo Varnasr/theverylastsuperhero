@@ -5,8 +5,8 @@ designation: Tech Sage of the Early Resistance
 summary: The tech sage who designed the Salt Lamps — combining the old wisdom of stones that remember with acoustic resonance and nanoscale tuning.
 order: 9
 related: [salt-lamps, hysterons, nandini-maa, p-ai, virtual-layer-flooring]
-image: ../../assets/lore/myaknju.webp
-imageAlt: An elderly man sorting seeds and dried herbs on a star chart while a young man and woman watch, an anemometer behind them
+image: ../../assets/lore/lamp-workshop.webp
+imageAlt: Figures in a low-lit workshop tuning a glowing crystalline lamp on a bench of instruments
 ---
 
 The tech sage from the early Resistance, and the mind that designed the lamps.

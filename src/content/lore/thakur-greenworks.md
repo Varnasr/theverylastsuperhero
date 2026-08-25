@@ -5,6 +5,8 @@ designation: Waste-to-Energy | Publicly Clean, Privately Toxic
 summary: The waste-to-energy plant near Rajapur. Emits fly ash nightly, is linked to disappearances, and is run by a man who started as an idealist.
 order: 8
 related: [waste-to-energy, rohan-kapoor, aasma, the-resistance]
+image: ../../assets/lore/mr-thakur.webp
+imageAlt: A man in a dark bandhgala seated at a polished desk of bound files, a globe and a national flag behind him
 ---
 
 A waste-to-energy plant near Rajapur. Publicly clean. Privately toxic.
