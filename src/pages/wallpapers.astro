@@ -15,7 +15,9 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
       <p class="eyebrow">The Sumati Series</p>
       <h1>Wallpapers</h1>
       <p class="text-muted lede">
-        Free for personal use under
+        Portrait plates for a phone, landscape plates for a desktop. Every one downloads at the
+        size printed on its card — the original file, not a resized copy. Free for personal use
+        under
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener"
           >CC BY-NC-ND 4.0</a
         >. Open one to view it full size, then save it the way you normally save an image.
@@ -28,7 +30,7 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
     <div class="wall-grid">
       {
         wallpapers.map((w) => (
-          <figure class="paper">
+          <figure class={`paper paper--${w.data.orientation}`}>
             <a
               href={w.data.image.src}
               target="_blank"
@@ -45,8 +47,8 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
               <Image
                 src={w.data.image}
                 alt={w.data.imageAlt}
-                widths={[320, 480, 640, 960, 1280]}
-                sizes="(max-width: 40rem) 92vw, 22rem"
+                widths={[320, 480, 640, 960, 1280, 1672]}
+                sizes={w.data.orientation === 'desktop' ? '(max-width: 34rem) 92vw, 38rem' : '(max-width: 40rem) 92vw, 22rem'}
                 loading="lazy"
               />
             </a>
@@ -104,9 +106,29 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
     gap: var(--space-s);
   }
 
+  /* Landscape plates were being centre-cropped into a 2:3 portrait box and
+     then scaled back up — half the reason the desktop set looked wrong. Each
+     card now shows its own shape. */
+  .paper--phone img {
+    aspect-ratio: 2 / 3;
+  }
+
+  .paper--desktop img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .paper--desktop {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 34rem) {
+    .paper--desktop {
+      grid-column: span 1;
+    }
+  }
+
   .paper img {
     width: 100%;
-    aspect-ratio: 2 / 3;
     object-fit: cover;
     border-radius: var(--radius);
     border: 1px solid var(--border);
