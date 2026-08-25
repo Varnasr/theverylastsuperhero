@@ -5,7 +5,7 @@ designation: Resistance Iconography | One Feather Missing
 summary: A firebird with wings mid-rise and one feather always missing. Not on uniforms — there were none. Not on records — they were erased. Everywhere else.
 order: 2
 image: ../../assets/lore/firebird-emblem.webp
-imageAlt: The Firebird emblem — a stylised bird rendered in ash and ochre, wings rising
+imageAlt: The Firebird emblem — wings mid-rise, and one feather missing from the left wing
 related: [the-resistance, sumati, kishanganj]
 ---
 
