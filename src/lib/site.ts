@@ -123,18 +123,19 @@ export const nav = [
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
   { href: '/illustrations', label: 'Illustrations' },
+  { href: '/memory', label: 'Testimonials' },
+  { href: '/making', label: 'Making' },
+  { href: '/reading', label: 'Reading' },
 ] as const;
 
 /** Secondary destinations, grouped under "More" in the header. */
 export const navMore = [
-  { href: '/making', label: 'On the Making', note: "The author's afterword" },
-  { href: '/reading', label: 'Further Reading', note: 'The books behind the book' },
+  { href: '/act', label: 'How to Help', note: 'The parts that are not fiction' },
+  { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
   { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
   { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
-  { href: '/memory', label: 'Memory Wall', note: 'Reader artwork and testimony' },
-  { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
-  { href: '/wallpapers', label: 'Wallpapers', note: 'The Sumati Series' },
+  { href: '/wallpapers', label: 'Wallpapers', note: 'For a phone or a desktop' },
   { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
   { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
 ] as const;
@@ -144,5 +145,4 @@ export const footerLinks = [
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
   { href: '/rss.xml', label: 'RSS' },
-  { href: 'https://github.com/Varnasr/theverylastsuperhero', label: 'Source' },
 ] as const;

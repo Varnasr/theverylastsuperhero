@@ -96,6 +96,17 @@ const glossary = defineCollection({
   }),
 });
 
+const action = defineCollection({
+  loader: glob({ base: './src/content/action', pattern: '**/*.md' }),
+  schema: z.object({
+    name: z.string(),
+    url: z.string().url(),
+    /** Section heading on the page. */
+    group: z.string(),
+    order: z.number().default(100),
+  }),
+});
+
 const reading = defineCollection({
   loader: glob({ base: './src/content/reading', pattern: '**/*.md' }),
   schema: z.object({
@@ -215,4 +226,4 @@ const memory = defineCollection({
 });
 
 export const collections = {
-  glossary, fanfic, reading, lore, timeline, archive, wallpapers, memory };
+  action, glossary, fanfic, reading, lore, timeline, archive, wallpapers, memory };

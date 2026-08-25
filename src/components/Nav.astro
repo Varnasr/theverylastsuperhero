@@ -432,7 +432,10 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
       padding: 0.7rem 0.6rem;
     }
 
-    .more__menu {
+    /* Qualified to match the desktop rule above: a bare `.more__menu` (0,1,0)
+       loses to `.site-nav ul.more__menu` (0,2,1), which left this absolutely
+       positioned inside the mobile panel and hanging off the screen edge. */
+    .site-nav ul.more__menu {
       position: static;
       min-width: 0;
       border: 0;

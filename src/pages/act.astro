@@ -1,0 +1,194 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { site } from '../lib/site';
+
+/**
+ * What to do about it.
+ *
+ * The novel's argument is that resilience is systems and documentation rather
+ * than heroism, so this page points at people doing exactly that, and links
+ * only to organisations whose sites were checked to resolve.
+ */
+
+const orgs = (await getCollection('action')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(orgs.map(async (o) => ({ ...o, Body: (await render(o)).Content })));
+
+const groups: { name: string; orgs: typeof rendered }[] = [];
+for (const o of rendered) {
+  const last = groups.at(-1);
+  if (last?.name === o.data.group) last.orgs.push(o);
+  else groups.push({ name: o.data.group, orgs: [o] });
+}
+---
+
+<BaseLayout
+  title="How to Help"
+  description="The parts of this novel that are not fiction, and the people already working on them — transparency, air, waste, land, and the movements you can actually join."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Not fiction</p>
+      <h1>How to Help</h1>
+      <blockquote class="frame">
+        <p>
+          The Very Last Superhero is grounded in Delhi's actual, ongoing reality. The Okhla
+          Waste-to-Energy plant exists. The heat exists. The failed tech, the air so dense with
+          particulate that memory feels physical — this is not fiction.
+        </p>
+        <footer>
+          Varna Sri Raman, <a href="/making">On the Making</a>
+        </footer>
+      </blockquote>
+      <p class="text-muted lede">
+        The book's answer is not a hero. It is documentation, doubt, and people who keep turning up
+        — a tea stall, a post office, a librarian who did not stop. Here are some of the people
+        doing that now.
+      </p>
+    </header>
+
+    <section class="campaign">
+      <p class="campaign__label">The campaign this book is dedicated to</p>
+      <h2>{site.campaign.label}</h2>
+      <p class="text-muted">
+        Dev, to whom the book is partly dedicated, has been fighting Delhi's waste-to-energy plants
+        for years. Rohan's work in the novel is drawn from it.
+      </p>
+      <a class="button" href={site.campaign.url} rel="noopener">Read about the campaign</a>
+    </section>
+
+    {
+      groups.map((group) => (
+        <section class="group">
+          <h2 class="group__name">{group.name}</h2>
+          <ul class="orgs">
+            {group.orgs.map(({ data, Body }) => (
+              <li class="org">
+                <h3>
+                  <a href={data.url} rel="noopener">
+                    {data.name}
+                  </a>
+                </h3>
+                <div class="org__note prose">
+                  <Body />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <p class="note text-muted">
+      None of these organisations endorsed this book or know it exists. They are listed because
+      their work is the real version of what the novel imagines, and because every link here was
+      checked to resolve before it went up. If one has gone stale, or one belongs here and is
+      missing, <a href="/contact">say so</a>.
+    </p>
+
+    <Newsletter />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-2xl);
+  }
+
+  .frame {
+    margin: var(--space-m) 0 0;
+    padding-inline-start: var(--space-m);
+    border-inline-start: 2px solid var(--amber);
+    max-width: 58ch;
+  }
+
+  .frame p {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    text-wrap: pretty;
+  }
+
+  .frame footer {
+    margin-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .campaign {
+    padding: var(--space-l);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    max-width: 60ch;
+    margin-block-end: var(--space-2xl);
+  }
+
+  .campaign__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .campaign h2 {
+    font-size: var(--step-1);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .campaign .button {
+    margin-block-start: var(--space-s);
+  }
+
+  .group + .group {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .group__name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    padding-block-end: var(--space-xs);
+    margin-block-end: var(--space-xl);
+    border-block-end: 1px solid var(--border);
+  }
+
+  .orgs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .org {
+    max-width: 64ch;
+  }
+
+  .org h3 {
+    font-size: var(--step-1);
+  }
+
+  .org__note {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .note {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    font-size: var(--step--1);
+    max-width: 62ch;
+  }
+</style>
