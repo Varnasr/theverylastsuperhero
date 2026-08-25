@@ -1,11 +1,16 @@
 ---
-import { getCollection, getEntries } from 'astro:content';
+import { getCollection, getEntries, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const events = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
 
 const withLinks = await Promise.all(
-  events.map(async (e) => ({ event: e, related: await getEntries(e.data.related) }))
+  events.map(async (e) => ({
+    event: e,
+    related: await getEntries(e.data.related),
+    // Events carry a body where there is more to say than the summary line.
+    Body: (await render(e)).Content,
+  }))
 );
 ---
 
@@ -27,13 +32,16 @@ const withLinks = await Promise.all(
 
     <ol class="timeline">
       {
-        withLinks.map(({ event, related }) => (
+        withLinks.map(({ event, related, Body }) => (
           <li class:list={['event', { 'event--classified': event.data.classified }]} id={event.id}>
             <div class="event__marker" aria-hidden="true" />
             <div class="event__card">
               <p class="event__year">{event.data.yearLabel}</p>
               <h2>{event.data.title}</h2>
-              <p class="text-muted">{event.data.summary}</p>
+              <p class="event__summary">{event.data.summary}</p>
+              <div class="event__body prose">
+                <Body />
+              </div>
               {related.length > 0 && (
                 <p class="event__links">
                   {related.map((r, i) => (
@@ -53,6 +61,31 @@ const withLinks = await Promise.all(
 </BaseLayout>
 
 <style>
+  .event__summary {
+    color: var(--text);
+  }
+
+  /* Present only on events that carry more than a summary line. */
+  .event__body {
+    margin-block-start: var(--space-s);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    max-width: 62ch;
+  }
+
+  .event__body:empty {
+    display: none;
+  }
+
+  .event__body :global(p + p) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .event__body :global(blockquote) {
+    margin-block: var(--space-s);
+    font-size: var(--step-0);
+  }
+
   .page-head {
     margin-block-end: var(--space-xl);
   }

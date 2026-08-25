@@ -5,6 +5,8 @@ designation: Sumati's Mother
 summary: Present most often as a lagging holographic call, and terrifying even in that form. With Rohan, she fought to expose what was being hidden — before she had to go away.
 order: 8
 related: [sumati, rohan-kapoor, waste-to-energy]
+image: ../../assets/lore/meera.webp
+imageAlt: A woman writing by lantern light beside a small brass-jointed polyhedron, a hazed skyline through the window
 ---
 
 Sumati's mother, who could be terrifying even in holographic form. Her voice

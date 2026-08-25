@@ -5,6 +5,8 @@ designation: Climate Adaptation
 summary: Not an accessory. Extended exposure without one means heat stroke, dehydration, and death — and most suits are third-hand, patchy, humming faintly.
 order: 13
 related: [rohan-kapoor, sumati, the-collapse]
+image: ../../assets/lore/cooling-suits.webp
+imageAlt: A cooling suit seen front and back — perforated fabric, a face wrap, and a backpack heat exchanger
 ---
 
 Sumati learned in school that before climate change intensified, people used to

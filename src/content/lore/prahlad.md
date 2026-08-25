@@ -3,10 +3,10 @@ title: Prahlad
 category: Character
 designation: Archive Keeper
 summary: A gaunt, soft-spoken man who keeps what is left of the archive, and knows the difference between a record and a rumour.
-image: ../../assets/illustrations/library-disarray.webp
-imageAlt: A library in disarray, books flown from the shelves, pages fluttering like confetti
 order: 10
 related: [the-treasure-room, salt-lamps, the-resistance, memory-tablets, asha, vikram-malhotra]
+image: ../../assets/lore/prahlad.webp
+imageAlt: An older man in a waistcoat writing into a ledger under a brass lamp, stacks of bound registers around him
 ---
 
 A gaunt, soft-spoken man.

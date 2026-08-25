@@ -26,6 +26,8 @@ testimony:
         Residents without certified cooling are advised to remain indoors. Your
         district compliance score has been updated. Queue times are shorter than
         yesterday. Thank you for your cooperation.
+image: ../../assets/lore/pai-surveillance.webp
+imageAlt: A surveillance mast of cameras, speakers and a facial-recognition panel above an empty road
 ---
 
 P.A.I. stood for **Predictive Autonomous Interface**.

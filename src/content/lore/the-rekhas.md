@@ -5,6 +5,8 @@ designation: REKHA-1 / REKHA-2 / REKHA-3 | Bio-Robots
 summary: Triplet bio-robots who rejected their control protocols and joined the Resistance — the first synthetics to act with independent moral agency. Their shrine is hidden in Kishanganj.
 order: 12
 related: [the-radhas, the-resistance, kishanganj, asha]
+image: ../../assets/lore/the-rekhas.webp
+imageAlt: Three young women with near-identical faces sitting close together, one in red, one in ochre, one in cream
 ---
 
 Three of them, built the same and finishing differently.

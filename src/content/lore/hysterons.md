@@ -5,6 +5,8 @@ designation: Shape Memory Materials | Salt Lamp Component
 summary: Memory materials — Nitinol and other Shape Memory Materials — blended into the salt. Combined with halite under the right compression and lattice integrity, the result can remember.
 order: 3
 related: [salt-lamps, myaknju, the-treasure-room]
+image: ../../assets/lore/hysterons.webp
+imageAlt: A faceted crystalline polyhedron braced with brass nodes and wire, lit from within
 ---
 
 Salt gives a lamp its lattice. Hysterons give it its memory.
