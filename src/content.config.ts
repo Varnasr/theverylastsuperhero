@@ -75,6 +75,17 @@ const lore = defineCollection({
     }),
 });
 
+const glossary = defineCollection({
+  loader: glob({ base: './src/content/glossary', pattern: '**/*.md' }),
+  schema: z.object({
+    /** The headword exactly as the book prints it. */
+    term: z.string(),
+    order: z.number().default(100),
+    /** Lore entries this term explains, for cross-linking back into the archive. */
+    related: z.array(reference('lore')).default([]),
+  }),
+});
+
 const timeline = defineCollection({
   loader: glob({ base: './src/content/timeline', pattern: '**/*.md' }),
   schema: z.object({
@@ -151,4 +162,5 @@ const memory = defineCollection({
     }),
 });
 
-export const collections = { lore, timeline, archive, wallpapers, memory };
+export const collections = {
+  glossary, lore, timeline, archive, wallpapers, memory };

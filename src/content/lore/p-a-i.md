@@ -5,6 +5,27 @@ designation: Predictive Autonomous Interface
 summary: Officially the Predictive Autonomous Interface. In practice, Pandemonium Algorithmic Indoctrination — it monitored for deviance, and it did not correct. It punished.
 order: 4
 related: [p-ai, kishore-mehta, the-collapse, the-disclosures-era]
+testimony:
+  src: /audio/pai-civic-notice.mp3
+  title: Civic compliance broadcast, sector nine
+  speaker: P.A.I.
+  recorded: "2074"
+  duration: "0:41"
+  kind: broadcast
+  transcript:
+    - lang: hi-IN
+      text: >
+        पी. ए. आई.। नागरिक अनुपालन प्रसारण, सेक्टर नौ। अगले चार घंटों तक तापमान
+        जीवित रहने योग्य सीमा में है। प्रमाणित शीतलन के बिना निवासियों को घर के
+        अंदर रहने की सलाह दी जाती है। आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया
+        गया है। आपके सहयोग के लिए धन्यवाद।
+    - lang: en-IN
+      text: >
+        Predictive Autonomous Interface. Civic compliance broadcast, sector nine.
+        Ambient temperature is within survivable range for the next four hours.
+        Residents without certified cooling are advised to remain indoors. Your
+        district compliance score has been updated. Queue times are shorter than
+        yesterday. Thank you for your cooperation.
 ---
 
 P.A.I. stood for **Predictive Autonomous Interface**.

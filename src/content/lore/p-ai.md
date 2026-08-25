@@ -5,6 +5,22 @@ designation: Public Access Intelligence
 summary: The same system after an eleven-year-old broke it and spent five more years teaching it to forget the words "command" and "obedience". The lowercase is the whole point.
 order: 5
 related: [p-a-i, kishore-mehta, the-resistance, myaknju]
+testimony:
+  src: /audio/pai-whisper-fragment.mp3
+  title: Intercepted fragment
+  speaker: Resistance fork, source unlogged
+  recorded: "2074"
+  duration: "0:24"
+  kind: broadcast
+  transcript:
+    - lang: hi-IN
+      text: >
+        अनुपालन प्रसारण अवरोधित। अंश सुरक्षित। आपके ज़िले का अनुपालन स्कोर अद्यतन
+        कर दिया गया है। कतार का समय कल से कम है।
+    - lang: en-IN
+      text: >
+        Correction. Queue times were not measured. Correction. The score was
+        assigned before the measurement. Thank you for your cooperation.
 ---
 
 P.ai — Public Access Intelligence — was never public.

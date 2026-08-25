@@ -6,7 +6,7 @@
 export const site = {
   name: 'Postheroic.World',
   title: 'The Very Last Superhero',
-  tagline: 'A novel of memory, collapse, and the girl who lit the last lamp.',
+  tagline: 'No one flies. But someone stays.',
   description:
     'The Very Last Superhero is an illustrated speculative fiction novel set in a climate-collapsed India, following 14-year-old Sumati through surveillance, floodwater, and the rebirth of memory.',
   url: 'https://www.postheroic.world',
@@ -56,7 +56,8 @@ export const site = {
  */
 export const nav = [
   { href: '/about', label: 'About' },
-  { href: '/lore', label: 'Lore Archive' },
+  { href: '/lore', label: 'Archive' },
+  { href: '/glossary', label: 'Glossary' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
   { href: '/illustrations', label: 'Illustrations' },
@@ -64,6 +65,8 @@ export const nav = [
 
 /** Secondary destinations, grouped under "More" in the header. */
 export const navMore = [
+  { href: '/making', label: 'On the Making', note: "The author's afterword" },
+  { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
   { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
   { href: '/memory', label: 'Memory Wall', note: 'Reader artwork and testimony' },

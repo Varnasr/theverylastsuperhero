@@ -6,27 +6,6 @@ summary: The curriculum public universities were pushed to adopt — a blend of 
 order: 6
 related: [p-a-i, the-collapse, kishore-mehta, hysterons]
 mapZone: curriculum-office
-testimony:
-  src: /audio/curriculum-notice-2061.mp3
-  title: Curriculum Division notice, 2061
-  speaker: Curriculum Division
-  recorded: "2061"
-  duration: "0:34"
-  kind: broadcast
-  transcript:
-    - lang: hi-IN
-      text: >
-        पाठ्यक्रम प्रभाग सूचना। शैक्षणिक वर्ष दो हज़ार इकसठ। राष्ट्रीय पाठ्यक्रम
-        पुनः तैयार किया गया है। शिक्षकों के पास मौजूद अनधिकृत अभिलेख जमा किए
-        जाने हैं।
-    - lang: en-IN
-      text: >
-        Curriculum Division notice. Academic year twenty sixty one. The National
-        Curriculum has been regenerated. Chapters concerning the period two
-        thousand fifty five to two thousand sixty have been revised for accuracy.
-        Unauthorised records held by individual educators are to be surrendered.
-        Teaching from superseded material is a compliance matter. This notice will
-        not be repeated.
 ---
 
 During that time, science was under siege in India.

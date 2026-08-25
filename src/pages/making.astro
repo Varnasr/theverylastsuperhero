@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BuyButton from '../components/BuyButton.astro';
+
+/**
+ * "On the Making of The Very Last Superhero" — the author's own afterword,
+ * reproduced verbatim from the manuscript. Nothing here is site copy; if it
+ * needs changing, it changes in the book first.
+ */
+---
+
+<BaseLayout
+  title="On the Making of The Very Last Superhero"
+  description="The author's afterword — why the book was written, what is real in it, and what the illustrations actually are."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">In the author's words</p>
+      <h1>On the Making of <em>The Very Last Superhero</em></h1>
+    </header>
+
+    <div class="prose making stack">
+      <p class="lede">This is not a story about superheroes. It’s a story about what we believed they could save us from—and what happened when they didn’t.</p>
+
+      <p><em>The Very Last Superhero</em> is grounded in Delhi’s actual, ongoing reality. The Okhla Waste-to-Energy plant exists. The heat exists. The failed tech, the air so dense with particulate that memory feels physical—this is not fiction. The book doesn’t imagine a future. It builds a map from the present forward.</p>
+
+      <p>The world of this story is shaped by material capitalism, climate collapse, and abandoned infrastructures dressed up as innovation. The superheroes were only ever state mechanisms—designed for obedience, engineered for loyalty, and incapable of love. They left behind their tech, propaganda, and the communities they claimed to protect when they fell.</p>
+
+      <p>Sumati is not a chosen one. She is a child trying to understand what she has inherited. Her search for her father becomes a search for Resistance and then for something older: shared memory. She learns from relics, ruins, animals, and ghosts. She knows from listening. This story is about care as resistance—about love for the nonhuman, the forgotten, and the othered. It is about what it means to remember communally, across time.</p>
+
+      <p>The Resistance didn’t fight back with fire. It fought with documentation, doubt, salt lamps, cracked badges, and memory tablets that outlived power grids. The Firebird—etched on walls, drawn in soot—was their symbol. Not official. Not claimed. But everywhere. A reminder that collapse doesn’t mean the end. It means the truth has outlived its suppressors.</p>
+
+      <p>The reprogrammed intelligence in the story—p.ai—was once P.A.I.: Pandemonium Algorithmic Indoctrination, designed to predict and punish. Rishi Mehta, age eleven, changed the dots, rewrote the code, and taught it to listen, not to obey. It wasn’t redemption. It was designed differently.</p>
+
+      <p>The illustrations in this book were made through generative tools, manual curation, and narrative revision. Each image holds part of the story. Some are memories the characters never see. Some are false. Some are true. They are not illustrations. They are records.</p>
+
+      <p>This book is about what survives collapse: animals, stories, data fragments, broken tech, friendship, and the long, stubborn refusal to give up on one another.</p>
+
+      <p>And maybe, most of all, it is about how to live when the heroes are gone—</p>
+
+      <p>And we are what’s left.</p>
+
+    </div>
+
+    <aside class="after">
+      <p class="text-muted">
+        Varna Sri Raman is the author and illustrator. The afterword above is printed in the book,
+        and reproduced here in full.
+      </p>
+      <BuyButton />
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .making {
+    max-width: 66ch;
+  }
+
+  .making .lede {
+    font-size: var(--step-1);
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .making p:last-child {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--amber);
+  }
+
+  .after {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m);
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 66ch;
+  }
+
+  .after p {
+    flex: 1 1 20rem;
+    font-size: var(--step--1);
+    margin: 0;
+  }
+</style>

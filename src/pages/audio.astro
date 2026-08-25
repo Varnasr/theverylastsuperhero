@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SaltLampPlayer from '../components/SaltLampPlayer.astro';
+
+/**
+ * The Salt Lamp Archive — every recording in one place.
+ *
+ * Recordings live on the lore entries they belong to; this page gathers them so
+ * a reader can find the audio without knowing which entry holds it. The split
+ * between human testimony and institutional broadcast is the point, so the two
+ * are grouped rather than mixed.
+ */
+
+const withAudio = (await getCollection('lore'))
+  .filter((e) => e.data.testimony)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const broadcasts = withAudio.filter((e) => e.data.testimony!.kind === 'broadcast');
+const testimony = withAudio.filter((e) => e.data.testimony!.kind === 'testimony');
+---
+
+<BaseLayout
+  title="The Salt Lamp Archive"
+  description="Recordings held in the archive — state broadcasts from P.A.I., the Curriculum Division and the emissions bulletin, and the empty slots where human testimony belongs."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Audio</p>
+      <h1>The Salt Lamp Archive</h1>
+      <p class="text-muted lede">
+        A lamp holds testimony the way a room holds a conversation. What comes back out is never
+        quite what went in — and the Resistance decided long ago that this was a feature. A record
+        that must be re-spoken to survive is a record with people attached to it.
+      </p>
+    </header>
+
+    <section class="group">
+      <h2>Institutional broadcasts</h2>
+      <p class="text-muted note">
+        {broadcasts.length} recordings. These are machines reciting rather than remembering, so the
+        voices are synthetic — generated offline, and bilingual where a real civic announcement
+        would be. That is the honest register for an institution that broadcasts and never listens.
+      </p>
+      <div class="stack">
+        {
+          broadcasts.map((e) => (
+            <article class="item">
+              <SaltLampPlayer {...e.data.testimony!} />
+              <p class="from">
+                Held against <a href={`/lore/${e.id}`}>{e.data.title}</a>
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>Human testimony</h2>
+      {
+        testimony.length ? (
+          <div class="stack">
+            {testimony.map((e) => (
+              <article class="item">
+                <SaltLampPlayer {...e.data.testimony!} />
+                <p class="from">
+                  Held against <a href={`/lore/${e.id}`}>{e.data.title}</a>
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="empty">
+            <p>
+              This section is empty on purpose, and the emptiness is the exhibit. Salt Lamps hold
+              human testimony: a record survives because a person re-speaks it, which is the
+              novel's whole argument. Synthesising these would undercut it — a machine reciting a
+              memory is exactly the thing the Resistance works against.
+            </p>
+            <p class="text-muted">
+              So the slots wait for real voices. If you have read the book and want to leave one,
+              the <a href="/memory">Memory Wall</a> is where it starts.
+            </p>
+          </div>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-2xl);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .group + .group {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .group h2 {
+    font-size: var(--step-1);
+  }
+
+  .note {
+    max-width: 60ch;
+    font-size: var(--step--1);
+    margin-block: var(--space-xs) var(--space-l);
+  }
+
+  .item + .item {
+    margin-block-start: var(--space-l);
+  }
+
+  .from {
+    margin-block-start: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  .empty {
+    padding: var(--space-l);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    max-width: 62ch;
+  }
+
+  .empty p + p {
+    margin-block-start: var(--space-s);
+    font-size: var(--step--1);
+  }
+</style>

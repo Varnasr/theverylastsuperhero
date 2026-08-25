@@ -4,7 +4,7 @@ category: Character
 designation: Wind-Manipulating Hero | Shrine Object
 summary: The hero who promised clean air. Sumati's mother kept a shrine to him. That detail says more about the era than any tribunal record.
 order: 25
-related: [captain-indra, the-golden-age, the-disclosures-era]
+related: [captain-indra, the-disclosures-era, the-disclosures-era]
 ---
 
 The wind-manipulating hero who promised clean air.

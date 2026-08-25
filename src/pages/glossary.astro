@@ -1,0 +1,151 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/**
+ * Glossary and Notes for the Curious Reader — the book's own back matter,
+ * reproduced from the manuscript rather than paraphrased.
+ *
+ * This is the one part of the site where the author's printed words stand
+ * unedited, so entries are rendered straight from the collection.
+ */
+
+const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ ...e, Body: (await render(e)).Content }))
+);
+---
+
+<BaseLayout
+  title="Glossary and Notes for the Curious Reader"
+  description="The book's own glossary — where the science is accurate, the politics are plausible, and the failures of humanity are deeply familiar. Hyper-Express, cooling suits, the 2060 Disclosures, waste-to-energy, Pandemonium architecture and more."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">From the book</p>
+      <h1>Glossary and Notes for the Curious Reader</h1>
+      <p class="text-muted lede">
+        This section is for readers who want to know more about the world of
+        <em>The Very Last Superhero</em> — where the science is accurate, the politics are
+        plausible, and the dreams and failures of humanity are deeply familiar. If you're wondering
+        whether the future in this novel could happen, the short answer is that parts of it already
+        have.
+      </p>
+    </header>
+
+    <nav class="jump" aria-label="Glossary terms">
+      <ul>
+        {
+          rendered.map((e) => (
+            <li>
+              <a href={`#${e.id}`}>{e.data.term}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <dl class="glossary">
+      {
+        rendered.map(({ id, data, Body }) => (
+          <div class="term" id={id}>
+            <dt>
+              <a href={`#${id}`} class="term__anchor">
+                {data.term}
+              </a>
+            </dt>
+            <dd class="prose">
+              <Body />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="closing">
+      This glossary is not exhaustive. It is an invitation. The world of
+      <em>The Very Last Superhero</em> is constructed from the sediment of our past and the anxious
+      architecture of our present. If some parts feel too real, that is intentional. If others think
+      it is impossible, perhaps that is where we should begin.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 62ch;
+  }
+
+  .jump {
+    margin-block-end: var(--space-2xl);
+    padding-block: var(--space-m);
+    border-block: 1px solid var(--border);
+  }
+
+  .jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .jump a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-block-end: 1px solid transparent;
+  }
+
+  .jump a:hover {
+    color: var(--amber);
+    border-block-end-color: currentColor;
+  }
+
+  .glossary {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  .term {
+    scroll-margin-block-start: 6rem;
+  }
+
+  dt {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 700;
+    margin-block-end: var(--space-2xs);
+  }
+
+  .term__anchor {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .term__anchor:hover {
+    color: var(--amber);
+  }
+
+  dd {
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  .closing {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 62ch;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

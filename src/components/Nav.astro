@@ -220,7 +220,10 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     border-inline-start: 1px solid var(--border);
   }
 
-  .nav-search {
+  /* Qualified with the parent: a bare `.nav-search` (0,1,0) loses to
+     `.site-nav a` (0,1,1) above, which forces display:block and wraps the icon
+     and label onto separate rows. */
+  .site-nav a.nav-search {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -287,7 +290,10 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     rotate: 180deg;
   }
 
-  .more__menu {
+  /* Specificity note: `.site-nav ul` (0,1,1) outranks a bare `.more__menu`
+     (0,1,0), so the horizontal row's align-items:center would win here and
+     centre every item in the column. Qualifying with the parent settles it. */
+  .site-nav ul.more__menu {
     position: absolute;
     inset-inline-end: 0;
     inset-block-start: calc(100% + 0.4rem);
@@ -300,6 +306,9 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+    /* .site-nav ul sets align-items:center for the horizontal row; this list is
+       a column, where that centres every item and leaves the labels ragged. */
+    align-items: stretch;
     gap: 0.1rem;
   }
 
