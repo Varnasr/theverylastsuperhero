@@ -6,7 +6,7 @@ summary: The pilot plants Rohan Kapoor reviews — revivals of the old Belgian s
 image: ../../assets/illustrations/fly-ash-fields.webp
 imageAlt: A tall thin man pushing fronds aside to reveal long white fields of fly ash
 order: 2
-related: [rohan-kapoor, mr-joshi, dr-gupta, the-collapse]
+related: [rohan-kapoor, mr-joshi, mr-gupta, the-collapse]
 testimony:
   src: /audio/emissions-bulletin.mp3
   title: Emissions integrity bulletin
