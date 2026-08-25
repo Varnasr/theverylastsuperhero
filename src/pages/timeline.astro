@@ -4,6 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const events = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
 
+const redacted = events.filter((e) => e.data.classified).length;
+
 const withLinks = await Promise.all(
   events.map(async (e) => ({
     event: e,
@@ -24,8 +26,9 @@ const withLinks = await Promise.all(
       <p class="eyebrow">Chronology</p>
       <h1>Collapse &amp; Resistance</h1>
       <p class="text-muted lede">
-        {events.length} recorded events. Entries marked <span class="badge badge--corrupted"
-          >redacted</span
+        {events.length} recorded events, from the coalitions founded in the climate emergency
+        years to a resurgence with no founding date. The {redacted} marked <span
+          class="badge badge--corrupted">redacted</span
         > were recovered only in fragments.
       </p>
     </header>
@@ -36,7 +39,10 @@ const withLinks = await Promise.all(
           <li class:list={['event', { 'event--classified': event.data.classified }]} id={event.id}>
             <div class="event__marker" aria-hidden="true" />
             <div class="event__card">
-              <p class="event__year">{event.data.yearLabel}</p>
+              <p class="event__year">
+                {event.data.yearLabel}
+                {event.data.classified && <span class="badge badge--corrupted">redacted</span>}
+              </p>
               <h2>{event.data.title}</h2>
               <p class="event__summary">{event.data.summary}</p>
               <div class="event__body prose">
@@ -159,6 +165,13 @@ const withLinks = await Promise.all(
   }
 
   .event__year {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .event__year-inner {
     font-family: var(--font-mono);
     font-size: var(--step--1);
     letter-spacing: 0.06em;
