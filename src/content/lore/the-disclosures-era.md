@@ -10,14 +10,21 @@ testimony:
   title: Curriculum Division notice
   speaker: Curriculum Division
   recorded: "2061"
-  duration: "0:26"
+  duration: "0:39"
   kind: broadcast
-  transcript: >
-    Curriculum Division notice. Academic year twenty sixty-one. The National
-    Curriculum has been regenerated. Chapters concerning the period 2055 to 2060
-    have been revised for accuracy. Unauthorised records held by individual
-    educators are to be surrendered. Teaching from superseded material is a
-    compliance matter. This notice will not be repeated.
+  transcript:
+    - lang: hi
+      text: >
+        पाठ्यक्रम प्रभाग सूचना। शैक्षणिक वर्ष दो हज़ार इकसठ।
+        राष्ट्रीय पाठ्यक्रम पुनः तैयार किया गया है।
+        शिक्षकों के पास मौजूद अनधिकृत अभिलेख जमा किए जाने हैं।
+    - lang: en
+      text: >
+        Curriculum Division notice. Academic year twenty sixty-one. The National
+        Curriculum has been regenerated. Chapters concerning the period 2055 to
+        2060 have been revised for accuracy. Unauthorised records held by
+        individual educators are to be surrendered. Teaching from superseded
+        material is a compliance matter. This notice will not be repeated.
 ---
 
 For two decades they soared across the skies in plasma suits and gravity-defying

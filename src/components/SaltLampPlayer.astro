@@ -13,13 +13,15 @@ interface Props {
   speaker: string;
   recorded: string;
   duration?: string;
-  transcript?: string;
+  transcript?: string | Array<{ lang: string; text: string }>;
   /** 'testimony' is a human voice in a lamp; 'broadcast' is an institution talking. */
   kind?: 'testimony' | 'broadcast';
 }
 
 const { src, title, speaker, recorded, duration, transcript, kind = 'testimony' } = Astro.props;
 const isBroadcast = kind === 'broadcast';
+const segments =
+  typeof transcript === 'string' ? [{ lang: 'en', text: transcript }] : (transcript ?? []);
 const label = isBroadcast ? 'Intercepted broadcast' : 'Salt Lamp testimony';
 const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
 ---
@@ -80,7 +82,7 @@ const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
       transcript && (
         <details class="lamp__transcript">
           <summary>Read the transcript</summary>
-          <p>{transcript}</p>
+          {segments.map((seg) => <p lang={seg.lang}>{seg.text}</p>)}
         </details>
       )
     }
@@ -413,6 +415,11 @@ const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
     color: var(--text-muted);
     border-left: 2px solid var(--border-strong);
     padding-left: var(--space-s);
+  }
+
+  /* Devanagari needs a little more room than Latin at the same size. */
+  .lamp__transcript p[lang='hi'] {
+    line-height: 1.85;
   }
 
   @media (max-width: 30rem) {

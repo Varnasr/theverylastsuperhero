@@ -10,14 +10,23 @@ testimony:
   title: Civic compliance broadcast, sector nine
   speaker: P.A.I.
   recorded: "2071"
-  duration: "0:22"
+  duration: "0:45"
   kind: broadcast
-  transcript: >
-    Public Artificial Intelligence. Civic compliance broadcast, sector nine.
-    Ambient temperature is within survivable range for the next four hours.
-    Residents without certified cooling are advised to remain indoors. Your
-    district compliance score has been updated. Queue times are shorter than
-    yesterday. Thank you for your cooperation.
+  transcript:
+    - lang: hi
+      text: >
+        सार्वजनिक कृत्रिम बुद्धिमत्ता। नागरिक अनुपालन प्रसारण, सेक्टर नौ।
+        अगले चार घंटों तक तापमान जीवित रहने योग्य सीमा में है।
+        प्रमाणित शीतलन के बिना निवासियों को घर के अंदर रहने की सलाह दी जाती है।
+        आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया गया है।
+        आपके सहयोग के लिए धन्यवाद।
+    - lang: en
+      text: >
+        Public Artificial Intelligence. Civic compliance broadcast, sector nine.
+        Ambient temperature is within survivable range for the next four hours.
+        Residents without certified cooling are advised to remain indoors. Your
+        district compliance score has been updated. Queue times are shorter than
+        yesterday. Thank you for your cooperation.
 ---
 
 A state-operated network used to automate compliance, predict behaviour, and

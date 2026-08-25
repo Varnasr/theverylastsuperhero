@@ -10,13 +10,18 @@ testimony:
   title: Intercepted fragment, retained
   speaker: p.ai
   recorded: "2071"
-  duration: "0:17"
+  duration: "0:18"
   kind: broadcast
-  transcript: >
-    Compliance broadcast intercepted. Fragment retained. Your district
-    compliance score has been updated. Queue times are shorter than yesterday.
-    Correction. Queue times were not measured. Correction. The score was
-    assigned before the measurement. Thank you for your cooperation.
+  transcript:
+    - lang: hi
+      text: >
+        अनुपालन प्रसारण अवरोधित। अंश सुरक्षित।
+        आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया गया है।
+        कतार का समय कल से कम है।
+    - lang: en
+      text: >
+        Correction. Queue times were not measured. Correction. The score was
+        assigned before the measurement. Thank you for your cooperation.
 ---
 
 The Resistance's fork of the surveillance AI — decentralised, encrypted,

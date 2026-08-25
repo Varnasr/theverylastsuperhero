@@ -108,9 +108,37 @@ Broadcasts are generated locally, offline, with no account and no per-word cost:
 
 ```bash
 pip install piper-tts lameenc
-python3 -m piper.download_voices en_GB-alan-medium --data-dir .voices
+python3 -m piper.download_voices hi_IN-priyamvada-medium en_GB-alan-medium --data-dir .voices
 python3 scripts/generate-broadcasts.py
 ```
+
+They are **bilingual — Hindi then English** — because that is how public address
+actually works in India, and because the novel already says so: the station
+robots at Serenity Junction "announce gentle beeps in five languages". Piper has
+no Indian-English voice, so rather than fake an accent with a British one, each
+language gets a voice that belongs to it.
+
+A multilingual clip needs a segmented transcript, so each language is marked with
+`lang` in the markup — without it a screen reader pronounces Devanagari with
+English phonetics:
+
+```yaml
+  transcript:
+    - lang: hi
+      text: >
+        सार्वजनिक कृत्रिम बुद्धिमत्ता। नागरिक अनुपालन प्रसारण, सेक्टर नौ।
+    - lang: en
+      text: >
+        Public Artificial Intelligence. Civic compliance broadcast, sector nine.
+```
+
+A plain string still works for single-language audio.
+
+**If you want true Indian-English voices**, [Sarvam AI](https://sarvam.ai) has
+them and its API is reachable — swap the `synthesise()` call in
+`scripts/generate-broadcasts.py` for a POST to `api.sarvam.ai/text-to-speech`
+with an API key. Everything downstream (segments, degrade, MP3 encoding,
+transcripts) stays as it is.
 
 Add an entry to `BROADCASTS` in `scripts/generate-broadcasts.py` and re-run.
 Set `degrade: True` for an intercepted fragment — a tremolo, a noise floor and

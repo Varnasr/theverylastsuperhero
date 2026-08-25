@@ -54,7 +54,17 @@ const lore = defineCollection({
           speaker: z.string(),
           recorded: z.string(),
           duration: z.string().optional(),
-          transcript: z.string().optional(),
+          /**
+           * Either a plain string, or segments for multilingual audio. Segments
+           * carry a BCP-47 code so each is marked with `lang` in the markup —
+           * without it a screen reader reads Devanagari with English phonetics.
+           */
+          transcript: z
+            .union([
+              z.string(),
+              z.array(z.object({ lang: z.string(), text: z.string() })).min(1),
+            ])
+            .optional(),
           kind: z.enum(['testimony', 'broadcast']).default('testimony'),
         })
         .optional(),

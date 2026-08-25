@@ -16,9 +16,14 @@ Everything runs locally through Piper — no account, no API, no per-word cost, 
 nothing leaves the machine. Output is 64 kbps mono MP3, which is plenty for
 speech and keeps each clip well under 100 KB.
 
+Broadcasts are bilingual where a real civic announcement would be — Hindi then
+English, the way public address actually works in India, and the way this world
+already works: the station robots at Serenity Junction "announce gentle beeps in
+five languages".
+
 Usage:
     pip install piper-tts lameenc
-    python3 -m piper.download_voices en_GB-alan-medium --data-dir .voices
+    python3 -m piper.download_voices hi_IN-priyamvada-medium en_GB-alan-medium --data-dir .voices
     python3 scripts/generate-broadcasts.py
 
 Adding a broadcast means adding an entry to BROADCASTS and re-running. Existing
@@ -36,7 +41,19 @@ from pathlib import Path
 
 OUT = Path("public/audio")
 VOICE_DIR = Path(".voices")
-VOICE = "en_GB-alan-medium"
+
+# One voice per language. There is no Indian-English voice in Piper's catalogue,
+# so rather than fake an accent the broadcasts are bilingual — which is what a
+# civic announcement in this world would actually be. The novel says so itself:
+# the station robots at Serenity Junction "announce gentle beeps in five
+# languages".
+VOICES = {
+    "hi": "hi_IN-priyamvada-medium",
+    "en": "en_GB-alan-medium",
+}
+
+# Pause between language segments, in seconds.
+SEGMENT_GAP = 0.55
 
 # `degrade` runs the intercepted-fragment treatment: the Resistance's fork is a
 # sabotaged copy of the state network, and it should not sound clean.
@@ -44,52 +61,99 @@ BROADCASTS = [
     {
         "slug": "pai-civic-notice",
         "degrade": False,
-        "text": (
-            "Public Artificial Intelligence. Civic compliance broadcast, "
-            "sector nine. "
-            "Ambient temperature is within survivable range for the next four hours. "
-            "Residents without certified cooling are advised to remain indoors. "
-            "Your district compliance score has been updated. "
-            "Queue times are shorter than yesterday. "
-            "Thank you for your cooperation."
-        ),
+        "segments": [
+            {
+                "voice": "hi",
+                "text": (
+                    "सार्वजनिक कृत्रिम बुद्धिमत्ता। नागरिक अनुपालन प्रसारण, सेक्टर नौ। "
+                    "अगले चार घंटों तक तापमान जीवित रहने योग्य सीमा में है। "
+                    "प्रमाणित शीतलन के बिना निवासियों को घर के अंदर रहने की सलाह दी जाती है। "
+                    "आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया गया है। "
+                    "आपके सहयोग के लिए धन्यवाद।"
+                ),
+            },
+            {
+                "voice": "en",
+                "text": (
+                    "Public Artificial Intelligence. Civic compliance broadcast, "
+                    "sector nine. "
+                    "Ambient temperature is within survivable range for the next four hours. "
+                    "Residents without certified cooling are advised to remain indoors. "
+                    "Your district compliance score has been updated. "
+                    "Queue times are shorter than yesterday. "
+                    "Thank you for your cooperation."
+                ),
+            },
+        ],
     },
     {
+        # The fork retransmits the state's own words, then lets the correction
+        # through in the second language — the part the broadcast never says.
         "slug": "pai-whisper-fragment",
         "degrade": True,
-        "text": (
-            "Compliance broadcast intercepted. Fragment retained. "
-            "Your district compliance score has been updated. "
-            "Queue times are shorter than yesterday. "
-            "Correction. Queue times were not measured. "
-            "Correction. The score was assigned before the measurement. "
-            "Thank you for your cooperation."
-        ),
+        "segments": [
+            {
+                "voice": "hi",
+                "text": (
+                    "अनुपालन प्रसारण अवरोधित। अंश सुरक्षित। "
+                    "आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया गया है। "
+                    "कतार का समय कल से कम है।"
+                ),
+            },
+            {
+                "voice": "en",
+                "text": (
+                    "Correction. Queue times were not measured. "
+                    "Correction. The score was assigned before the measurement. "
+                    "Thank you for your cooperation."
+                ),
+            },
+        ],
     },
     {
         "slug": "curriculum-notice-2061",
         "degrade": False,
-        "text": (
-            "Curriculum Division notice. Academic year twenty sixty one. "
-            "The National Curriculum has been regenerated. "
-            "Chapters concerning the period two thousand fifty five to two thousand sixty "
-            "have been revised for accuracy. "
-            "Unauthorised records held by individual educators are to be surrendered. "
-            "Teaching from superseded material is a compliance matter. "
-            "This notice will not be repeated."
-        ),
+        "segments": [
+            {
+                "voice": "hi",
+                "text": (
+                    "पाठ्यक्रम प्रभाग सूचना। शैक्षणिक वर्ष दो हज़ार इकसठ। "
+                    "राष्ट्रीय पाठ्यक्रम पुनः तैयार किया गया है। "
+                    "शिक्षकों के पास मौजूद अनधिकृत अभिलेख जमा किए जाने हैं।"
+                ),
+            },
+            {
+                "voice": "en",
+                "text": (
+                    "Curriculum Division notice. Academic year twenty sixty one. "
+                    "The National Curriculum has been regenerated. "
+                    "Chapters concerning the period two thousand fifty five to two thousand sixty "
+                    "have been revised for accuracy. "
+                    "Unauthorised records held by individual educators are to be surrendered. "
+                    "Teaching from superseded material is a compliance matter. "
+                    "This notice will not be repeated."
+                ),
+            },
+        ],
     },
     {
+        # Technical bulletin: English only, in the register such things are
+        # actually published in.
         "slug": "emissions-bulletin",
         "degrade": False,
-        "text": (
-            "Waste to energy pilot. Emissions integrity bulletin. "
-            "Stack readings for this cycle are within declared tolerance. "
-            "Declared tolerance has been adjusted this cycle. "
-            "Particulate figures for the residential perimeter are pending review "
-            "and will be published following review. "
-            "The pilot remains a model for the zone."
-        ),
+        "segments": [
+            {
+                "voice": "en",
+                "text": (
+                    "Waste to energy pilot. Emissions integrity bulletin. "
+                    "Stack readings for this cycle are within declared tolerance. "
+                    "Declared tolerance has been adjusted this cycle. "
+                    "Particulate figures for the residential perimeter are pending review "
+                    "and will be published following review. "
+                    "The pilot remains a model for the zone."
+                ),
+            },
+        ],
     },
 ]
 
@@ -158,18 +222,39 @@ def main() -> int:
         print("piper-tts is not installed. See the docstring at the top of this file.")
         return 1
 
-    model = VOICE_DIR / f"{VOICE}.onnx"
-    if not model.exists():
-        print(f"Voice model missing: {model}")
-        print(f"Run: python3 -m piper.download_voices {VOICE} --data-dir {VOICE_DIR}")
-        return 1
+    # Load only the voices the broadcasts actually reference.
+    needed = {seg["voice"] for b in BROADCASTS for seg in b["segments"]}
+    loaded = {}
+    for lang in sorted(needed):
+        name = VOICES[lang]
+        model = VOICE_DIR / f"{name}.onnx"
+        if not model.exists():
+            print(f"Voice model missing: {model}")
+            print(f"Run: python3 -m piper.download_voices {name} --data-dir {VOICE_DIR}")
+            return 1
+        loaded[lang] = PiperVoice.load(str(model), config_path=str(model) + ".json")
 
-    voice = PiperVoice.load(str(model), config_path=str(model) + ".json")
     OUT.mkdir(parents=True, exist_ok=True)
 
     total = 0
     for b in BROADCASTS:
-        pcm, rate, channels = synthesise(voice, b["text"])
+        chunks: list[bytes] = []
+        rate = channels = None
+
+        for i, seg in enumerate(b["segments"]):
+            pcm, r, c = synthesise(loaded[seg["voice"]], seg["text"])
+            if rate is None:
+                rate, channels = r, c
+            elif (r, c) != (rate, channels):
+                # Every Piper voice used here is 22.05 kHz mono; bail loudly
+                # rather than silently splicing mismatched audio.
+                print(f"  ! {b['slug']}: segment {i} is {r}Hz/{c}ch, expected {rate}Hz/{channels}ch")
+                return 1
+            if i:
+                chunks.append(b"\x00\x00" * int(rate * channels * SEGMENT_GAP))
+            chunks.append(pcm)
+
+        pcm = b"".join(chunks)
         if b["degrade"]:
             pcm = degrade(pcm, rate)
         mp3 = to_mp3(pcm, rate, channels)
@@ -177,8 +262,9 @@ def main() -> int:
         path = OUT / f"{b['slug']}.mp3"
         path.write_bytes(mp3)
         seconds = len(pcm) / (rate * channels * 2)
+        langs = "+".join(dict.fromkeys(seg["voice"] for seg in b["segments"]))
         total += len(mp3)
-        print(f"{path}  {seconds:5.1f}s  {len(mp3) / 1024:6.1f} KB")
+        print(f"{path}  {langs:5}  {seconds:5.1f}s  {len(mp3) / 1024:6.1f} KB")
 
     print(f"\n{len(BROADCASTS)} broadcasts, {total / 1024:.1f} KB total")
     return 0

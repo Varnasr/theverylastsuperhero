@@ -2,8 +2,9 @@
 
 ## ✅ Done
 - Machine voices: four synthetic broadcasts (P.A.I., the intercepted fork, the
-  2061 Curriculum notice, an emissions bulletin) generated offline with Piper.
-  Human testimony is deliberately *not* synthesised — see docs/CONTENT.md
+  2061 Curriculum notice, an emissions bulletin) generated offline with Piper,
+  bilingual Hindi + English. Human testimony is deliberately *not* synthesised —
+  see docs/CONTENT.md. **The Hindi needs a native-speaker check.**
 - `/lamplighter` — a memory game: the archive plays a sequence of lamps, you
   repeat it back. The book's argument about memory, as a rule
 - `/sigil` — Firebird wallpaper generator (was "Firebird badge generator"),
@@ -23,6 +24,10 @@
 - Fixed 7 broken images, 2 broken nav links, and the mislabelled `.jpg` files
 
 ## 🔜 Next
+- Check the Hindi in `scripts/generate-broadcasts.py` — written without a native
+  speaker, and it is the state's voice, so the register matters
+- Optional: regenerate with Sarvam AI for true Indian-English voices (API is
+  reachable; needs a key)
 - Record the first Salt Lamp testimony (the player is built and waiting)
 - Connect the Memory Wall form — see `docs/SUBMISSIONS.md`
 - Commission or recover artwork for the Satcomm Relic (`status: pending`)
