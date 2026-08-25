@@ -1,5 +1,6 @@
 ---
 import { site, footerLinks } from '../lib/site';
+import BuyButton from './BuyButton.astro';
 const year = new Date().getFullYear();
 ---
 
@@ -10,6 +11,7 @@ const year = new Date().getFullYear();
       <p class="blurb">
         {site.tagline} Written by {site.author}, published by {site.publisher}.
       </p>
+      <p class="footer-buy"><BuyButton /></p>
     </div>
 
     <div class="col">
@@ -83,6 +85,10 @@ const year = new Date().getFullYear();
   .fine {
     font-size: var(--step--1);
     color: var(--text-faint);
+  }
+
+  .footer-buy {
+    margin-block-start: var(--space-m);
   }
 
   .col ul {

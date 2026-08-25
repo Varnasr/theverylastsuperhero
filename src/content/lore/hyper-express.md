@@ -3,6 +3,8 @@ title: The Hyper Express
 category: Infrastructure
 designation: Hyperloop | Maglev
 summary: Delhi to Kolkata in six hours, on journey times that showed as impossible a decade ago. Trains become places to think things out.
+image: ../../assets/illustrations/bazaar-from-train.webp
+imageAlt: Bazaars of colourful fabric and street food seen from a moving train window, dreamlike
 order: 16
 related: [serenity-junction, kishanganj, sumati]
 ---

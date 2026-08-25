@@ -1,0 +1,96 @@
+---
+import { site } from '../lib/site';
+
+interface Props {
+  /** 'primary' for the hero and the buy band; 'compact' for the nav. */
+  variant?: 'primary' | 'compact';
+  label?: string;
+  class?: string;
+}
+
+const { variant = 'primary', label, class: className } = Astro.props;
+
+/**
+ * Falls back to an ISBN search rather than hiding the button. An ISBN search on
+ * Amazon resolves to exactly one listing once the book is live, so the link is
+ * never wrong — it just takes one extra hop until the product URL is pasted into
+ * site.ts.
+ */
+const href =
+  site.buy.amazon || `https://www.amazon.in/s?k=${site.isbn.replace(/-/g, '')}`;
+
+const text = label ?? (variant === 'compact' ? 'Buy' : 'Buy the book');
+---
+
+<a
+  class:list={['buy', `buy--${variant}`, className]}
+  href={href}
+  rel="noopener"
+  target="_blank"
+  data-buy
+>
+  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path
+      d="M2.5 3h1.4l1.6 7.2h6.6l1.4-5.2H5.2"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle cx="6.6" cy="13" r="1.15" fill="currentColor" />
+    <circle cx="11.6" cy="13" r="1.15" fill="currentColor" />
+  </svg>
+  <span>{text}</span>
+</a>
+
+<style>
+  .buy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-s);
+    transition:
+      background-color 0.15s var(--ease),
+      border-color 0.15s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .buy svg {
+    width: 1em;
+    height: 1em;
+    flex: none;
+  }
+
+  .buy--primary {
+    padding: 0.7em 1.3em;
+    background: var(--amber);
+    border: 1px solid var(--amber);
+    color: #131211;
+    font-weight: 600;
+    font-size: var(--step--1);
+  }
+
+  .buy--primary:hover {
+    background: var(--amber-bright);
+    border-color: var(--amber-bright);
+    color: #131211;
+    transform: translateY(-1px);
+  }
+
+  .buy--compact {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.78rem;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+  }
+
+  .buy--compact:hover {
+    background: var(--amber);
+    color: #131211;
+  }
+</style>

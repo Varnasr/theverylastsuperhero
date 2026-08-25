@@ -3,6 +3,8 @@ title: Chandra
 category: Character
 designation: Crow Guardian
 summary: A large crow that does not scatter. It watches from a telephone pole, head tilted as if studying you, and there is something unsettling about the gaze.
+image: ../../assets/illustrations/chased-by-crow.webp
+imageAlt: A girl in kurta and leggings running down a train platform chased by a giant black crow, a brown dog running alongside
 order: 7
 related: [sumati, buddy, momo, rani]
 ---

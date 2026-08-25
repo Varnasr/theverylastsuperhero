@@ -24,6 +24,13 @@
 - Fixed 7 broken images, 2 broken nav links, and the mislabelled `.jpg` files
 
 ## 🔜 Next
+- **Check the in-book / not-in-book flags on /illustrations.** 34 pieces were
+  imported and 14 are currently marked as appearing in the published book — those
+  are guesses from subject matter, not knowledge. Correct `CAPTIONS` in
+  `src/pages/illustrations.astro`; `inBook: true` shows it as published, omitting
+  it marks the piece "not in the book"
+- Paste the real Amazon product URL into `buy.amazon` in `src/lib/site.ts`. Until
+  then every buy button falls back to an Amazon search on the ISBN
 - Check the Hindi in `scripts/generate-broadcasts.py` — written without a native
   speaker, and it is the state's voice, so the register matters
 - Optional: regenerate with Sarvam AI for true Indian-English voices (API is

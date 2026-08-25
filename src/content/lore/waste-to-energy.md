@@ -3,6 +3,8 @@ title: Waste-to-Energy Systems
 category: Technology
 designation: WTE | Emissions Integrity
 summary: The pilot plants Rohan Kapoor reviews — revivals of the old Belgian system that worked at Gazipur in the 2020s, promising to revolutionise Delhi's energy grid if the emissions controls hold.
+image: ../../assets/illustrations/fly-ash-fields.webp
+imageAlt: A tall thin man pushing fronds aside to reveal long white fields of fly ash
 order: 2
 related: [rohan-kapoor, mr-joshi, dr-gupta, the-collapse]
 testimony:

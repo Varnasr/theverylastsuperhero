@@ -3,6 +3,8 @@ title: Virtual Layer Flooring
 category: Infrastructure
 designation: Sensory Overlays
 summary: Delicate patterned surfaces laid in schools and archives for story-triggered audio playback.
+image: ../../assets/illustrations/virtual-layer-flooring.webp
+imageAlt: Footsteps on a train corridor floor leaving a blue blur of soft light behind them
 order: 9
 related: [salt-lamps, myaknju, the-treasure-room]
 ---

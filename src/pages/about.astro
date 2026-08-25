@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site';
+import BuyButton from '../components/BuyButton.astro';
 ---
 
 <BaseLayout
@@ -97,6 +98,7 @@ import { site } from '../lib/site';
         <div><dt>ISBN</dt><dd>{site.isbn}</dd></div>
         <div><dt>Chapters</dt><dd>{site.chapters}, plus a prologue and an afterword</dd></div>
       </dl>
+      <p class="buy-row"><BuyButton /></p>
 
       <h2>Credits</h2>
       <p>
@@ -173,6 +175,10 @@ import { site } from '../lib/site';
       grid-template-columns: 1fr;
       gap: var(--space-2xs);
     }
+  }
+
+  .buy-row {
+    margin-block-start: var(--space-l);
   }
 
   cite {

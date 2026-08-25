@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LoreCard from '../components/LoreCard.astro';
+import BuyButton from '../components/BuyButton.astro';
 import { site } from '../lib/site';
 import hero from '../assets/wallpapers/on-rooftop.jpg';
 
@@ -56,8 +57,8 @@ const structuredData = {
       <h1>The Very Last Superhero</h1>
       <p class="hero__tagline">{site.tagline}</p>
       <div class="hero__actions">
-        <a class="button button--primary" href="/lore">Enter the Lore Archive</a>
-        <a class="button" href="/timeline">Read the Timeline</a>
+        <BuyButton />
+        <a class="button" href="/lore">Enter the Lore Archive</a>
       </div>
     </div>
   </section>
@@ -129,6 +130,22 @@ const structuredData = {
       </blockquote>
       <figcaption>— {site.epigraph.attribution}</figcaption>
     </figure>
+  </section>
+
+  <section class="section shell">
+    <div class="buy-band">
+      <div class="stack">
+        <p class="eyebrow">The book</p>
+        <h2>Read the whole thing</h2>
+        <p class="text-muted">
+          {site.chapters} chapters, illustrated throughout, published by {site.publisher}.
+          Everything on this site is the world around it — the novel itself is where Sumati
+          actually goes.
+        </p>
+        <p class="buy-band__meta">{site.edition} &middot; ISBN {site.isbn}</p>
+      </div>
+      <BuyButton />
+    </div>
   </section>
 
   <section class="section shell">
@@ -275,6 +292,34 @@ const structuredData = {
 
   .callout .stack {
     max-width: 46ch;
+  }
+
+  .buy-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-l);
+    padding: var(--space-xl);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(
+        circle at 12% 50%,
+        color-mix(in srgb, var(--amber) 10%, transparent),
+        transparent 60%
+      ),
+      var(--bg-raised);
+  }
+
+  .buy-band .stack {
+    max-width: 52ch;
+  }
+
+  .buy-band__meta {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
   }
 
   .epigraph {

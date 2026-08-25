@@ -3,6 +3,8 @@ title: Nandini Maa
 category: Character
 designation: Elder Leader | Nandini's
 summary: "Mrs Nandini Sharma, who taught at the collapsed Sarvodaya Vidyalaya and now runs the tea stall at the end of the platform. Finds a girl who has missed her train and says: we'll figure it out together."
+image: ../../assets/illustrations/nandinis-tea-corner.webp
+imageAlt: A tea stall on a railway platform signed Nandini's Tea Corner, a woman in a tea-stained apron stirring a steaming pot
 order: 8
 related: [sumati, myaknju, momo, rani, serenity-junction, the-resistance]
 ---

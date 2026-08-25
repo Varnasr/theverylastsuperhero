@@ -70,6 +70,12 @@ export const GET: APIRoute = async () => {
       d: 'A memory game. The archive plays a sequence of Salt Lamps; you repeat it back.',
     },
     {
+      t: 'Illustrations',
+      u: '/illustrations',
+      k: 'Gallery',
+      d: 'The artwork behind the book — the pieces that made it in, and the ones that did not.',
+    },
+    {
       t: 'Firebird Sigil',
       u: '/sigil',
       k: 'Tool',

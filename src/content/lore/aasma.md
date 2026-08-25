@@ -3,6 +3,8 @@ title: Aasma
 category: Character
 designation: Streetwise Ally
 summary: A clever, fast-talking girl living on the fringes of the surveillance grid, who knows which corners the cameras have never learned.
+image: ../../assets/illustrations/cardboard-boxes.webp
+imageAlt: A girl pulling apart a tall pile of cardboard boxes to reveal a thin girl with tousled hair, eyes wide with shock
 order: 9
 related: [sumati, chandra, the-resistance, moti]
 ---

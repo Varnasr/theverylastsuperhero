@@ -3,6 +3,8 @@ title: Kishanganj
 category: Location
 designation: Town | Serenity Junction
 summary: The quaint town where Serenity Junction sits. Once lush-green fields, now arid patches with cracks running deep.
+image: ../../assets/illustrations/arid-land.webp
+imageAlt: Arid patches of land with cracks running deep like veins, townsfolk under wide-brimmed hats and parasols
 order: 18
 related: [serenity-junction, sumati, the-collapse]
 ---

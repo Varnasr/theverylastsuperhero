@@ -3,6 +3,8 @@ title: Serenity Junction
 category: Location
 designation: Station | Two Platforms
 summary: A quaint platform in Kishanganj with memorabilia on the walls, where the train stops for two minutes and a father steps off.
+image: ../../assets/illustrations/delhi-station-2045.webp
+imageAlt: A railway station with solar panels and a hyperloop, a bespectacled man holding his daughter’s hand, assisted by robots
 order: 17
 related: [kishanganj, sumati, rohan-kapoor, mr-joshi, nandini-maa, hyper-express]
 ---

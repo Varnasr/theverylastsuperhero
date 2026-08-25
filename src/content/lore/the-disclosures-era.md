@@ -3,6 +3,8 @@ title: The Age of Heroes
 category: Event
 designation: Two Decades | Ended 2060
 summary: For twenty years heroes soared in plasma suits and gravity-defying capes, and India worshipped them. The 2060 Disclosures ended it.
+image: ../../assets/illustrations/superhero-flees.webp
+imageAlt: A bus fallen into a river beneath a collapsed bridge, women and children in the water, a superhero in neon green fleeing the scene
 order: 19
 related: [captain-indra, delhi-climate-brigade, quantum-corps, the-collapse]
 testimony:

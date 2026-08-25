@@ -3,6 +3,8 @@ title: Sumati
 category: Character
 designation: Protagonist
 summary: The girl who finds her father's Salt Lamp and reawakens the forgotten archive.
+image: ../../assets/illustrations/sumati-face.jpg
+imageAlt: The face of a teenage girl, looking up
 order: 5
 related: [rohan-kapoor, salt-lamps, chandra, the-resistance]
 ---

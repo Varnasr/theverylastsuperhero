@@ -1,0 +1,200 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/**
+ * The illustration gallery — including the ones that did not make the book.
+ *
+ * Images are globbed rather than listed, so dropping a file into
+ * src/assets/illustrations puts it on the page. Captions live in CAPTIONS below;
+ * anything without one still appears, just without a description.
+ */
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/illustrations/*.{png,jpg,jpeg,webp}',
+  { eager: true }
+);
+
+interface Caption {
+  title: string;
+  note: string;
+  /** true where the image (or a version of it) appears in the published book. */
+  inBook?: boolean;
+}
+
+const CAPTIONS: Record<string, Caption> = {
+  'salt-lamp-shack': { title: 'The Lamp in the Shack', note: 'A dimly lit shack, straw on the floor, and a Himalayan salt lamp glowing red in the middle of it.', inBook: true },
+  'treasure-room': { title: 'The Treasure Room', note: 'Broken fans, old parchment, coins with holes, shiny metal balls, lamps, embroidered fabric, bottles of every colour.', inBook: true },
+  'nandinis-tea-corner': { title: "Nandini's Tea Corner", note: 'The tea stall at the end of the platform, and the woman who tells a lost girl they will figure it out together.', inBook: true },
+  'virtual-layer-flooring': { title: 'Virtual Layer Flooring', note: 'Footsteps leaving a blue blur of soft light along a train corridor.', inBook: true },
+  'superhero-flees': { title: 'The Hero Leaves', note: 'A bus in the river, a collapsed bridge, women and children in the water — and a figure in neon green heading the other way.', inBook: true },
+  'fly-ash-fields': { title: 'Fly Ash', note: 'Pushing the fronds aside to find long white fields of ash behind them.', inBook: true },
+  'bench-weeping': { title: 'The Bench', note: 'The moment before the dog gets a name.', inBook: true },
+  'cardboard-boxes': { title: 'Behind the Boxes', note: 'Pulling apart a pile of cardboard to find someone already living there.', inBook: true },
+  'chased-by-crow': { title: 'The Crow', note: 'Down the platform at speed, a girl, a dog, and a bird that will not be shooed.', inBook: true },
+  'professor-with-books': { title: 'Papa and the Books', note: 'Stepping off a train under a pile of books, watched from the platform.', inBook: true },
+  'delhi-station-2045': { title: 'The Station', note: 'Solar panels, a hyperloop, and robots that guide confused travellers with soft blue light.', inBook: true },
+  'arid-land': { title: 'Cracked Ground', note: 'Fields that were once lush green, bearing the brunt of it. Wide-brimmed hats and parasols.', inBook: true },
+  'animal-team': { title: 'The Animals', note: 'A mongoose, a cat, a dog, a parrot, a crow. Between them they upend more scan sweeps than the Resistance ever planned.', inBook: true },
+  'library-disarray': { title: 'The Library, After', note: 'Books off the shelves, pages fluttering like confetti.' },
+  'library-librarian': { title: 'The Head Librarian', note: 'A stern woman at a high table, surrounded by books, being asked for something she is not supposed to give.' },
+  'sumati-face': { title: 'Sumati', note: 'Looking up.', inBook: true },
+  'london-fireplace': { title: 'A Room in London', note: 'Wood panelling, law journals, a roaring fire, and a man who is a long way from Delhi.' },
+  'bazaar-from-train': { title: 'Bazaars from a Train Window', note: 'Colourful fabric and shimmering jewels, the smell of street food, all of it going past.' },
+  'museum': { title: 'The Museum', note: 'Holographic biospheres, ecosystem simulations, augmented tours through an Earth that is no longer there.' },
+  'rickety-bus': { title: 'The Rickety Bus', note: 'Vibrant saris, dhotis, children by the roadside, fields of wheat and mustard.' },
+  'fire-dance': { title: 'Around the Fire', note: 'A girl, her dog, five villagers and a drum. It is evening, and it is festive.' },
+  'police-station': { title: 'The Police Station', note: 'Potbellied policemen lounging, uniforms stained with sweat and dust, the air thick with stale tobacco.' },
+  'police-van': { title: 'In the Van', note: 'Two girls, a professor and a middle-aged woman, huddled in with three officers.' },
+  'station-master-yelling': { title: 'The Station Master', note: 'An unpleasant fellow with a smirk, yelling at people who have done nothing.' },
+  'commissioner-room': { title: "The Commissioner's Room", note: 'Polished marble under warm golden light. Awards and certificates showcasing a career of dedication to law and order.' },
+  'dog-at-window': { title: 'Barking at the Window', note: 'Something outside is worth the noise.' },
+  'lit-room': { title: 'A Small Bright Room', note: 'Brightly lit and poorly furnished.' },
+  'man-jumping': { title: 'The Jump', note: 'A tall lean man with a pot belly, mid-air.' },
+  'deep-conversation': { title: 'Deep Conversation', note: 'A young man, entirely absorbed.' },
+  'vision-board': { title: 'The Vision Board', note: 'A complex board assembled to find one person.' },
+  'study-a': { title: 'Study', note: 'One of a set of refinement passes.' },
+  'study-b': { title: 'Study', note: 'One of a set of refinement passes.' },
+  'study-c': { title: 'Study', note: 'One of a set of refinement passes.' },
+  'study-d': { title: 'Study', note: 'One of a set of refinement passes.' },
+};
+
+const slugOf = (path: string) => path.split('/').pop()!.replace(/\.[a-z]+$/i, '');
+
+const images = Object.entries(files)
+  .map(([path, mod]) => {
+    const slug = slugOf(path);
+    return { slug, src: mod.default, caption: CAPTIONS[slug] };
+  })
+  // Named pieces first, in the order CAPTIONS declares them; anything unlisted after.
+  .sort((a, b) => {
+    const keys = Object.keys(CAPTIONS);
+    const ai = keys.indexOf(a.slug);
+    const bi = keys.indexOf(b.slug);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+
+const inBook = images.filter((i) => i.caption?.inBook).length;
+const cut = images.length - inBook;
+
+// A representative image for the social card.
+const first = images[0]?.src;
+const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) : undefined;
+---
+
+<BaseLayout
+  title="Illustrations"
+  description="The artwork behind The Very Last Superhero — the illustrations that made the book, and the ones that did not."
+  image={og?.src}
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">The artwork</p>
+      <h1>Illustrations</h1>
+      <p class="text-muted lede">
+        {images.length} pieces made while writing the book. {inBook} of them made it in; the other {
+          cut
+        } did not — rooms that were described and then cut, characters who lost their scene, versions
+        that were nearly right. They are here because the world is bigger than the book that came out
+        of it.
+      </p>
+    </header>
+
+    <div class="gallery">
+      {
+        images.map(({ slug, src, caption }) => (
+          <figure class="plate" id={slug}>
+            <Image
+              src={src}
+              alt={caption?.note ?? caption?.title ?? ''}
+              widths={[400, 700, 1000]}
+              sizes="(max-width: 40rem) 92vw, (max-width: 70rem) 45vw, 30rem"
+              loading="lazy"
+            />
+            <figcaption>
+              <h2>
+                {caption?.title ?? slug.replace(/-/g, ' ')}
+                {!caption?.inBook && <span class="plate__cut">not in the book</span>}
+              </h2>
+              {caption?.note && <p class="text-muted">{caption.note}</p>}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <p class="note text-muted">
+      Artwork by {'Varna Sri Raman'}, generated with AI image tools from written prompts and then
+      selected, refined and sequenced by hand. Free to share under
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener"
+        >CC BY-NC-ND 4.0</a
+      >.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .gallery {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fill, minmax(min(26rem, 100%), 1fr));
+  }
+
+  .plate {
+    margin: 0;
+    scroll-margin-block: 6rem;
+  }
+
+  .plate img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-sunken);
+  }
+
+  .plate figcaption {
+    margin-block-start: var(--space-s);
+  }
+
+  .plate h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-s);
+    font-size: var(--step-1);
+  }
+
+  .plate__cut {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px dashed var(--border-strong);
+    border-radius: 999px;
+    padding: 0.15em 0.6em;
+  }
+
+  .plate figcaption p {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    max-width: 48ch;
+  }
+
+  .note {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    font-size: var(--step--1);
+    max-width: 60ch;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { nav, site } from '../lib/site';
 import ThemeToggle from './ThemeToggle.astro';
+import BuyButton from './BuyButton.astro';
 
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
@@ -42,6 +43,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
             <path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
           </svg><span class="nav-search__label">Search</span>
         </a>
+        <BuyButton variant="compact" />
         <ThemeToggle />
       </div>
     </nav>

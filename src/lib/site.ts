@@ -14,6 +14,18 @@ export const site = {
   publisher: 'StoryWell Books Foundation',
   email: 'info@storywell.in',
   isbn: '978-93-95373-08-1',
+  /**
+   * Where to buy. Paste the exact Amazon product URL (the .../dp/XXXXXXXXXX one)
+   * into `amazon` and every buy button on the site points at it.
+   *
+   * Until then the buttons fall back to an Amazon search on the book's ISBN,
+   * which always resolves to the right listing once it is live — better than a
+   * dead link or a hidden button.
+   */
+  buy: {
+    amazon: '',
+    publisher: 'https://storywell.in',
+  },
   edition: 'First Edition 2026',
   chapters: 17,
   /** Real-world campaign the book is dedicated to. */
@@ -48,6 +60,7 @@ export const nav = [
   { href: '/map', label: 'Map' },
   { href: '/archive', label: 'Objects' },
   { href: '/memory', label: 'Memory Wall' },
+  { href: '/illustrations', label: 'Illustrations' },
   { href: '/wallpapers', label: 'Wallpapers' },
   { href: '/lamplighter', label: 'Lamplighter' },
 ] as const;
