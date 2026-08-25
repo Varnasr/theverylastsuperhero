@@ -1,0 +1,56 @@
+---
+import { site } from '../lib/site';
+
+/**
+ * First-party analytics beacon.
+ *
+ * Posts to our own /api/collect, which writes to our own database. No third
+ * party is contacted, nothing is stored on the device, and there is no cookie —
+ * so there is nothing to consent to and nothing an ad blocker needs to stop.
+ *
+ * Honours Do Not Track and Global Privacy Control even though a cookieless
+ * first-party count arguably does not have to.
+ */
+const enabled = site.analytics.firstParty;
+---
+
+{
+  enabled && (
+    <script is:inline>
+      {`(() => {
+        const dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl;
+        if (dnt) return;
+
+        const send = (kind, meta) => {
+          const body = JSON.stringify({
+            kind,
+            path: location.pathname,
+            referrer: document.referrer,
+            formFactor: window.innerWidth < 700 ? 'phone' : 'desktop',
+            meta,
+          });
+          // sendBeacon survives the page being closed, which is exactly when a
+          // buy click happens.
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/api/collect', new Blob([body], { type: 'application/json' }));
+          } else {
+            fetch('/api/collect', { method: 'POST', body, keepalive: true,
+              headers: { 'Content-Type': 'application/json' } }).catch(() => {});
+          }
+        };
+
+        send('pageview');
+
+        document.addEventListener('click', (e) => {
+          const buy = e.target instanceof Element && e.target.closest('[data-buy]');
+          if (buy) send('buy_click', { placement: buy.className || null });
+        }, { capture: true });
+
+        document.addEventListener('submit', (e) => {
+          const form = e.target;
+          if (form instanceof HTMLFormElement && form.name) send('form_submit', { form: form.name });
+        }, { capture: true });
+      })();`}
+    </script>
+  )
+}

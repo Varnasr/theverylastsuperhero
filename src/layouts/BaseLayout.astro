@@ -1,5 +1,6 @@
 ---
 import { site } from '../lib/site';
+import Analytics from '../components/Analytics.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
@@ -128,6 +129,7 @@ const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${tit
         />
       )
     }
+    <Analytics />
   </head>
 
   <body>

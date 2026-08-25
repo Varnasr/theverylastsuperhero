@@ -60,6 +60,18 @@ export const site = {
    */
   analytics: {
     /**
+     * First-party analytics: the page posts to our own /api/collect function,
+     * which writes to our own Supabase table. No third party, no cookies, no
+     * device identifier, and no IP stored — so no consent banner is required
+     * and no ad blocker has anything to block.
+     *
+     * Needs ANALYTICS_SUPABASE_URL and ANALYTICS_SUPABASE_KEY set in Netlify.
+     * Read the numbers in the Supabase table editor: postheroic_daily,
+     * postheroic_top_pages, postheroic_referrers.
+     */
+    firstParty: true,
+
+    /**
      * Free. Cloudflare Web Analytics — no cookies, no consent banner, works on
      * any host (you do not need to use Cloudflare for anything else). Gives
      * visitors, pages, referrers and countries. Sign up, add the site, paste
