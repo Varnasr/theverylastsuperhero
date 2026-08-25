@@ -4,7 +4,7 @@ category: Creature
 designation: Ginger Cat | Nandini's
 summary: Nandini's fat ginger cat, and a plump distraction who upends more than one scan sweep.
 order: 14
-related: [nandini-sharma, rani, buddy, moti]
+related: [nandini-maa, rani, buddy, moti]
 ---
 
 Nandini's cat: fat, ginger, and entirely unbothered by new arrivals sniffing

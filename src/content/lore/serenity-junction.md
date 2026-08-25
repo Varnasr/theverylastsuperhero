@@ -4,7 +4,7 @@ category: Location
 designation: Station | Two Platforms
 summary: A quaint platform in Kishanganj with memorabilia on the walls, where the train stops for two minutes and a father steps off.
 order: 17
-related: [kishanganj, sumati, rohan-kapoor, mr-joshi, nandini-sharma, hyper-express]
+related: [kishanganj, sumati, rohan-kapoor, mr-joshi, nandini-maa, hyper-express]
 ---
 
 *Next stop: Serenity Junction*, the train's AI announces.

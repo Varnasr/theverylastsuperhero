@@ -4,7 +4,7 @@ category: Character
 designation: Nandini's Silent Companion
 summary: A thin, wiry man whose watchful eyes take in everything while revealing nothing — and the mind behind the Audible Enclave upgrade embedded in Salt Lamps.
 order: 9
-related: [nandini-sharma, salt-lamps, p-ai, virtual-layer-flooring]
+related: [nandini-maa, salt-lamps, p-ai, virtual-layer-flooring]
 ---
 
 A thin, wiry man whose watchful eyes seem to take in everything while revealing

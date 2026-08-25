@@ -45,8 +45,9 @@ const statusLabel = {
                   loading="lazy"
                 />
               ) : (
-                <div class="placeholder" role="img" aria-label="Artwork not yet recovered">
-                  <span aria-hidden="true">◌</span>
+                <div class="placeholder">
+                  <span class="placeholder__mark" aria-hidden="true">◌</span>
+                  <span class="placeholder__text">Artwork not yet recovered</span>
                 </div>
               )}
             </div>
@@ -98,8 +99,11 @@ const statusLabel = {
   }
 
   .placeholder {
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
     width: 100%;
     height: 100%;
     background:
@@ -112,7 +116,18 @@ const statusLabel = {
       ),
       var(--bg-sunken);
     color: var(--text-faint);
-    font-size: 2rem;
+  }
+
+  .placeholder__mark {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .placeholder__text {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .object__foot {

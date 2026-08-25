@@ -30,68 +30,59 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     <section class="submit">
       <h2>Add to the archive</h2>
 
-      {
-        formLive ? (
-          <form class="form" action={site.formEndpoint} method="POST">
-            <div class="field">
-              <label for="name">Your name, or the name you archive under</label>
-              <input id="name" name="name" type="text" required autocomplete="name" />
-            </div>
+      <p class="submit__lede text-muted">
+        Fill this in and it opens in your own email app, already written, addressed to
+        <a href={`mailto:${site.email}`}>{site.email}</a>. Nothing is sent until you press send
+        there, and no third party sees it.
+      </p>
 
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required autocomplete="email" />
-              <p class="hint">Used only to reply about your contribution.</p>
-            </div>
+      <form class="form" action={site.formEndpoint || undefined} method="POST" data-fallback={formLive ? undefined : 'mailto'}>
+        <div class="field">
+          <label for="name">Your name, or the name you archive under</label>
+          <input id="name" name="name" type="text" required autocomplete="name" />
+        </div>
 
-            <div class="field">
-              <label for="kind">What are you sending?</label>
-              <select id="kind" name="kind">
-                <option value="testimony">A piece of testimony</option>
-                <option value="artwork">Artwork</option>
-                <option value="other">Something else</option>
-              </select>
-            </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+          <p class="hint">Used only to reply about your contribution.</p>
+        </div>
 
-            <div class="field">
-              <label for="message">Your contribution</label>
-              <textarea id="message" name="message" rows="7" required></textarea>
-              <p class="hint">
-                For artwork, describe it and include a link — please don't paste image data.
-              </p>
-            </div>
+        <div class="field">
+          <label for="kind">What are you sending?</label>
+          <select id="kind" name="kind">
+            <option value="testimony">A piece of testimony</option>
+            <option value="artwork">Artwork</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
 
-            {/* Honeypot: bots fill it, people never see it. */}
-            <div class="honeypot" aria-hidden="true">
-              <label for="lamp">Leave this field empty</label>
-              <input id="lamp" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
-            </div>
+        <div class="field">
+          <label for="message">Your contribution</label>
+          <textarea id="message" name="message" rows="7" required></textarea>
+          <p class="hint">
+            For artwork, describe it and include a link — please don't paste image data.
+          </p>
+        </div>
 
-            <p class="consent">
-              By sending this you agree it may be displayed on this site with your attribution, as
-              described in the <a href="/terms">Terms</a>. You can ask for it to be removed at any
-              time.
-            </p>
+        {/* Honeypot: bots fill it, people never see it. */}
+        <div class="honeypot" aria-hidden="true">
+          <label for="lamp">Leave this field empty</label>
+          <input id="lamp" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+        </div>
 
-            <button class="button button--primary" type="submit">Send to the archive</button>
-          </form>
-        ) : (
-          <div class="form form--offline">
-            <p class="offline-note">
-              <span class="badge badge--pending">Form not yet connected</span>
-            </p>
-            <p>
-              Submissions are currently taken by email. Write to{' '}
-              <a href={`mailto:${site.email}?subject=Memory%20Wall%20contribution`}>{site.email}</a>{' '}
-              with your artwork or testimony and the name you would like it archived under.
-            </p>
-            <p class="hint">
-              To switch the form on, set <code>formEndpoint</code> in{' '}
-              <code>src/lib/site.ts</code> — see <code>docs/SUBMISSIONS.md</code>.
-            </p>
-          </div>
-        )
-      }
+        <p class="consent">
+          By sending this you agree it may be displayed on this site with your attribution, as
+          described in the <a href="/terms">Terms</a>. You can ask for it to be removed at any
+          time.
+        </p>
+
+        <button class="button button--primary" type="submit">Send to the archive</button>
+        <p class="sent" data-sent hidden role="status">
+          Your email app should have opened with the message ready. If it didn't, write to{' '}
+          <a href={`mailto:${site.email}`}>{site.email}</a> directly.
+        </p>
+      </form>
     </section>
 
     <section class="wall">
@@ -137,6 +128,42 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     </section>
   </div>
 </BaseLayout>
+
+<script is:inline define:vars={{ to: site.email }}>
+  (() => {
+    const form = document.querySelector('form[data-fallback="mailto"]');
+    if (!form) return; // A relay endpoint is configured; the normal POST applies.
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return; // bot
+
+      const kind = { testimony: 'testimony', artwork: 'artwork', other: 'a contribution' }[
+        data.get('kind')
+      ] ?? 'a contribution';
+
+      const subject = `Memory Wall — ${kind} from ${data.get('name')}`;
+      const body = [
+        `Name: ${data.get('name')}`,
+        `Email: ${data.get('email')}`,
+        `Type: ${data.get('kind')}`,
+        '',
+        data.get('message'),
+        '',
+        '— Sent from the Memory Wall at postheroic.world',
+      ].join('\n');
+
+      location.href =
+        `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      const note = form.querySelector('[data-sent]');
+      if (note) note.hidden = false;
+    });
+  })();
+</script>
 
 <style>
   .page-head {
@@ -219,12 +246,15 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     color: var(--text-faint);
   }
 
-  .form--offline {
-    gap: var(--space-s);
+  .submit__lede {
+    max-width: 52ch;
+    margin-block-end: var(--space-m);
+    font-size: var(--step--1);
   }
 
-  .offline-note {
-    margin: 0;
+  .sent {
+    font-size: var(--step--1);
+    color: var(--amber);
   }
 
   .empty {
