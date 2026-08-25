@@ -1,0 +1,150 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { getCollection, getEntries, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+/**
+ * Object detail. The catalogue cards used to be dead ends — the only links on
+ * them went off to related lore, and the markdown body of each object was never
+ * rendered anywhere.
+ */
+
+export const getStaticPaths = (async () => {
+  const objects = await getCollection('archive');
+  return objects.map((o) => ({ params: { slug: o.id }, props: { object: o } }));
+}) satisfies GetStaticPaths;
+
+const { object } = Astro.props;
+const { Content } = await render(object);
+const d = object.data;
+const related = await getEntries(d.related ?? []);
+
+const statusLabel: Record<string, string> = {
+  recovered: 'Recovered',
+  corrupted: 'Data partial',
+  pending: 'Artwork not yet recovered',
+};
+---
+
+<BaseLayout title={d.title} description={d.summary} image={d.image?.src}>
+  <div class="shell section">
+    <p class="back"><a href="/archive">← Archive Objects</a></p>
+
+    <article class="object">
+      {
+        d.image && (
+          <figure class="plate">
+            <Image
+              src={d.image}
+              alt={d.imageAlt ?? ''}
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 60rem) 92vw, 46rem"
+            />
+          </figure>
+        )
+      }
+
+      <header class="head stack">
+        {d.designation && <p class="eyebrow">{d.designation}</p>}
+        <h1>{d.title}</h1>
+        <p class="text-muted lede">{d.summary}</p>
+        <p>
+          <span
+            class:list={[
+              'badge',
+              d.status === 'corrupted' && 'badge--corrupted',
+              d.status === 'pending' && 'badge--pending',
+            ]}>{statusLabel[d.status]}</span
+          >
+        </p>
+      </header>
+
+      <div class="prose body">
+        <Content />
+      </div>
+
+      {
+        related.length > 0 && (
+          <footer class="foot">
+            <p class="foot__title">Filed with</p>
+            <ul>
+              {related.map((r) => (
+                <li>
+                  <a href={`/lore/${r.id}`}>{r.data.title}</a>
+                  <span class="text-muted"> — {r.data.summary}</span>
+                </li>
+              ))}
+            </ul>
+          </footer>
+        )
+      }
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .back {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-block-end: var(--space-l);
+  }
+
+  .back a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back a:hover {
+    color: var(--amber);
+  }
+
+  .plate {
+    margin: 0 0 var(--space-xl);
+    max-width: 46rem;
+  }
+
+  .plate img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-sunken);
+  }
+
+  .head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .body {
+    max-width: 64ch;
+  }
+
+  .foot {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 64ch;
+  }
+
+  .foot__title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .foot ul {
+    margin-block-start: var(--space-s);
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-xs);
+    font-size: var(--step--1);
+  }
+</style>

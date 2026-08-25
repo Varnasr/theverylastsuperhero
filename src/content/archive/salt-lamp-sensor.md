@@ -2,9 +2,11 @@
 title: Salt Lamp Sensor
 designation: Obj-SL/AAS
 summary: Found in Aasma's shack. Possibly a hybrid memory-storage or sensing device from the early Resistance era. Possibly just a lamp that has been listening for a long time.
-status: corrupted
+status: recovered
 order: 5
 related: [salt-lamps, aasma, hysterons]
+image: ../../assets/archive/salt-lamp-sensor.webp
+imageAlt: A faceted salt lamp glowing on a low base, brass nodes and fine wire strung across its surface
 ---
 
 Recovered from a plank-walled room with straw on the floor, where it had been

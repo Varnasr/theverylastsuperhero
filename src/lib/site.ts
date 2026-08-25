@@ -70,6 +70,18 @@ export const site = {
      * postheroic_top_pages, postheroic_referrers.
      */
     firstParty: true,
+    /**
+     * Supabase project and publishable key. The key is meant to be public: the
+     * table has RLS on with an insert-only policy for it, so a visitor can add
+     * a row and can neither read the table back nor change what is there.
+     *
+     * A Netlify function (netlify/functions/collect.mjs) would keep even this
+     * off the page and add a country from Netlify's geo header, but functions
+     * only ship when Netlify builds from Git, and this site is deployed by
+     * upload. Link the repo in Netlify and the function takes over.
+     */
+    supabaseUrl: 'https://bivccpsnzzolxuqdvhfu.supabase.co',
+    supabaseKey: 'sb_publishable_s5Pvx9fNo_7_ejmFC8fXPQ_Zj_N-9mN',
 
     /**
      * Free. Cloudflare Web Analytics — no cookies, no consent banner, works on

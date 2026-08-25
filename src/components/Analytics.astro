@@ -2,41 +2,49 @@
 import { site } from '../lib/site';
 
 /**
- * First-party analytics beacon.
+ * First-party analytics: our own database, no third-party service.
  *
- * Posts to our own /api/collect, which writes to our own database. No third
- * party is contacted, nothing is stored on the device, and there is no cookie —
- * so there is nothing to consent to and nothing an ad blocker needs to stop.
+ * No cookie is set and nothing is stored on the device, so there is nothing to
+ * consent to. No identifier is sent either — visitors are counted by the day
+ * bucket a row lands in, not by anything that follows a person around.
  *
- * Honours Do Not Track and Global Privacy Control even though a cookieless
- * first-party count arguably does not have to.
+ * Do Not Track and Global Privacy Control are honoured even though a cookieless
+ * first-party count arguably need not.
  */
-const enabled = site.analytics.firstParty;
+const { firstParty, supabaseUrl, supabaseKey } = site.analytics;
+const on = firstParty && supabaseUrl && supabaseKey;
 ---
 
 {
-  enabled && (
-    <script is:inline>
+  on && (
+    <script is:inline define:vars={{ url: `${supabaseUrl}/rest/v1/postheroic_events`, key: supabaseKey }}>
       {`(() => {
-        const dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl;
-        if (dnt) return;
+        if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) return;
+
+        // Which site sent them, not which page — a referring path can carry
+        // more about a reader than we have any use for.
+        let referrer = '';
+        try {
+          const r = new URL(document.referrer);
+          if (r.hostname !== location.hostname) referrer = r.hostname;
+        } catch {}
 
         const send = (kind, meta) => {
           const body = JSON.stringify({
             kind,
             path: location.pathname,
-            referrer: document.referrer,
-            formFactor: window.innerWidth < 700 ? 'phone' : 'desktop',
-            meta,
+            referrer,
+            form_factor: window.innerWidth < 700 ? 'phone' : 'desktop',
+            meta: meta || null,
           });
-          // sendBeacon survives the page being closed, which is exactly when a
-          // buy click happens.
-          if (navigator.sendBeacon) {
-            navigator.sendBeacon('/api/collect', new Blob([body], { type: 'application/json' }));
-          } else {
-            fetch('/api/collect', { method: 'POST', body, keepalive: true,
-              headers: { 'Content-Type': 'application/json' } }).catch(() => {});
-          }
+          const headers = {
+            apikey: key,
+            Authorization: 'Bearer ' + key,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal',
+          };
+          // keepalive so a buy click survives the page being torn down.
+          fetch(url, { method: 'POST', headers, body, keepalive: true, mode: 'cors' }).catch(() => {});
         };
 
         send('pageview');
@@ -47,8 +55,8 @@ const enabled = site.analytics.firstParty;
         }, { capture: true });
 
         document.addEventListener('submit', (e) => {
-          const form = e.target;
-          if (form instanceof HTMLFormElement && form.name) send('form_submit', { form: form.name });
+          const f = e.target;
+          if (f instanceof HTMLFormElement && f.name) send('form_submit', { form: f.name });
         }, { capture: true });
       })();`}
     </script>

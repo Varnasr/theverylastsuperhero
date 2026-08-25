@@ -35,6 +35,8 @@ const statusLabel = {
           <article
             class:list={['card', 'object', `object--${object.data.status}`]}
           >
+            <a class="object__cover" href={`/archive/${object.id}`} aria-label={object.data.title} />
+
             <div class="card__media">
               {object.data.image ? (
                 <Image
@@ -54,7 +56,9 @@ const statusLabel = {
 
             <div class="card__body">
               {object.data.designation && <p class="eyebrow">{object.data.designation}</p>}
-              <h2>{object.data.title}</h2>
+              <h2>
+                <a href={`/archive/${object.id}`}>{object.data.title}</a>
+              </h2>
               <p class="text-muted summary">{object.data.summary}</p>
 
               <p class="object__foot">
@@ -82,6 +86,45 @@ const statusLabel = {
 </BaseLayout>
 
 <style>
+  /* The card is the click target, but nesting the whole card in an anchor would
+     swallow the related-lore links inside it. A stretched overlay link keeps
+     both: the cover sits under the body, so links in the body still win. */
+  .object {
+    position: relative;
+  }
+
+  .object__cover {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .object .card__body,
+  .object .card__media {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .object .card__body a {
+    pointer-events: auto;
+  }
+
+  .object h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .object:hover h2 a,
+  .object:focus-within h2 a {
+    color: var(--amber);
+  }
+
+  .object:focus-within {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
   /* Wider than the shared .grid-auto: object cards carry an image plus a
      paragraph, and at 17rem they read as a scatter of thumbnails rather than a
      catalogue. */
