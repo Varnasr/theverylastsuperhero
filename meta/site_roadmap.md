@@ -31,16 +31,16 @@
 
 ## 📌 Canon reconciliation
 
-The lore was reconciled against the manuscript (CRC Dec 2025), supplied as a
-Google Doc conversion of the camera-ready PDF.
+**The site is not a transcript of the novel.** It is a companion archive, and it
+is meant to hold more than the book does — material that extends the world
+rather than restating it. The manuscript settles questions of fact where the two
+overlap; it is not a ceiling on what the archive may contain.
 
-**Source limitation:** that Doc contains only 10,771 words and 15 images and
-ends mid-sentence in chapter 2 — Google's PDF-to-Docs OCR captured roughly the
-first 40 pages. Both the Drive connector and Google's own `?format=txt` and
-`?format=html` exports return the same truncated text, so this is the Doc
-itself, not a transfer limit. Chapters 3–17 were never available. To finish the
-reconciliation, export from the original manuscript source (Word/InDesign)
-rather than from the CRC PDF.
+That distinction was got wrong once already: "hysterons" were removed on the
+grounds that they did not appear in the available manuscript extract. They do
+appear in the text, and in any case the extract covered only chapters 1–2, so
+absence from it was never evidence of anything. Hysterons are restored and now
+have an entry of their own.
 
 **Corrected from the manuscript's own words:**
 
@@ -53,19 +53,26 @@ rather than from the CRC PDF.
 - Cooling suits are survival equipment — without one, extended exposure means
   heat stroke and death
 
-**Added from the prologue and opening chapters:** the Age of Heroes, Captain
+**Drawn from the prologue and opening chapters:** the Age of Heroes, Captain
 Indra, the Delhi Climate Brigade, the Quantum Corps, waste-to-energy systems,
 Buddy, Meera, Nandini Sharma, Rani, Mr Joshi, Dr Gupta, Chandra's crow
 behaviour, Serenity Junction, Kishanganj, the Hyper Express, Vikram Malhotra.
 
-**Judgement calls made on unavailable chapters:**
+**Extended beyond the text** — written for the archive, consistent with the book
+but not lifted from it. Correct or cut any of it freely; it is the site's voice,
+not the novel's:
 
-- **The Firebird** — absent from chapters 1–2, but it has commissioned artwork
-  and a wallpaper of its own, so it is almost certainly established later. Kept.
-- **Chandra** — the crow appears unnamed in chapter 2 and chapter 4 is titled
-  "The Crow's Message". Kept, and enriched with the canonical description.
-- **"Hysterons"** — appeared in the old index.html but not in the newer
-  lore1.html and not in the manuscript. Dropped; Salt Lamps are "crystalline
-  Himalayan salt".
-- **P.A.I. / p.ai, Moti, Memory Tablets, Virtual Layer Flooring, Obj-V078** —
-  not reached by the excerpt. Left exactly as they were rather than guessed at.
+- **Hysterons** — the entry builds on hysteresis, a real property where a
+  material's state depends on its own history. If the novel defines them
+  otherwise, this entry should follow the novel.
+- **Salt Lamps** — the argument that a record needing re-speaking is a record
+  with people attached to it
+- **The Resistance map** — the zone network and lamp routes are a schematic
+  invented for the site; the novel never draws one
+
+**Available manuscript:** the supplied Google Doc holds 10,771 words and stops
+mid-sentence in chapter 2 — Google's PDF-to-Docs OCR captured roughly the first
+40 pages, and both the Drive connector and Google's own txt/html exports return
+the same truncated text. A .docx export from the original manuscript source
+would carry all 17 chapters. Entries resting on later chapters (P.A.I., Moti,
+Memory Tablets, Virtual Layer Flooring, Obj-V078) were left as they stood.

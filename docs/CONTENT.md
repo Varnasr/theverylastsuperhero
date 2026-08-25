@@ -1,5 +1,11 @@
 # Adding to the archive
 
+**The archive is meant to hold more than the novel does.** Entries may extend
+the world — a material the book names once and never explains, a place mentioned
+in passing, a piece of reasoning the story implies but never states. Where the
+site and the book overlap, the book decides; everywhere else, the archive is
+free to be its own thing. Write accordingly.
+
 Everything on this site — every lore entry, timeline event, archive object,
 wallpaper and reader contribution — is a markdown file in `src/content/`.
 Adding one file is enough: the index pages, the search index, the RSS feed, the

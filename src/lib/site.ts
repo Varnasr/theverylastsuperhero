@@ -43,6 +43,7 @@ export const nav = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/lore', label: 'Lore Archive' },
+  { href: '/constellation', label: 'Constellation' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
   { href: '/archive', label: 'Objects' },

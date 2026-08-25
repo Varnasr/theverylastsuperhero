@@ -58,6 +58,12 @@ export const GET: APIRoute = async () => {
       d: 'Reader artwork and testimony contributed to the archive.',
     },
     {
+      t: 'Constellation',
+      u: '/constellation',
+      k: 'Page',
+      d: 'Every archive entry and every connection between them, drawn as one graph.',
+    },
+    {
       t: 'Resistance Map',
       u: '/map',
       k: 'Page',

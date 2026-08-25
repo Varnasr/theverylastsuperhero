@@ -1,0 +1,495 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { layout } from '../lib/constellation';
+
+const entries = (await getCollection('lore', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const { nodes, edges } = layout(
+  entries.map((e) => ({
+    id: e.id,
+    label: e.data.title,
+    category: e.data.category,
+    related: e.data.related.map((r) => r.id),
+  })),
+  { width: 1000, height: 720 }
+);
+
+const byId = new Map(nodes.map((n) => [n.id, n]));
+const summaries = new Map(entries.map((e) => [e.id, e.data.summary]));
+const categories = [...new Set(nodes.map((n) => n.category))].sort();
+
+// Neighbours per node, so hovering one lights up everything it touches.
+const neighbours = new Map<string, string[]>(nodes.map((n) => [n.id, []]));
+for (const e of edges) {
+  neighbours.get(e.source)!.push(e.target);
+  neighbours.get(e.target)!.push(e.source);
+}
+
+const radius = (degree: number) => 5 + Math.min(degree, 9) * 1.15;
+
+const isolated = nodes.filter((n) => n.degree === 0);
+---
+
+<BaseLayout
+  title="Constellation"
+  description="Every entry in the Resistance Archive and every connection between them, drawn as a single graph — the shape of the world behind The Very Last Superhero."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">The archive, all at once</p>
+      <h1>Constellation</h1>
+      <p class="text-muted lede">
+        {nodes.length} entries and {edges.length} connections between them. The novel never draws this
+        — a reader carries it in their head. Hover or focus a point to light up what it touches;
+        select one to open its entry.
+      </p>
+    </header>
+
+    <figure class="graph">
+      <svg viewBox="0 0 1000 720" role="img" aria-labelledby="c-title c-desc">
+        <title id="c-title">Graph of the Resistance Archive</title>
+        <desc id="c-desc">
+          {nodes.length} lore entries joined by {edges.length} connections. Every entry and its links
+          are also listed as text below this diagram.
+        </desc>
+
+        <g class="edges">
+          {
+            edges.map((e) => {
+              const a = byId.get(e.source)!;
+              const b = byId.get(e.target)!;
+              return (
+                <line
+                  x1={a.x}
+                  y1={a.y}
+                  x2={b.x}
+                  y2={b.y}
+                  data-edge={`${e.source} ${e.target}`}
+                />
+              );
+            })
+          }
+        </g>
+
+        <g class="nodes">
+          {
+            nodes.map((n) => (
+              <g
+                class={`node cat-${n.category.toLowerCase()}`}
+                data-node={n.id}
+                data-neighbours={neighbours.get(n.id)!.join(' ')}
+                transform={`translate(${n.x} ${n.y})`}
+              >
+                <circle class="node__dot" r={radius(n.degree)} />
+                <text class="node__label" y={n.labelDy} text-anchor="middle">
+                  {n.label}
+                </text>
+              </g>
+            ))
+          }
+        </g>
+      </svg>
+
+      <figcaption class="legend">
+        {
+          categories.map((c) => (
+            <span class="legend__item">
+              <span class={`legend__dot cat-${c.toLowerCase()}`} aria-hidden="true" />
+              {c}
+            </span>
+          ))
+        }
+      </figcaption>
+    </figure>
+
+    <div class="readout" data-readout hidden aria-live="polite">
+      <p class="eyebrow" data-readout-cat></p>
+      <h2 data-readout-title></h2>
+      <p class="text-muted" data-readout-summary></p>
+      <p class="readout__links" data-readout-links></p>
+    </div>
+
+    {
+      isolated.length > 0 && (
+        <p class="orphans">
+          Unconnected so far:{' '}
+          {isolated.map((n, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={`/lore/${n.id}`}>{n.label}</a>
+            </>
+          ))}
+          . An entry with no links is not a mistake, but it usually means the archive has not
+          finished thinking about it.
+        </p>
+      )
+    }
+
+    <section class="index">
+      <h2>Every connection, as text</h2>
+      <p class="text-muted">
+        The graph is a convenience. This is the same information without needing to see or point at
+        anything.
+      </p>
+      <ul>
+        {
+          nodes.map((n) => (
+            <li>
+              <a href={`/lore/${n.id}`}>{n.label}</a>
+              <span class="index__cat">{n.category}</span>
+              {neighbours.get(n.id)!.length > 0 ? (
+                <span class="index__links">
+                  connects to{' '}
+                  {neighbours.get(n.id)!.map((id, i) => (
+                    <>
+                      {i > 0 && ', '}
+                      <a href={`/lore/${id}`}>{byId.get(id)?.label}</a>
+                    </>
+                  ))}
+                </span>
+              ) : (
+                <span class="index__links index__links--none">no connections yet</span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ summaries: Object.fromEntries(summaries) }}>
+  (() => {
+    const svg = document.querySelector('.graph svg');
+    const readout = document.querySelector('[data-readout]');
+    if (!svg || !readout) return;
+
+    const nodes = [...svg.querySelectorAll('[data-node]')];
+    const edges = [...svg.querySelectorAll('[data-edge]')];
+    const els = {
+      cat: readout.querySelector('[data-readout-cat]'),
+      title: readout.querySelector('[data-readout-title]'),
+      summary: readout.querySelector('[data-readout-summary]'),
+      links: readout.querySelector('[data-readout-links]'),
+    };
+
+    const labelOf = (id) =>
+      document.querySelector(`[data-node="${CSS.escape(id)}"] .node__label`)?.textContent?.trim() ??
+      id;
+
+    const clear = () => {
+      svg.classList.remove('is-focused');
+      nodes.forEach((n) => n.classList.remove('is-active', 'is-near'));
+      edges.forEach((e) => e.classList.remove('is-active'));
+      readout.hidden = true;
+    };
+
+    const focus = (node) => {
+      const id = node.dataset.node;
+      const near = new Set((node.dataset.neighbours || '').split(' ').filter(Boolean));
+
+      svg.classList.add('is-focused');
+      nodes.forEach((n) => {
+        n.classList.toggle('is-active', n === node);
+        n.classList.toggle('is-near', near.has(n.dataset.node));
+      });
+      edges.forEach((e) => {
+        const [a, b] = (e.dataset.edge || '').split(' ');
+        e.classList.toggle('is-active', a === id || b === id);
+      });
+
+      els.cat.textContent = [...node.classList]
+        .find((c) => c.startsWith('cat-'))
+        ?.replace('cat-', '')
+        .replace(/^./, (m) => m.toUpperCase()) ?? '';
+      els.title.textContent = labelOf(id);
+      els.summary.textContent = summaries[id] ?? '';
+      els.links.innerHTML = near.size
+        ? 'Connects to ' +
+          [...near].map((n) => `<a href="/lore/${n}">${labelOf(n)}</a>`).join(', ') +
+          ` &middot; <a href="/lore/${id}"><strong>Open ${labelOf(id)}</strong></a>`
+        : `<a href="/lore/${id}"><strong>Open ${labelOf(id)}</strong></a>`;
+      readout.hidden = false;
+    };
+
+    nodes.forEach((node) => {
+      node.setAttribute('tabindex', '0');
+      node.setAttribute('role', 'link');
+      node.setAttribute('aria-label', `${labelOf(node.dataset.node)} — open entry`);
+
+      node.addEventListener('mouseenter', () => focus(node));
+      node.addEventListener('focus', () => focus(node));
+      node.addEventListener('click', () => {
+        location.href = `/lore/${node.dataset.node}`;
+      });
+      node.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          location.href = `/lore/${node.dataset.node}`;
+        }
+      });
+    });
+
+    svg.addEventListener('mouseleave', clear);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') clear();
+    });
+  })();
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .graph {
+    margin: 0;
+    padding: var(--space-m);
+    background:
+      radial-gradient(
+        circle at 50% 45%,
+        color-mix(in srgb, var(--amber) 6%, transparent),
+        transparent 65%
+      ),
+      var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .graph svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    touch-action: manipulation;
+  }
+
+  /* Category colours, tuned to stay distinguishable in both themes. */
+  .cat-technology {
+    --hue: #ffcb6b;
+  }
+  .cat-character {
+    --hue: #7fb2e5;
+  }
+  .cat-creature {
+    --hue: #8fd3a8;
+  }
+  .cat-location {
+    --hue: #d79ae0;
+  }
+  .cat-network {
+    --hue: #e2703a;
+  }
+  .cat-system {
+    --hue: #f08d8d;
+  }
+  .cat-object {
+    --hue: #c2b280;
+  }
+  .cat-infrastructure {
+    --hue: #86c7c7;
+  }
+  .cat-symbol {
+    --hue: #f0b429;
+  }
+  .cat-techwear {
+    --hue: #a5a2f0;
+  }
+  .cat-event {
+    --hue: #d4695f;
+  }
+
+  .edges line {
+    stroke: var(--border-strong);
+    stroke-width: 1;
+    transition:
+      stroke 0.18s var(--ease),
+      stroke-opacity 0.18s var(--ease);
+  }
+
+  svg.is-focused .edges line {
+    stroke-opacity: 0.22;
+  }
+
+  svg.is-focused .edges line.is-active {
+    stroke: var(--amber);
+    stroke-opacity: 1;
+    stroke-width: 1.6;
+  }
+
+  .node {
+    cursor: pointer;
+  }
+
+  .node__dot {
+    fill: var(--hue, var(--amber));
+    stroke: var(--bg-raised);
+    stroke-width: 1.5;
+    transition:
+      r 0.18s var(--ease),
+      fill-opacity 0.18s var(--ease);
+  }
+
+  .node__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--text-muted);
+    paint-order: stroke;
+    stroke: var(--bg-raised);
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+    pointer-events: none;
+    transition:
+      fill 0.18s var(--ease),
+      fill-opacity 0.18s var(--ease);
+  }
+
+  svg.is-focused .node__dot,
+  svg.is-focused .node__label {
+    fill-opacity: 0.28;
+  }
+
+  svg.is-focused .node.is-near .node__dot,
+  svg.is-focused .node.is-near .node__label,
+  svg.is-focused .node.is-active .node__dot,
+  svg.is-focused .node.is-active .node__label {
+    fill-opacity: 1;
+  }
+
+  svg.is-focused .node.is-active .node__label {
+    fill: var(--text);
+  }
+
+  .node:focus-visible {
+    outline: none;
+  }
+
+  .node:focus-visible .node__dot {
+    stroke: var(--amber);
+    stroke-width: 3;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-m);
+    margin-block-start: var(--space-m);
+    padding-block-start: var(--space-s);
+    border-block-start: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--hue, var(--amber));
+  }
+
+  .readout {
+    margin-block-start: var(--space-m);
+    padding: var(--space-m) var(--space-l);
+    border: 1px solid var(--border);
+    border-inline-start: 3px solid var(--amber);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    min-height: 6rem;
+  }
+
+  .readout h2 {
+    font-size: var(--step-1);
+    margin-block: var(--space-2xs) var(--space-2xs);
+  }
+
+  .readout__links {
+    margin-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .orphans {
+    margin-block-start: var(--space-m);
+    max-width: 62ch;
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .index {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .index h2 {
+    font-size: var(--step-2);
+  }
+
+  .index > p {
+    max-width: 56ch;
+    margin-block: var(--space-xs) var(--space-m);
+    font-size: var(--step--1);
+  }
+
+  .index ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .index li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem var(--space-s);
+    padding-block: var(--space-xs);
+    border-block-end: 1px solid var(--border);
+    font-size: var(--step--1);
+  }
+
+  .index li > a:first-child {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-0);
+    text-decoration: none;
+  }
+
+  .index__cat {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-faint);
+  }
+
+  .index__links {
+    color: var(--text-muted);
+    flex: 1 1 22rem;
+  }
+
+  .index__links--none {
+    color: var(--text-faint);
+    font-style: italic;
+  }
+
+  @media (max-width: 40rem) {
+    .node__label {
+      font-size: 14px;
+    }
+  }
+</style>
