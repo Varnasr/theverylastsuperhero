@@ -2,6 +2,10 @@
 term: "Obedience Index"
 section: "AI Systems and Surveillance Technologies"
 order: 7
+references:
+  - label: "Social Credit System"
+    url: "https://en.wikipedia.org/wiki/Social_Credit_System"
+    note: "The nearest real-world analogue to an algorithmic trust score."
 ---
 The Obedience Index is a centralised behavioural scoring system that quantifies citizens’ loyalty and compliance. It governs who can access transit, apply for jobs, buy cooling gear, or attend school. Tracked through terminals, mobile devices, and interpersonal reports, it is algorithmically calibrated to reward docility and penalise deviation, primarily political or ideological dissent. In the story, it underlies almost every barrier Sumati faces: her train ticket is revoked, public terminals deny her access, and even automated shelters reject her biometric ID.
 

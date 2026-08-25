@@ -1,6 +1,6 @@
 ---
 title: "Post-Truth"
-author: "Lee Mc Intyre"
+author: "Lee McIntyre"
 section: "Post-Truth India and Epistemic Breakdown"
 order: 2
 publisher: "MIT Press"

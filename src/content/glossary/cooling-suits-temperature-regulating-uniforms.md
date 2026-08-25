@@ -2,6 +2,10 @@
 term: "Cooling Suits / Temperature-Regulating Uniforms"
 section: "Core Technologies and Systems"
 order: 3
+references:
+  - label: "Thermoelectric cooling"
+    url: "https://en.wikipedia.org/wiki/Thermoelectric_cooling"
+    note: "The Peltier effect the suits run on."
 ---
 Cooling suits are thermoregulating garments made with nanomaterials and graphene composites. Designed to protect wearers from extreme temperatures exceeding 50°C, they use active cooling systems initially developed for military and emergency personnel. In 2075, urban middle-class populations wear them daily as climate extremes become the norm. Schools issue reduced-function versions—Temperature-Regulating Uniforms—for children like Sumati, but these are less effective and prone to malfunction.
 

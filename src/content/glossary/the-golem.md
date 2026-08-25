@@ -2,6 +2,9 @@
 term: "The Golem"
 section: "Surveillance Tools and Public Infrastructure"
 order: 22
+references:
+  - label: "Golem"
+    url: "https://en.wikipedia.org/wiki/Golem"
 ---
 In Jewish folklore, the Golem is an artificial being, usually shaped from clay, brought to life through mystical rituals, often involving sacred words. Created to serve or protect, the Golem is a paradox: simultaneously a saviour and a threat. The most well-known Golem legend comes from 16th-century Prague, where Rabbi Judah Loew is said to have created a Golem to defend the Jewish ghetto.
 

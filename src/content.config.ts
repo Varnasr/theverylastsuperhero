@@ -82,6 +82,14 @@ const glossary = defineCollection({
     term: z.string(),
     /** The book groups terms; the page keeps those groupings. */
     section: z.string().optional(),
+    /**
+     * Real-world starting points for the technology or idea behind a term.
+     * Open access only — a reader should not hit a paywall following a
+     * reference out of a novel's glossary.
+     */
+    references: z
+      .array(z.object({ label: z.string(), url: z.string().url(), note: z.string().optional() }))
+      .default([]),
     order: z.number().default(100),
     /** Lore entries this term explains, for cross-linking back into the archive. */
     related: z.array(reference('lore')).default([]),

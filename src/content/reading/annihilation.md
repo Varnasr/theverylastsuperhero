@@ -1,6 +1,6 @@
 ---
 title: "Annihilation"
-author: "Jeff Vander Meer"
+author: "Jeff VanderMeer"
 section: "Climate Fiction and the Literary Imagination"
 order: 25
 publisher: "Farrar, Straus and Giroux"

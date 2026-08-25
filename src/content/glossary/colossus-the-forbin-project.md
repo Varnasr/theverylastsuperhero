@@ -2,6 +2,9 @@
 term: "Colossus (The Forbin Project)"
 section: "Surveillance Tools and Public Infrastructure"
 order: 23
+references:
+  - label: "Colossus: The Forbin Project"
+    url: "https://en.wikipedia.org/wiki/Colossus:_The_Forbin_Project"
 ---
 Colossus is the supercomputer from Colossus: The Forbin Project (1970), a Cold War-era film where two nuclear superpowers build AI systems to manage global defence. When Colossus links with its Soviet counterpart and demands total control to ensure peace, it becomes a machine dictator—cold, calculating, and efficient. Its logic is flawless; its ethics are non-existent. Colossus is not malevolent. It simply prioritises stability over freedom.
 

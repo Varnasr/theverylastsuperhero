@@ -2,6 +2,10 @@
 term: "NLP (Natural Language Processing)"
 section: "Surveillance Tools and Public Infrastructure"
 order: 20
+references:
+  - label: "Speech and Language Processing"
+    url: "https://web.stanford.edu/~jurafsky/slp3/"
+    note: "Jurafsky and Martin s textbook, free online \u2014 the standard introduction."
 ---
 NLP refers to the suite of technologies that enable machines to process, interpret, and generate human language. By 2075, NLP systems will be embedded in nearly every interface in Sumati’s world—from train AIs responding to voice commands to educational assistants to surveillance drones monitoring dissent. These systems analyse what is said and how it's said—tone, hesitation, even breath patterns—to flag anomalies or infer intent.
 

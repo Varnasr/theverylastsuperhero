@@ -2,6 +2,9 @@
 term: "Deep Fake"
 section: "Surveillance Tools and Public Infrastructure"
 order: 28
+references:
+  - label: "Deepfake"
+    url: "https://en.wikipedia.org/wiki/Deepfake"
 ---
 A digitally manipulated video or audio file designed to convincingly simulate real individuals saying or doing things they never did. By 2075, deep fakes will have evolved into high-resolution, real-time simulations powered by generative adversarial networks (GANs) and memory-mining AI. They are used by governments, corporations, and resistance groups alike—for misinformation, protective deception, or strategic narrative control. In The Very Last Superhero, deep fakes are part of the media environment Sumati grows up in: school broadcasts are routinely “corrected,” tribunal footage is contested, and even family videos are suspect.
 

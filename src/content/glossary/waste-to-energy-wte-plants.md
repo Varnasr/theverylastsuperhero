@@ -2,6 +2,10 @@
 term: "Waste-to-Energy (WTE) Plants"
 section: "Core Technologies and Systems"
 order: 4
+references:
+  - label: "Waste-to-energy"
+    url: "https://en.wikipedia.org/wiki/Waste-to-energy"
+    note: "Including the dioxin and particulate problems the book turns on."
 ---
 Waste-to-Energy (WTE) plants are industrial facilities that burn municipal solid waste to generate electricity. Touted as climate-friendly solutions to India’s urban waste problem, they became widespread post-2040. But the reality is more toxic: many of these plants emit harmful pollutants like dioxins and furans, contaminate groundwater, and displace nearby communities. The Okhla WTE plant in Delhi—referenced directly in the novel—was a flashpoint for public protests in the 2020s.
 

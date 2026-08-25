@@ -2,6 +2,10 @@
 term: "Hyper-Express / Maglev Rail"
 section: "Core Technologies and Systems"
 order: 1
+references:
+  - label: "Maglev"
+    url: "https://en.wikipedia.org/wiki/Maglev"
+    note: "Working systems in China and Japan; the novel s version is faster and far more surveilled."
 ---
 The Hyper-Express is a high-speed magnetic levitation (maglev) rail line built across India after 2060 to phase out long-haul domestic flights and reduce aviation-related emissions. Running on superconducting tracks, it symbolises futuristic efficiency, energy conservation, and national ambition. Its implementation, however, is deeply exclusionary, requiring biometric IDs and algorithmic clearance to board. In the story, this sleek infrastructure becomes a site of rupture: where Sumati last sees her father, and where state indifference first manifests.
 

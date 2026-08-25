@@ -2,6 +2,9 @@
 term: "EMP (Electromagnetic Pulse)"
 section: "Surveillance Tools and Public Infrastructure"
 order: 27
+references:
+  - label: "Electromagnetic pulse"
+    url: "https://en.wikipedia.org/wiki/Electromagnetic_pulse"
 ---
 An intense burst of electromagnetic radiation can turn off electronic circuits, communications infrastructure, and unshielded digital memory systems. EMPs can occur naturally (from solar flares) or be artificially generated, often by weaponised devices. In The Very Last Superhero, EMPs are referenced as tactical tools and historical events, most notably during the dismantling of early resistance networks and the collapse of superhero command nodes in the Northern corridors.
 

@@ -2,6 +2,10 @@
 term: "P.A.I. (Public Access Intelligence)"
 section: "AI Systems and Surveillance Technologies"
 order: 5
+references:
+  - label: "Predictive policing"
+    url: "https://en.wikipedia.org/wiki/Predictive_policing"
+    note: "Forecasting dissent before it happens is not speculative."
 ---
 P.A.I. is the dominant state-managed artificial intelligence system in the world of The Very Last Superhero. Presented publicly as a decentralised platform for climate monitoring and civic efficiency, its function is far more insidious. Built by a joint syndicate of state ministries and corporate interests, P.A.I. tracks citizen behaviour, predicts dissent, and reroutes enforcement drones to suppress uprisings. It is modular and opaque, adapting quickly without transparency or oversight.
 

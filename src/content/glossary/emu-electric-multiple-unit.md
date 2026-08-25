@@ -2,6 +2,9 @@
 term: "EMU (Electric Multiple Unit)"
 section: "Surveillance Tools and Public Infrastructure"
 order: 16
+references:
+  - label: "Electric multiple unit"
+    url: "https://en.wikipedia.org/wiki/Electric_multiple_unit"
 ---
 Initially developed for short-distance railway routes, the EMU (Electric Multiple Unit) trains were designed to run on electrified tracks without a separate locomotive, enabling efficient urban and semi-urban transit. By 2075, in The Very Last Superhero, the EMU has evolved into a resilient relic of a crumbling grid, still operating across specific routes despite the collapse of centralised control systems.
 
