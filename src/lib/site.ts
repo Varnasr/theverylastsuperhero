@@ -49,6 +49,7 @@ export const nav = [
   { href: '/archive', label: 'Objects' },
   { href: '/memory', label: 'Memory Wall' },
   { href: '/wallpapers', label: 'Wallpapers' },
+  { href: '/lamplighter', label: 'Lamplighter' },
 ] as const;
 
 export const footerLinks = [

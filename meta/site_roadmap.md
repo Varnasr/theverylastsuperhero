@@ -1,6 +1,12 @@
 # 🚧 Postheroic.World – Site Roadmap
 
 ## ✅ Done
+- `/lamplighter` — a memory game: the archive plays a sequence of lamps, you
+  repeat it back. The book's argument about memory, as a rule
+- `/sigil` — Firebird wallpaper generator (was "Firebird badge generator"),
+  drawn in canvas at real device resolution, with a line from the archive
+- `/constellation` — character relationship graph (was an idea), built from the
+  `related` fields the content files already carry
 - Astro rebuild; all content moved into typed collections
 - Full lore archive (17 entries) with category filtering and cross-links
 - `timeline.html` → `/timeline`, now data-driven and linked to lore entries
@@ -25,9 +31,7 @@
 ## 💡 Ideas
 - Self-host the fonts to remove the last third-party request
 - p.ai whisper interface — an in-world way to query the archive
-- Firebird badge generator
-- Character relationship graph, built from the `related` fields already in the
-  content files
+- Salt Lamp testimony recordings — the player is built and waiting for audio
 
 ## 📌 Canon reconciliation
 

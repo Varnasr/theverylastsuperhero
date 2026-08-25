@@ -1,0 +1,475 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/**
+ * Lamplighter — a memory game, which is the only kind of game this book could have.
+ *
+ * The archive speaks a sequence of lamps; you repeat it back. Each round it adds
+ * one more. That is the novel's whole argument about memory rendered as a rule:
+ * a record that must be re-spoken to survive is a record with people attached to
+ * it, and the moment nobody can repeat it, it is gone.
+ *
+ * Six lamps, each with a number and a distinct pitch, so it is playable without
+ * relying on colour or on sound alone.
+ */
+
+const lamps = [
+  { id: 1, name: 'Treasure Room', hue: '#ffcb6b', freq: 261.63 },
+  { id: 2, name: 'The Schools', hue: '#8fd3a8', freq: 293.66 },
+  { id: 3, name: 'Rooftops', hue: '#7fb2e5', freq: 329.63 },
+  { id: 4, name: 'Salt Relay', hue: '#d79ae0', freq: 392.0 },
+  { id: 5, name: 'Relief Zones', hue: '#e2703a', freq: 440.0 },
+  { id: 6, name: 'Satcomm Tower', hue: '#86c7c7', freq: 523.25 },
+];
+---
+
+<BaseLayout
+  title="Lamplighter"
+  description="A memory game from the Resistance Archive. The archive speaks a sequence of Salt Lamps; you repeat it back. Each round it adds one more."
+>
+  <div class="shell section game-page">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>Lamplighter</h1>
+      <p class="text-muted lede">
+        The archive speaks. You repeat it back. Each round it adds one more lamp.
+      </p>
+      <p class="text-muted note">
+        This is how the Resistance actually trained carriers — not by storing more, but by
+        making sure someone could still say it aloud.
+      </p>
+    </header>
+
+    <div class="board" data-board>
+      <div class="ring">
+        {
+          lamps.map((l) => (
+            <button
+              class="lamp"
+              type="button"
+              data-lamp={l.id}
+              style={`--hue:${l.hue}`}
+              aria-label={`Lamp ${l.id}, ${l.name}`}
+              disabled
+            >
+              <span class="lamp__glyph" aria-hidden="true">
+                {l.id}
+              </span>
+              <span class="lamp__name">{l.name}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="hud">
+        <div class="hud__scores">
+          <p><span class="hud__label">Carried</span><strong data-score>0</strong></p>
+          <p><span class="hud__label">Best</span><strong data-best>0</strong></p>
+        </div>
+
+        <p class="status" data-status role="status" aria-live="polite">
+          Press start, then repeat what the archive plays.
+        </p>
+
+        <div class="controls">
+          <button class="button button--primary" type="button" data-start>Light the first lamp</button>
+          <button class="button" type="button" data-sound aria-pressed="true">Sound on</button>
+        </div>
+
+        <p class="hint">
+          Use the buttons, or press <kbd>1</kbd>–<kbd>6</kbd>.
+        </p>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="text-muted">Lamplighter needs JavaScript. The rest of the archive does not.</p>
+    </noscript>
+
+    <section class="about-game">
+      <h2>Why a memory game</h2>
+      <p class="text-muted">
+        Salt Lamps do not hold testimony the way a hard drive holds a file. A lamp that nobody
+        lights goes quiet, and what it held goes with it. Across the network the lamps fell silent
+        in 2073 and stayed silent for two years — not because the data was deleted, but because
+        there was nobody left repeating it.
+      </p>
+      <p class="text-muted">
+        Read about <a href="/lore/salt-lamps">Salt Lamps</a> and
+        <a href="/lore/hysterons">hysterons</a>, or find the zones on the
+        <a href="/map">Resistance map</a>.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  interface Lamp {
+    el: HTMLButtonElement;
+    id: number;
+    freq: number;
+  }
+
+  const board = document.querySelector<HTMLElement>('[data-board]');
+  const statusEl = document.querySelector<HTMLElement>('[data-status]');
+  const scoreEl = document.querySelector<HTMLElement>('[data-score]');
+  const bestEl = document.querySelector<HTMLElement>('[data-best]');
+  const startBtn = document.querySelector<HTMLButtonElement>('[data-start]');
+  const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound]');
+  if (!board || !statusEl || !scoreEl || !bestEl || !startBtn || !soundBtn) {
+    throw new Error('lamplighter markup missing');
+  }
+
+  const FREQS: Record<number, number> = {
+    1: 261.63,
+    2: 293.66,
+    3: 329.63,
+    4: 392.0,
+    5: 440.0,
+    6: 523.25,
+  };
+
+  const lamps: Lamp[] = [...board.querySelectorAll<HTMLButtonElement>('[data-lamp]')].map((el) => ({
+    el,
+    id: Number(el.dataset.lamp),
+    freq: FREQS[Number(el.dataset.lamp)] ?? 440,
+  }));
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Deliberately unhurried. Fast flashing is both harder to read and a
+  // photosensitivity risk, and this game gains nothing from speed.
+  const LIT = reduced ? 620 : 520;
+  const GAP = reduced ? 320 : 220;
+
+  let sequence: number[] = [];
+  let expect = 0;
+  let accepting = false;
+  let soundOn = true;
+
+  let best = 0;
+  try {
+    best = Number(localStorage.getItem('phw-lamplighter-best') ?? 0) || 0;
+  } catch {
+    /* storage unavailable; the run still works, it just will not be remembered */
+  }
+  bestEl.textContent = String(best);
+
+  let audio: AudioContext | null = null;
+  const tone = (freq: number, ms: number) => {
+    if (!soundOn) return;
+    try {
+      audio ??= new AudioContext();
+      if (audio.state === 'suspended') void audio.resume();
+      const osc = audio.createOscillator();
+      const gain = audio.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      // Envelope, so notes do not click on and off.
+      const now = audio.currentTime;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.16, now + 0.02);
+      gain.gain.setValueAtTime(0.16, now + ms / 1000 - 0.06);
+      gain.gain.linearRampToValueAtTime(0, now + ms / 1000);
+      osc.connect(gain).connect(audio.destination);
+      osc.start(now);
+      osc.stop(now + ms / 1000);
+    } catch {
+      /* no audio available; the game is fully playable without it */
+    }
+  };
+
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  const light = async (lamp: Lamp, ms: number) => {
+    lamp.el.classList.add('is-lit');
+    tone(lamp.freq, ms);
+    await wait(ms);
+    lamp.el.classList.remove('is-lit');
+  };
+
+  const setEnabled = (on: boolean) => {
+    lamps.forEach((l) => (l.el.disabled = !on));
+  };
+
+  const playSequence = async () => {
+    accepting = false;
+    setEnabled(false);
+    statusEl.textContent = `The archive is speaking — ${sequence.length} ${
+      sequence.length === 1 ? 'lamp' : 'lamps'
+    }.`;
+    await wait(600);
+    for (const id of sequence) {
+      const lamp = lamps.find((l) => l.id === id)!;
+      await light(lamp, LIT);
+      await wait(GAP);
+    }
+    expect = 0;
+    accepting = true;
+    setEnabled(true);
+    statusEl.textContent = 'Your turn. Repeat it back.';
+  };
+
+  const nextRound = async () => {
+    sequence.push(1 + Math.floor(Math.random() * lamps.length));
+    scoreEl.textContent = String(sequence.length - 1);
+    await playSequence();
+  };
+
+  const gameOver = async (lamp: Lamp) => {
+    accepting = false;
+    setEnabled(false);
+    lamp.el.classList.add('is-wrong');
+    tone(110, 520);
+    await wait(700);
+    lamp.el.classList.remove('is-wrong');
+
+    const carried = sequence.length - 1;
+    if (carried > best) {
+      best = carried;
+      bestEl.textContent = String(best);
+      try {
+        localStorage.setItem('phw-lamplighter-best', String(best));
+      } catch {
+        /* nothing to persist to */
+      }
+    }
+
+    statusEl.textContent =
+      carried === 0
+        ? 'The lamp goes dark before it is even lit. Try again.'
+        : `The lamp goes dark. You carried ${carried} ${carried === 1 ? 'lamp' : 'lamps'}.`;
+    startBtn.textContent = 'Light it again';
+    startBtn.hidden = false;
+    startBtn.focus();
+  };
+
+  const press = async (lamp: Lamp) => {
+    if (!accepting) return;
+    void light(lamp, 220);
+
+    if (lamp.id !== sequence[expect]) {
+      await gameOver(lamp);
+      return;
+    }
+
+    expect++;
+    if (expect === sequence.length) {
+      accepting = false;
+      setEnabled(false);
+      scoreEl.textContent = String(sequence.length);
+      statusEl.textContent = 'Held. The archive adds one more.';
+      await wait(900);
+      await nextRound();
+    }
+  };
+
+  lamps.forEach((lamp) => lamp.el.addEventListener('click', () => void press(lamp)));
+
+  document.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t instanceof HTMLElement && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= lamps.length) {
+      const lamp = lamps.find((l) => l.id === n);
+      if (lamp && accepting) {
+        e.preventDefault();
+        void press(lamp);
+      }
+    }
+  });
+
+  startBtn.addEventListener('click', async () => {
+    sequence = [];
+    expect = 0;
+    scoreEl.textContent = '0';
+    startBtn.hidden = true;
+    await nextRound();
+  });
+
+  soundBtn.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundBtn.textContent = soundOn ? 'Sound on' : 'Sound off';
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+  });
+</script>
+
+<style>
+  .game-page {
+    max-width: 60rem;
+  }
+
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 48ch;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-style: italic;
+  }
+
+  .note {
+    max-width: 54ch;
+    font-size: var(--step--1);
+  }
+
+  .board {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  @media (max-width: 52rem) {
+    .board {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ring {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-s);
+  }
+
+  .lamp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    aspect-ratio: 3 / 4;
+    padding: var(--space-s);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    cursor: pointer;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.35s var(--ease),
+      box-shadow 0.35s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .lamp:disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
+
+  .lamp:not(:disabled):hover {
+    border-color: var(--hue);
+    transform: translateY(-2px);
+  }
+
+  .lamp__glyph {
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+    color: var(--hue);
+    line-height: 1;
+    transition: color 0.35s var(--ease);
+  }
+
+  .lamp__name {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: center;
+  }
+
+  /* Lit state: a warm glow rather than a hard flash. */
+  .lamp.is-lit {
+    background: color-mix(in srgb, var(--hue) 28%, var(--bg-raised));
+    border-color: var(--hue);
+    box-shadow:
+      0 0 0 1px var(--hue),
+      0 0 28px -4px var(--hue);
+  }
+
+  .lamp.is-lit .lamp__glyph {
+    color: var(--text);
+  }
+
+  .lamp.is-wrong {
+    background: color-mix(in srgb, #d4695f 30%, var(--bg-raised));
+    border-color: #d4695f;
+  }
+
+  .hud {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+  }
+
+  .hud__scores {
+    display: flex;
+    gap: var(--space-xl);
+  }
+
+  .hud__scores p {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .hud__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .hud__scores strong {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    line-height: 1;
+    color: var(--amber);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status {
+    min-height: 3em;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--text);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+  }
+
+  .hint {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05em 0.35em;
+  }
+
+  .about-game {
+    margin-block-start: var(--space-3xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 56ch;
+  }
+
+  .about-game h2 {
+    font-size: var(--step-2);
+    margin-block-end: var(--space-s);
+  }
+
+  .about-game p + p {
+    margin-block-start: var(--space-m);
+  }
+</style>

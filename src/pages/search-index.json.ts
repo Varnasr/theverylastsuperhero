@@ -64,6 +64,18 @@ export const GET: APIRoute = async () => {
       d: 'Every archive entry and every connection between them, drawn as one graph.',
     },
     {
+      t: 'Lamplighter',
+      u: '/lamplighter',
+      k: 'Game',
+      d: 'A memory game. The archive plays a sequence of Salt Lamps; you repeat it back.',
+    },
+    {
+      t: 'Firebird Sigil',
+      u: '/sigil',
+      k: 'Tool',
+      d: 'Make your own Firebird wallpaper — a sigil, a line from the archive, and a palette.',
+    },
+    {
       t: 'Resistance Map',
       u: '/map',
       k: 'Page',

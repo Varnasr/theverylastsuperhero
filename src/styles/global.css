@@ -409,6 +409,12 @@
 
 /* ------------------------------------------------------------ utilities */
 @layer utilities {
+  /* A class that sets `display` outranks the UA's `[hidden] { display: none }`,
+     so a hidden .button stays on screen. Make the attribute win everywhere. */
+  [hidden] {
+    display: none !important;
+  }
+
   .visually-hidden:not(:focus):not(:active) {
     clip-path: inset(50%);
     height: 1px;

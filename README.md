@@ -49,6 +49,8 @@ The novel is built around the **Resistance Archive** — 33 lore entries, 12 tim
 | **Salt Lamp testimony** | An oral-history player for lore entries that carry a recording, built on a real `<audio>` element with transcripts |
 | **Memory Wall** | Reader artwork and testimony, human-reviewed before anything appears |
 | **Wallpapers** | The Sumati Series, free for personal use |
+| **Firebird Sigil** | A wallpaper generator — sigil, palette and a line from the archive, drawn in canvas at real device resolution |
+| **Lamplighter** | A memory game. The archive plays a sequence of Salt Lamps; you repeat it back |
 | **Reading mode** | A persistent dark/light toggle, reading-progress bar, and a print stylesheet |
 
 ---

@@ -1,0 +1,494 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/**
+ * Firebird Sigil — a wallpaper generator, from the roadmap's "Firebird badge
+ * generator" and "archive node randomizer" ideas.
+ *
+ * Everything is drawn in a canvas at real phone resolution, so what a reader
+ * downloads is a usable wallpaper rather than a screenshot. No artwork is
+ * fetched: the Firebird is drawn from a path, which keeps this page a few
+ * kilobytes and means it works offline once loaded.
+ */
+
+const quotes = [
+  { text: "Collapse doesn't mean the end. It means the truth has outlived its suppressors.", who: 'Rohan Kapoor, encrypted Salt Lamp log' },
+  { text: "I don't want a hero. I want a neighbour.", who: 'Sumati' },
+  { text: 'Chandra sees everything. That’s why they don’t notice her.', who: 'Aasma' },
+  { text: 'Every empire that forgets its own data will be remembered by its wreckage.', who: 'Resistance slogan, near Okhla, 2061' },
+  { text: 'The heat isn’t just in the air. It’s in the memory of the ground.', who: 'Station-side proverb, Kishanganj' },
+  { text: 'Never again shall we surrender our power to false saviours.', who: 'Memorial inscription, after the Disclosures' },
+  { text: 'A lamp that has gone dark is not empty. It is waiting.', who: 'The Resistance Archive' },
+  { text: 'The state could copy the data. It could never copy the remembering.', who: 'On hysterons' },
+];
+
+const palettes = [
+  { id: 'ember', name: 'Ember', bg: '#131211', glow: '#e2703a', ink: '#f2efe9', accent: '#ffcb6b' },
+  { id: 'salt', name: 'Salt', bg: '#faf7f1', glow: '#c96b2a', ink: '#1c1a17', accent: '#9a5b18' },
+  { id: 'flood', name: 'Flood', bg: '#0d1417', glow: '#3f8f9c', ink: '#e6f0f2', accent: '#86c7c7' },
+  { id: 'ash', name: 'Ash', bg: '#1a1a1c', glow: '#6f6f7a', ink: '#e8e8ec', accent: '#b9b9c4' },
+];
+
+const sizes = [
+  { id: 'phone', name: 'Phone', w: 1170, h: 2532 },
+  { id: 'tablet', name: 'Tablet', w: 1668, h: 2388 },
+  { id: 'desktop', name: 'Desktop', w: 2560, h: 1440 },
+];
+---
+
+<BaseLayout
+  title="Firebird Sigil"
+  description="Make your own Firebird wallpaper — a sigil, a line from the archive, and a palette, rendered at full phone resolution and free to download."
+>
+  <div class="shell section sigil-page">
+    <header class="page-head stack">
+      <p class="eyebrow">Make something</p>
+      <h1>Firebird Sigil</h1>
+      <p class="text-muted lede">
+        The Firebird has no official form. It is hand-sketched, stitched, sprayed, remembered —
+        which is the point: a symbol that cannot be standardised cannot be catalogued, and a symbol
+        that cannot be catalogued cannot be deleted. So make your own.
+      </p>
+    </header>
+
+    <div class="studio">
+      <div class="preview">
+        <canvas data-canvas width="1170" height="2532" aria-label="Preview of your generated wallpaper"
+        ></canvas>
+      </div>
+
+      <div class="controls">
+        <fieldset>
+          <legend>Line from the archive</legend>
+          <label class="visually-hidden" for="quote">Choose a line</label>
+          <select id="quote" data-quote>
+            {quotes.map((q, i) => <option value={i}>{q.text.slice(0, 46)}…</option>)}
+          </select>
+          <p class="attrib" data-attrib></p>
+          <button class="button" type="button" data-shuffle>Surface another</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Palette</legend>
+          <div class="swatches" role="group" aria-label="Palette">
+            {
+              palettes.map((p, i) => (
+                <button
+                  class="swatch"
+                  type="button"
+                  data-palette={i}
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                  style={`--a:${p.bg};--b:${p.glow};--c:${p.accent}`}
+                >
+                  <span class="swatch__chip" aria-hidden="true" />
+                  {p.name}
+                </button>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Size</legend>
+          <div class="swatches" role="group" aria-label="Size">
+            {
+              sizes.map((s, i) => (
+                <button class="chip-btn" type="button" data-size={i} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  {s.name} <span class="dim">{s.w}×{s.h}</span>
+                </button>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="button button--primary" type="button" data-download>Download wallpaper</button>
+        </div>
+
+        <p class="hint">
+          Free for personal use under
+          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a>.
+          Nothing is uploaded — the image is made in your browser.
+        </p>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="text-muted">
+        The generator needs JavaScript. The ready-made <a href="/wallpapers">wallpapers</a> do not.
+      </p>
+    </noscript>
+
+    <script
+      type="application/json"
+      data-sigil-data
+      is:inline
+      set:html={JSON.stringify({ quotes, palettes, sizes })}
+    />
+  </div>
+</BaseLayout>
+
+<script>
+  interface Quote { text: string; who: string }
+  interface Palette { id: string; name: string; bg: string; glow: string; ink: string; accent: string }
+  interface Size { id: string; name: string; w: number; h: number }
+
+  (() => {
+    const dataEl = document.querySelector('[data-sigil-data]');
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-canvas]');
+    if (!canvas || !dataEl?.textContent) return;
+
+    const { quotes, palettes, sizes } = JSON.parse(dataEl.textContent) as {
+      quotes: Quote[];
+      palettes: Palette[];
+      sizes: Size[];
+    };
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const quoteSel = document.querySelector<HTMLSelectElement>('[data-quote]');
+    const attrib = document.querySelector<HTMLElement>('[data-attrib]');
+
+    let qi = Math.floor(Math.random() * quotes.length);
+    let pi = 0;
+    let si = 0;
+
+    /**
+     * The Firebird: drawn, not fetched, so the page carries no image weight.
+     *
+     * Filled shapes rather than outlines — at wallpaper scale a stroked bird
+     * reads as a scribble, while solid wings hold their silhouette. Wings sweep
+     * up and outward from the shoulder; the tail streams down behind.
+     */
+    const firebird = (x: number, y: number, s: number, color: string, alpha: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(s, s);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+
+      // Wings — mirrored. Each sweeps up and out, then returns along a
+      // feathered lower edge.
+      for (const dir of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(dir * 3, -4);
+        ctx.bezierCurveTo(dir * 20, -34, dir * 44, -40, dir * 54, -28);
+        ctx.bezierCurveTo(dir * 46, -26, dir * 38, -20, dir * 33, -12);
+        ctx.bezierCurveTo(dir * 42, -14, dir * 48, -10, dir * 50, -2);
+        ctx.bezierCurveTo(dir * 36, -2, dir * 20, 4, dir * 8, 10);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Body — tapering from the shoulders down to the tail root.
+      ctx.beginPath();
+      ctx.moveTo(0, -14);
+      ctx.bezierCurveTo(6, -8, 7, 6, 4, 22);
+      ctx.bezierCurveTo(2, 28, -2, 28, -4, 22);
+      ctx.bezierCurveTo(-7, 6, -6, -8, 0, -14);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head and beak.
+      ctx.beginPath();
+      ctx.arc(0.5, -19, 5.6, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(5, -21);
+      ctx.lineTo(15, -24.5);
+      ctx.lineTo(5, -16.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // A crest, so it reads as a firebird rather than a generic bird.
+      ctx.beginPath();
+      ctx.moveTo(-2, -24);
+      ctx.bezierCurveTo(-4, -32, -10, -35, -14, -34);
+      ctx.bezierCurveTo(-10, -30, -8, -26, -6, -22);
+      ctx.closePath();
+      ctx.fill();
+
+      // Tail — three feathers streaming down, the centre one longest.
+      const tails = [
+        { cx: -14, ex: -20, ey: 62, w: 3.4 },
+        { cx: 0, ex: 1, ey: 74, w: 4.2 },
+        { cx: 14, ex: 22, ey: 60, w: 3.4 },
+      ];
+      for (const t of tails) {
+        ctx.beginPath();
+        ctx.moveTo(-t.w, 20);
+        ctx.bezierCurveTo(t.cx * 0.5, 40, t.cx, 52, t.ex, t.ey);
+        ctx.bezierCurveTo(t.cx + 2, 50, t.cx * 0.5 + 3, 38, t.w, 20);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    };
+
+    const wrap = (text: string, maxWidth: number) => {
+      const words = text.split(' ');
+      const lines: string[] = [];
+      let line = '';
+      for (const w of words) {
+        const test = line ? `${line} ${w}` : w;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = w;
+        } else line = test;
+      }
+      if (line) lines.push(line);
+      return lines;
+    };
+
+    const draw = () => {
+      const p = palettes[pi];
+      const s = sizes[si];
+      const q = quotes[qi];
+      canvas.width = s.w;
+      canvas.height = s.h;
+      const W = s.w;
+      const H = s.h;
+      const unit = Math.min(W, H) / 1170;
+
+      ctx.fillStyle = p.bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Warm bloom behind the sigil
+      const cx = W / 2;
+      const cy = H * 0.38;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.5);
+      g.addColorStop(0, p.glow + '55');
+      g.addColorStop(0.45, p.glow + '18');
+      g.addColorStop(1, p.glow + '00');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      // Faint concentric rings — the network, remembered rather than mapped
+      ctx.strokeStyle = p.accent + '22';
+      ctx.lineWidth = 1.5 * unit;
+      for (let r = 1; r <= 4; r++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 118 * unit, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Sigil, with a soft echo behind it
+      firebird(cx, cy, 3.1 * unit, p.glow, 0.28);
+      firebird(cx, cy, 2.7 * unit, p.accent, 1);
+
+      // The line
+      const quoteSize = Math.round(46 * unit);
+      ctx.font = `italic ${quoteSize}px Merriweather, Georgia, serif`;
+      ctx.fillStyle = p.ink;
+      ctx.textAlign = 'center';
+      const lines = wrap(q.text, W * 0.78);
+      const startY = H * 0.66;
+      lines.forEach((l, i) => ctx.fillText(l, cx, startY + i * quoteSize * 1.42));
+
+      // Attribution
+      ctx.font = `${Math.round(24 * unit)}px "IBM Plex Mono", ui-monospace, monospace`;
+      ctx.fillStyle = p.accent + 'cc';
+      ctx.fillText(`— ${q.who}`, cx, startY + lines.length * quoteSize * 1.42 + 34 * unit);
+
+      // Mark
+      ctx.font = `${Math.round(22 * unit)}px "IBM Plex Mono", ui-monospace, monospace`;
+      ctx.fillStyle = p.ink + '66';
+      ctx.fillText('postheroic.world', cx, H - 70 * unit);
+
+      if (attrib) attrib.textContent = `— ${q.who}`;
+    };
+
+    quoteSel?.addEventListener('change', () => {
+      qi = Number(quoteSel.value);
+      draw();
+    });
+
+    document.querySelector('[data-shuffle]')?.addEventListener('click', () => {
+      qi = (qi + 1 + Math.floor(Math.random() * (quotes.length - 1))) % quotes.length;
+      if (quoteSel) quoteSel.value = String(qi);
+      draw();
+    });
+
+    const group = (attr: string, set: (v: number) => void) => {
+      document.querySelectorAll(`[${attr}]`).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document
+            .querySelectorAll(`[${attr}]`)
+            .forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+          set(Number(btn.getAttribute(attr)));
+          draw();
+        });
+      });
+    };
+    group('data-palette', (v) => (pi = v));
+    group('data-size', (v) => (si = v));
+
+    document.querySelector('[data-download]')?.addEventListener('click', () => {
+      canvas.toBlob((blob: Blob | null) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `firebird-sigil-${sizes[si].id}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        // Revoke on the next tick so the download has started.
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }, 'image/png');
+    });
+
+    if (quoteSel) quoteSel.value = String(qi);
+
+    // Webfonts change the measured text width, so redraw once they land.
+    draw();
+    if (document.fonts?.ready) void document.fonts.ready.then(draw);
+  })();
+</script>
+
+<style>
+  .sigil-page {
+    max-width: 66rem;
+  }
+
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .studio {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (max-width: 52rem) {
+    .studio {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .preview {
+    position: sticky;
+    top: 5rem;
+    padding: var(--space-m);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 52rem) {
+    .preview {
+      position: static;
+    }
+  }
+
+  .preview canvas {
+    width: 100%;
+    height: auto;
+    max-height: 64svh;
+    object-fit: contain;
+    border-radius: var(--radius-s);
+    display: block;
+    margin-inline: auto;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  legend {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 0;
+    margin-block-end: var(--space-2xs);
+  }
+
+  select {
+    padding: 0.6rem var(--space-s);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+    color: var(--text);
+    width: 100%;
+  }
+
+  .attrib {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    min-height: 1.4em;
+  }
+
+  .swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .swatch,
+  .chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .swatch[aria-pressed='true'],
+  .chip-btn[aria-pressed='true'] {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+  }
+
+  .swatch__chip {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--b) 0%, var(--c) 55%, var(--a) 56%);
+    border: 1px solid var(--border-strong);
+  }
+
+  .dim {
+    color: var(--text-faint);
+    font-size: 0.68rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-s);
+  }
+
+  .hint {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    max-width: 44ch;
+  }
+</style>
