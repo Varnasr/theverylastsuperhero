@@ -23,7 +23,7 @@ The story follows **Sumati**, a 14-year-old girl navigating a post-collapse land
 
 ## The world
 
-The novel is built around the **Resistance Archive** — 32 lore entries, 12 timeline events and a catalogue of recovered objects, all authored as data rather than as pages.
+The novel is built around the **Resistance Archive** — 33 lore entries, 12 timeline events and a catalogue of recovered objects, all authored as data rather than as pages.
 
 | Element | Description |
 |---------|-------------|
@@ -43,6 +43,7 @@ The novel is built around the **Resistance Archive** — 32 lore entries, 12 tim
 |---|---|
 | **Lore Archive** | Every entry, filterable by kind, with automatic two-way cross-links to the timeline |
 | **Timeline** | The chronology from the Heroic Period to the lighting of the last lamp |
+| **Constellation** | All 33 entries and the 70 links between them as one graph, laid out at build time so it ships as static SVG |
 | **Resistance Map** | An interactive SVG schematic of lamp routes between zones, keyboard-navigable and linked to the archive |
 | **Search** | Client-side search across everything, no server and no search library. Press <kbd>/</kbd> anywhere |
 | **Salt Lamp testimony** | An oral-history player for lore entries that carry a recording, built on a real `<audio>` element with transcripts |
@@ -72,7 +73,7 @@ No UI framework. No client-side router. The interactive pieces — search, filte
 ```
 src/
 ├── content/            # The world, as data
-│   ├── lore/           #   32 archive entries
+│   ├── lore/           #   33 archive entries
 │   ├── timeline/       #   12 chronology events
 │   ├── archive/        #   catalogued objects
 │   ├── wallpapers/     #   the Sumati Series
@@ -81,7 +82,7 @@ src/
 ├── assets/             # Artwork, processed by the image pipeline
 ├── components/         # Nav, Footer, LoreCard, SaltLampPlayer, ThemeToggle
 ├── layouts/            # BaseLayout — head, SEO, theme, reading progress
-├── lib/                # site.ts (config), map-zones.ts (map data)
+├── lib/                # site.ts (config), map-zones.ts, constellation.ts (graph layout)
 ├── pages/              # Routes, including rss.xml, robots.txt, search-index.json
 └── styles/global.css   # Design tokens and the whole design system
 public/                 # Served as-is: favicon, CNAME, OG card

@@ -168,9 +168,10 @@ Nothing publishes itself. A submission arrives by email, a person reads it, and
 someone commits a file. That is deliberate: it keeps the site static and means
 no stranger can put anything on the wall.
 
-While the folder is empty the build prints
-`[WARN] [glob-loader] No files found matching "**/*.md"`. That is expected and
-disappears with the first contribution.
+`src/content/memory/template.md` is a ready-made copy of the above with
+`draft: true`. Copy it, rename it, fill it in, set `draft: false`. Leave the
+template in place — it keeps the collection valid while the wall is still
+empty.
 
 ---
 

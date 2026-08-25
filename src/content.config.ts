@@ -120,6 +120,14 @@ const memory = defineCollection({
       image: image().optional(),
       imageAlt: z.string().optional(),
       added: z.coerce.date(),
+      /**
+       * Keeps the shipped template out of the wall. It also keeps the
+       * collection non-empty, which stops Astro reporting "the collection
+       * does not exist or is empty. Please check your content config file for
+       * errors" on every build — accurate but alarming, since an empty wall is
+       * the correct state until the first reader writes in.
+       */
+      draft: z.boolean().default(false),
     }),
 });
 
