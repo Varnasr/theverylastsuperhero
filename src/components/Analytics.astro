@@ -5,60 +5,82 @@ import { site } from '../lib/site';
  * First-party analytics: our own database, no third-party service.
  *
  * No cookie is set and nothing is stored on the device, so there is nothing to
- * consent to. No identifier is sent either — visitors are counted by the day
- * bucket a row lands in, not by anything that follows a person around.
- *
- * Do Not Track and Global Privacy Control are honoured even though a cookieless
+ * consent to. No identifier is sent either — visitors are counted by the rows
+ * that land in a day, not by anything that follows a person around. Do Not
+ * Track and Global Privacy Control are honoured even though a cookieless
  * first-party count arguably need not.
+ *
+ * Written as raw script rather than a JSX template literal: inside
+ * `is:inline` Astro treats the body as text, so a `{...}` wrapper is emitted
+ * verbatim and the code never runs.
  */
 const { firstParty, supabaseUrl, supabaseKey } = site.analytics;
-const on = firstParty && supabaseUrl && supabaseKey;
+const on = Boolean(firstParty && supabaseUrl && supabaseKey);
+const endpoint = `${supabaseUrl}/rest/v1/postheroic_events`;
 ---
 
 {
   on && (
-    <script is:inline define:vars={{ url: `${supabaseUrl}/rest/v1/postheroic_events`, key: supabaseKey }}>
-      {`(() => {
-        if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) return;
+    <script is:inline define:vars={{ endpoint, key: supabaseKey }}>
+      (function () {
+        if (
+          navigator.doNotTrack === '1' ||
+          window.doNotTrack === '1' ||
+          navigator.globalPrivacyControl
+        )
+          return;
 
-        // Which site sent them, not which page — a referring path can carry
-        // more about a reader than we have any use for.
-        let referrer = '';
+        // Which site sent them, not which page: a referring path can carry more
+        // about a reader than we have any use for.
+        var referrer = '';
         try {
-          const r = new URL(document.referrer);
+          var r = new URL(document.referrer);
           if (r.hostname !== location.hostname) referrer = r.hostname;
-        } catch {}
+        } catch (e) {}
 
-        const send = (kind, meta) => {
-          const body = JSON.stringify({
-            kind,
-            path: location.pathname,
-            referrer,
-            form_factor: window.innerWidth < 700 ? 'phone' : 'desktop',
-            meta: meta || null,
-          });
-          const headers = {
-            apikey: key,
-            Authorization: 'Bearer ' + key,
-            'Content-Type': 'application/json',
-            Prefer: 'return=minimal',
-          };
-          // keepalive so a buy click survives the page being torn down.
-          fetch(url, { method: 'POST', headers, body, keepalive: true, mode: 'cors' }).catch(() => {});
-        };
+        function send(kind, meta) {
+          try {
+            fetch(endpoint, {
+              method: 'POST',
+              mode: 'cors',
+              keepalive: true,
+              headers: {
+                apikey: key,
+                Authorization: 'Bearer ' + key,
+                'Content-Type': 'application/json',
+                Prefer: 'return=minimal',
+              },
+              body: JSON.stringify({
+                kind: kind,
+                path: location.pathname,
+                referrer: referrer,
+                form_factor: window.innerWidth < 700 ? 'phone' : 'desktop',
+                meta: meta || null,
+              }),
+            }).catch(function () {});
+          } catch (e) {}
+        }
 
         send('pageview');
 
-        document.addEventListener('click', (e) => {
-          const buy = e.target instanceof Element && e.target.closest('[data-buy]');
-          if (buy) send('buy_click', { placement: buy.className || null });
-        }, { capture: true });
+        document.addEventListener(
+          'click',
+          function (e) {
+            var buy = e.target && e.target.closest && e.target.closest('[data-buy]');
+            if (buy) send('buy_click', { placement: buy.className || null });
+          },
+          true
+        );
 
-        document.addEventListener('submit', (e) => {
-          const f = e.target;
-          if (f instanceof HTMLFormElement && f.name) send('form_submit', { form: f.name });
-        }, { capture: true });
-      })();`}
+        document.addEventListener(
+          'submit',
+          function (e) {
+            var f = e.target;
+            if (f && f.tagName === 'FORM' && f.name) send('form_submit', { form: f.name });
+          },
+          true
+        );
+      })();
     </script>
   )
 }
