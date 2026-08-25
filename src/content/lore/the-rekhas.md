@@ -6,7 +6,7 @@ summary: Triplet bio-robots who rejected their control protocols and joined the 
 order: 12
 related: [the-radhas, the-resistance, kishanganj, asha]
 image: ../../assets/lore/the-rekhas.webp
-imageAlt: "Young women leaning close together, fine silver filaments tracing their faces and arms"
+imageAlt: "Three young women leaning close together, fine silver filaments tracing their faces and arms"
 ---
 
 Three of them, built the same and finishing differently.

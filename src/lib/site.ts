@@ -130,6 +130,7 @@ export const nav = [
 export const navMore = [
   { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
   { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
+  { href: '/after', label: 'What Comes After', note: 'The epilogue — spoilers' },
   { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
   { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
@@ -137,6 +138,7 @@ export const navMore = [
   { href: '/wallpapers', label: 'Wallpapers', note: 'For a phone or a desktop' },
   { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
   { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
+  { href: '/author', label: 'The Author', note: 'Who wrote and drew this' },
 ] as const;
 
 export const footerLinks = [
@@ -144,5 +146,4 @@ export const footerLinks = [
   { href: '/contact', label: 'Contact' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
-  { href: '/rss.xml', label: 'RSS' },
 ] as const;

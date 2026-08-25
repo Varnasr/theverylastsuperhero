@@ -1,0 +1,220 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BuyButton from '../components/BuyButton.astro';
+
+/**
+ * The epilogue, five years on.
+ *
+ * The novel spends most of its length on what was lost. This page is the other
+ * half of the argument — what the survivors go on to build — and it is drawn
+ * entirely from the book's own closing chapter. It is therefore a spoiler, and
+ * says so before it says anything else.
+ */
+
+const entries = (await getCollection('after')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ ...e, Body: (await render(e)).Content }))
+);
+
+const groups: { name: string; items: typeof rendered }[] = [];
+for (const e of rendered) {
+  const last = groups.at(-1);
+  if (last?.name === e.data.group) last.items.push(e);
+  else groups.push({ name: e.data.group, items: [e] });
+}
+
+const people = [
+  {
+    name: 'Sumati',
+    href: '/lore/sumati',
+    line: 'Draws the open hand on the journal Mr Mehta gave her. The emblem that replaces the Firebird is hers, and it is not a logo — it is a gesture.',
+  },
+  {
+    name: 'Aasma',
+    href: '/lore/aasma',
+    line: 'Runs youth outreach. The generation that inherited the heat is the one being taught what to do about it.',
+  },
+  {
+    name: 'Rohan Kapoor',
+    href: '/lore/rohan-kapoor',
+    line: 'Heads the National Environmental Accountability Commission — auditing the kind of corporate climate promise he was once on the wrong side of.',
+  },
+  {
+    name: 'Meera',
+    href: '/lore/meera',
+    line: 'Her adaptation models go on to reshape South Asian policy. A voice on a recording becomes the basis of how a subcontinent plans.',
+  },
+  {
+    name: 'Mr Mehta',
+    href: '/lore/kishore-mehta',
+    line: 'The library becomes a network. p.ai is distributed across community centres instead of concentrated in one machine.',
+  },
+  {
+    name: 'Vikram Malhotra',
+    href: '/lore/vikram-malhotra',
+    line: 'In work clothes, running emergency preparedness. No cape, no title, no crowd.',
+  },
+];
+---
+
+<BaseLayout
+  title="What Comes After"
+  description="The epilogue of The Very Last Superhero: five years on at the Delhi Environmental Resilience Hub, and what the survivors go on to build instead of a superhero."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Building and fixing</p>
+      <h1>What Comes After</h1>
+
+      <p class="warn">
+        <strong>This page is the ending.</strong> It describes the epilogue in detail. If you have not
+        read the book, <a href="/lore">the archive</a> is the better door.
+      </p>
+
+      <p class="text-muted lede">
+        Five years after the events of the novel, the abandoned headquarters of the Delhi Climate
+        Brigade is a public building again. Display cases that held superhero memorabilia hold
+        living walls. The command centre that once coordinated spectacular rescues coordinates
+        practical ones. A retired librarian is showing schoolchildren how to grow food on a roof.
+      </p>
+      <p class="text-muted lede">
+        The book's whole argument arrives here: nobody flew. The work got done anyway, by people
+        who kept turning up, and it turned out to be the kind of work that lasts.
+      </p>
+    </header>
+
+    <section class="who">
+      <h2>Where everyone ends up</h2>
+      <ul class="who__list">
+        {
+          people.map((p) => (
+            <li class="who__item">
+              <a class="who__name" href={p.href}>
+                {p.name}
+              </a>
+              <p class="text-muted">{p.line}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {
+      groups.map((group) => (
+        <section class="built">
+          <h2>{group.name}</h2>
+          <div class="built__grid">
+            {group.items.map((e) => (
+              <article class="card">
+                <h3>{e.data.title}</h3>
+                <div class="card__body text-muted">
+                  <e.Body />
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="close stack">
+      <h2>None of this is magic</h2>
+      <p class="text-muted">
+        Every item above is a thing that can be done without a single person who can fly: an audit
+        body, a distributed library, a repair workshop, a water point, a roof with soil on it, a
+        poisoned site cleaned. That is the point of the ending, and it is why{' '}
+        <a href="/act">How to Help</a> exists on this site at all — the same list, minus the
+        fifty years.
+      </p>
+      <div class="close__buy">
+        <BuyButton />
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-2xl);
+  }
+
+  .lede {
+    max-width: 62ch;
+  }
+
+  .warn {
+    max-width: 62ch;
+    padding: var(--space-s) var(--space-m);
+    border-inline-start: 3px solid var(--accent);
+    background: var(--surface-2, var(--surface));
+    font-size: var(--step--1);
+  }
+
+  section {
+    margin-block-start: var(--space-2xl);
+  }
+
+  section h2 {
+    font-size: var(--step-1);
+    margin-block-end: var(--space-m);
+  }
+
+  .who__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .who__item {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 1px solid var(--border);
+  }
+
+  .who__name {
+    font-family: var(--font-display, inherit);
+    font-weight: 600;
+  }
+
+  .who__item p {
+    margin-block-start: 0.35rem;
+    font-size: var(--step--1);
+  }
+
+  .built__grid {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+
+  .card {
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius, 4px);
+    background: var(--surface);
+  }
+
+  .card h3 {
+    font-size: var(--step-0);
+    margin: 0 0 var(--space-2xs);
+  }
+
+  .card__body :global(p) {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .close {
+    max-width: 62ch;
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .close__buy {
+    margin-block-start: var(--space-m);
+  }
+</style>

@@ -12,6 +12,15 @@ import { site } from '../lib/site';
  * only to organisations whose sites were checked to resolve.
  */
 
+const steps = (await getCollection('act-steps')).sort((a, b) => a.data.order - b.data.order);
+const rsteps = await Promise.all(steps.map(async (s) => ({ ...s, Body: (await render(s)).Content })));
+const stepGroups: { name: string; steps: typeof rsteps }[] = [];
+for (const s of rsteps) {
+  const last = stepGroups.at(-1);
+  if (last?.name === s.data.group) last.steps.push(s);
+  else stepGroups.push({ name: s.data.group, steps: [s] });
+}
+
 const orgs = (await getCollection('action')).sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(orgs.map(async (o) => ({ ...o, Body: (await render(o)).Content })));
 
@@ -49,6 +58,35 @@ for (const o of rendered) {
       </p>
     </header>
 
+    <section class="steps">
+      <h2 class="steps__head">Start here</h2>
+      <p class="text-muted steps__lede">
+        Ordered by what it costs you, not by how important it sounds. None of it requires being the
+        sort of person who does this kind of thing.
+      </p>
+
+      {
+        stepGroups.map((group) => (
+          <div class="tier">
+            <p class="tier__name">{group.name}</p>
+            <ol class="tier__list">
+              {group.steps.map(({ data, Body }) => (
+                <li class="step">
+                  <h3>{data.title}</h3>
+                  <div class="step__note prose">
+                    <Body />
+                  </div>
+                  <a class="step__link" href={data.url} rel="noopener">
+                    {data.linkLabel} →
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </section>
+
     <section class="campaign">
       <p class="campaign__label">The campaign this book is dedicated to</p>
       <h2>{site.campaign.label}</h2>
@@ -58,6 +96,12 @@ for (const o of rendered) {
       </p>
       <a class="button" href={site.campaign.url} rel="noopener">Read about the campaign</a>
     </section>
+
+    <h2 class="orgs__head">Who is already doing this</h2>
+    <p class="text-muted orgs__lede">
+      Sixteen organisations whose work is the real version of what the novel imagines. None of them
+      endorsed this book or know it exists.
+    </p>
 
     {
       groups.map((group) => (
@@ -119,6 +163,77 @@ for (const o of rendered) {
 
   .lede {
     max-width: 60ch;
+  }
+
+  .steps {
+    margin-block-end: var(--space-2xl);
+  }
+
+  .steps__head {
+    font-size: var(--step-2);
+  }
+
+  .steps__lede {
+    max-width: 58ch;
+    margin-block: var(--space-2xs) var(--space-xl);
+  }
+
+  .tier + .tier {
+    margin-block-start: var(--space-xl);
+  }
+
+  .tier__name {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-block-end: var(--space-s);
+  }
+
+  .tier__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+  }
+
+  .step {
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .step h3 {
+    font-size: var(--step-0);
+  }
+
+  .step__note {
+    margin-block: var(--space-2xs) var(--space-s);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .step__link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    align-self: start;
+  }
+
+  .orgs__head {
+    font-size: var(--step-2);
+    margin-block-start: var(--space-2xl);
+  }
+
+  .orgs__lede {
+    max-width: 58ch;
+    margin-block: var(--space-2xs) var(--space-xl);
   }
 
   .campaign {

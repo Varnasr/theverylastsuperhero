@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 /**
  * Every piece of the world is data, not hand-copied markup. Adding a lore entry
  * means adding one markdown file — the archive index, search index, related-entry
- * links, sitemap and RSS feed all pick it up automatically.
+ * links and the sitemap all pick it up automatically.
  */
 
 const loreCategories = [
@@ -93,6 +93,28 @@ const glossary = defineCollection({
     order: z.number().default(100),
     /** Lore entries this term explains, for cross-linking back into the archive. */
     related: z.array(reference('lore')).default([]),
+  }),
+});
+
+const actSteps = defineCollection({
+  loader: glob({ base: './src/content/act-steps', pattern: '**/*.md' }),
+  schema: z.object({
+    title: z.string(),
+    /** Five minutes / An afternoon / Ongoing — sorted by what it costs the reader. */
+    group: z.string(),
+    url: z.string().url(),
+    linkLabel: z.string(),
+    order: z.number().default(100),
+  }),
+});
+
+const after = defineCollection({
+  loader: glob({ base: './src/content/after', pattern: '**/*.md' }),
+  schema: z.object({
+    title: z.string(),
+    /** Institutions, Practices, The Emblem. */
+    group: z.string(),
+    order: z.number().default(100),
   }),
 });
 
@@ -226,4 +248,4 @@ const memory = defineCollection({
 });
 
 export const collections = {
-  action, glossary, fanfic, reading, lore, timeline, archive, wallpapers, memory };
+  after, action, 'act-steps': actSteps, glossary, fanfic, reading, lore, timeline, archive, wallpapers, memory };
