@@ -1,0 +1,285 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+import saltLamp from '../../assets/wallpapers/salt-lamp-at-dusk.jpg';
+import riverfront from '../../assets/wallpapers/the-riverfront.jpg';
+import nightWatch from '../../assets/wallpapers/night-watch.jpg';
+import firebird from '../../assets/wallpapers/firebird-rising.jpg';
+import water from '../../assets/wallpapers/water-sharing-station.jpg';
+
+/**
+ * Jigsaws cut from the artwork.
+ *
+ * The tiles are one image shown at five different background positions rather
+ * than five hundred cropped files, so a puzzle costs one download regardless of
+ * how finely it is cut.
+ */
+
+const sources = [
+  { id: 'salt-lamp', label: 'Salt Lamp at Dusk', src: saltLamp },
+  { id: 'night-watch', label: 'Night Watch', src: nightWatch },
+  { id: 'riverfront', label: 'The Riverfront', src: riverfront },
+  { id: 'water', label: 'Water-Sharing Station', src: water },
+  { id: 'firebird', label: 'Firebird Rising', src: firebird },
+];
+
+const pictures = await Promise.all(
+  sources.map(async (p) => ({
+    ...p,
+    url: (await getImage({ src: p.src, width: 1200, height: 675, format: 'webp' })).src,
+  }))
+);
+---
+
+<BaseLayout
+  title="Jigsaw"
+  description="Jigsaw puzzles cut from the artwork of The Very Last Superhero — the salt lamp at dusk, the riverfront, the Firebird."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>Jigsaw</h1>
+      <p class="text-muted lede">
+        Click one tile, then another, to swap them. Pick a picture and how badly you want to suffer.
+      </p>
+    </header>
+
+    <div class="controls">
+      <label>
+        <span>Picture</span>
+        <select data-picture>
+          {pictures.map((p) => <option value={p.id}>{p.label}</option>)}
+        </select>
+      </label>
+      <label>
+        <span>Pieces</span>
+        <select data-size>
+          <option value="3">9</option>
+          <option value="4" selected>16</option>
+          <option value="5">25</option>
+          <option value="6">36</option>
+        </select>
+      </label>
+      <button type="button" class="button" data-shuffle>Shuffle</button>
+      <label class="peek">
+        <input type="checkbox" data-peek />
+        <span>Show the picture</span>
+      </label>
+    </div>
+
+    <div class="stage">
+      <div class="puzzle" data-puzzle style="--n:4"></div>
+      <img class="ghost" data-ghost alt="" hidden />
+    </div>
+
+    <p class="status" data-status aria-live="polite"></p>
+
+    <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
+  </div>
+
+  <script type="application/json" id="jig-data" set:html={JSON.stringify(pictures.map(({ id, label, url }) => ({ id, label, url })))} />
+</BaseLayout>
+
+<script>
+  const node = document.getElementById('jig-data');
+  if (node) {
+    const pictures = JSON.parse(node.textContent || '[]');
+    const puzzle = document.querySelector('[data-puzzle]') as HTMLElement | null;
+    const ghost = document.querySelector('[data-ghost]') as HTMLImageElement | null;
+    const status = document.querySelector('[data-status]');
+    const pickSel = document.querySelector('[data-picture]') as HTMLSelectElement | null;
+    const sizeSel = document.querySelector('[data-size]') as HTMLSelectElement | null;
+    const peek = document.querySelector('[data-peek]') as HTMLInputElement | null;
+    if (!puzzle || !pickSel || !sizeSel) throw new Error('jigsaw: missing nodes');
+
+    let n = 4;
+    let order: number[] = [];
+    let selected: number | null = null;
+
+    const current = () => pictures.find((p: any) => p.id === pickSel.value) || pictures[0];
+
+    const say = (msg: string) => {
+      if (status) status.textContent = msg;
+    };
+
+    const render = () => {
+      const pic = current();
+      puzzle.style.setProperty('--n', String(n));
+      puzzle.innerHTML = '';
+      order.forEach((tile, slot) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tile';
+        btn.dataset.slot = String(slot);
+        const row = Math.floor(tile / n);
+        const col = tile % n;
+        btn.style.backgroundImage = `url(${pic.url})`;
+        btn.style.backgroundSize = `${n * 100}% ${n * 100}%`;
+        // With n columns there are n-1 steps between 0% and 100%.
+        btn.style.backgroundPosition =
+          `${(col * 100) / (n - 1)}% ${(row * 100) / (n - 1)}%`;
+        btn.setAttribute('aria-label', `Piece ${tile + 1}, position ${slot + 1}`);
+        if (slot === selected) btn.classList.add('is-picked');
+        puzzle.appendChild(btn);
+      });
+    };
+
+    const solved = () => order.every((tile, slot) => tile === slot);
+
+    const shuffle = () => {
+      n = Number(sizeSel.value);
+      const count = n * n;
+      order = Array.from({ length: count }, (_, i) => i);
+      // Fisher–Yates, re-rolled if it happens to land solved.
+      do {
+        for (let i = count - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+      } while (solved());
+      selected = null;
+      render();
+      say('');
+    };
+
+    puzzle.addEventListener('click', (e) => {
+      const tile = (e.target as HTMLElement).closest('.tile') as HTMLElement | null;
+      if (!tile) return;
+      const slot = Number(tile.dataset.slot);
+      if (selected === null) {
+        selected = slot;
+        render();
+        return;
+      }
+      if (selected === slot) {
+        selected = null;
+        render();
+        return;
+      }
+      [order[selected], order[slot]] = [order[slot], order[selected]];
+      selected = null;
+      render();
+      if (solved()) say('Done. That is the whole picture.');
+    });
+
+    const setGhost = () => {
+      if (!ghost) return;
+      ghost.src = current().url;
+      ghost.hidden = !peek?.checked;
+    };
+
+    pickSel.addEventListener('change', () => {
+      shuffle();
+      setGhost();
+    });
+    sizeSel.addEventListener('change', shuffle);
+    peek?.addEventListener('change', setGhost);
+    document.querySelector('[data-shuffle]')?.addEventListener('click', shuffle);
+
+    shuffle();
+    setGhost();
+  }
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--space-m);
+    margin-block-end: var(--space-l);
+  }
+
+  .controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+
+  .controls select {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 0.4rem 0.5rem;
+    color: var(--text);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    text-transform: none;
+  }
+
+  .peek {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .stage {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 46rem;
+  }
+
+  .puzzle {
+    display: grid;
+    grid-template-columns: repeat(var(--n), 1fr);
+    gap: 2px;
+    aspect-ratio: 16 / 9;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .tile {
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-color: var(--bg-raised);
+    transition: outline-color 0.12s var(--ease);
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+  }
+
+  .tile:hover {
+    outline-color: color-mix(in srgb, var(--amber) 55%, transparent);
+  }
+
+  .tile.is-picked {
+    outline-color: var(--amber);
+  }
+
+  .ghost {
+    width: 100%;
+    max-width: 20rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .status {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--amber);
+    min-height: 1.2em;
+    margin-block-start: var(--space-m);
+  }
+
+  .more-play {
+    margin-block-start: var(--space-2xl);
+  }
+</style>

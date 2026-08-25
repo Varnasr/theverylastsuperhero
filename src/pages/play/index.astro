@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+/**
+ * The play archive.
+ *
+ * Everything here is client-side and free — no accounts, no scores kept, no
+ * leaderboard. A book about who gets to hold a record should not be quietly
+ * collecting one on its readers.
+ */
+
+const games = [
+  {
+    href: '/play/crossword',
+    title: 'Crossword',
+    note: 'Twenty-four entries out of the archive. The Glossary is not cheating.',
+    kind: 'Puzzle',
+  },
+  {
+    href: '/play/jigsaw',
+    title: 'Jigsaw',
+    note: 'Five pictures from the book, cut nine to thirty-six ways.',
+    kind: 'Puzzle',
+  },
+  {
+    href: '/lamplighter',
+    title: 'Lamplighter',
+    note: 'The archive speaks a sequence of Salt Lamps. You repeat it back.',
+    kind: 'Memory',
+  },
+  {
+    href: '/play/inventor',
+    title: 'The Inventor',
+    note: 'Make up a piece of 2075 technology, and find out what it got wired to.',
+    kind: 'Generator',
+  },
+  {
+    href: '/sigil',
+    title: 'Firebird Sigil',
+    note: 'Build your own emblem and take it away as a wallpaper.',
+    kind: 'Generator',
+  },
+  {
+    href: '/play/word-search',
+    title: 'Word Search',
+    note: 'Fifteen words, every direction, backwards included.',
+    kind: 'Puzzle',
+  },
+];
+---
+
+<BaseLayout
+  title="Play"
+  description="Puzzles and games from The Very Last Superhero — a crossword, a word search, jigsaws cut from the artwork, a memory game and a 2075 technology generator."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>Play</h1>
+      <p class="text-muted lede">
+        Six things to do with the archive. All of them run in your browser, none of them keep a
+        score, and nothing here asks who you are.
+      </p>
+    </header>
+
+    <ul class="games">
+      {
+        games.map((g) => (
+          <li class="game">
+            <a href={g.href}>
+              <p class="game__kind">{g.kind}</p>
+              <h2>{g.title}</h2>
+              <p class="text-muted game__note">{g.note}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="text-muted foot">
+      Made something out of one of these? <a href="/fanfic">Reader Fiction</a> takes stories set in
+      this world, and the <a href="/memory">Testimonials</a> wall takes drawings.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 56ch;
+  }
+
+  .games {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  }
+
+  .game a {
+    display: block;
+    height: 100%;
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.15s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .game a:hover {
+    border-color: var(--amber);
+    transform: translateY(-2px);
+  }
+
+  .game__kind {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .game h2 {
+    font-size: var(--step-1);
+    margin: 0.25rem 0 0.35rem;
+  }
+
+  .game__note {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .foot {
+    max-width: 52ch;
+    margin-block-start: var(--space-2xl);
+    font-size: var(--step--1);
+  }
+</style>

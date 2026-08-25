@@ -1,0 +1,347 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildWordSearch } from '../../lib/puzzle';
+
+/**
+ * Fifteen words from the archive, hidden in every direction including
+ * backwards. The grid is seeded at build time so everyone gets the same one.
+ */
+
+const words = [
+  'HYSTERONS',
+  'FIREBIRD',
+  'SALTLAMP',
+  'HALITE',
+  'MAGLEV',
+  'SATCOMM',
+  'MONGOOSE',
+  'OBEDIENCE',
+  'ARCHIVE',
+  'KISHANGANJ',
+  'POLAROID',
+  'GOLEM',
+  'CYCLONE',
+  'LIBRARIAN',
+  'MONSOON',
+];
+
+const ws = buildWordSearch(words, 15);
+const found = ws.words.map((w) => w.word);
+const missing = words.filter((w) => !found.includes(w));
+
+const payload = {
+  size: ws.size,
+  words: ws.words.map((w) => ({
+    word: w.word,
+    cells: Array.from({ length: w.word.length }, (_, i) => [w.row + w.dr * i, w.col + w.dc * i]),
+  })),
+};
+---
+
+<BaseLayout
+  title="Word Search"
+  description="Fifteen words out of the Resistance Archive, hidden in every direction. Salt lamps, hysterons, halite and a mongoose."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>Word Search</h1>
+      <p class="text-muted lede">
+        {ws.words.length} words, in every direction including backwards. Drag across a run of letters,
+        or tap the first and last.
+      </p>
+      {missing.length > 0 && <p class="text-muted">Could not place: {missing.join(', ')}</p>}
+    </header>
+
+    <div class="layout">
+      <div class="board">
+        <div class="grid" style={`--size:${ws.size}`} data-grid>
+          {
+            ws.grid.map((row, r) =>
+              row.map((letter, c) => (
+                <button type="button" class="cell" data-r={r} data-c={c}>
+                  {letter}
+                </button>
+              ))
+            )
+          }
+        </div>
+      </div>
+
+      <aside class="list">
+        <h2>To find</h2>
+        <ul>
+          {
+            ws.words.map((w) => (
+              <li data-word={w.word}>{w.word}</li>
+            ))
+          }
+        </ul>
+        <p class="tally" data-tally aria-live="polite">0 of {ws.words.length} found.</p>
+        <button type="button" class="button button--quiet" data-reveal>Give up</button>
+      </aside>
+    </div>
+
+    <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
+  </div>
+
+  <script type="application/json" id="ws-data" set:html={JSON.stringify(payload)} />
+</BaseLayout>
+
+<script>
+  const node = document.getElementById('ws-data');
+  if (node) {
+    const data = JSON.parse(node.textContent || '{}');
+    const grid = document.querySelector('[data-grid]');
+    const tally = document.querySelector('[data-tally]');
+    const cells = Array.from(document.querySelectorAll('.cell')) as HTMLButtonElement[];
+    const at = (r: number, c: number) =>
+      cells.find((x) => Number(x.dataset.r) === r && Number(x.dataset.c) === c);
+
+    const solved = new Set<string>();
+    let anchor: { r: number; c: number } | null = null;
+
+    const key = (r: number, c: number) => r + ',' + c;
+
+    /** Every cell on the straight run between two points, if one exists. */
+    const runBetween = (a: { r: number; c: number }, b: { r: number; c: number }) => {
+      const dr = Math.sign(b.r - a.r);
+      const dc = Math.sign(b.c - a.c);
+      const lenR = Math.abs(b.r - a.r);
+      const lenC = Math.abs(b.c - a.c);
+      if (lenR !== 0 && lenC !== 0 && lenR !== lenC) return null;
+      const len = Math.max(lenR, lenC) + 1;
+      return Array.from({ length: len }, (_, i) => [a.r + dr * i, a.c + dc * i] as [number, number]);
+    };
+
+    const paint = (run: [number, number][] | null, cls: string) => {
+      for (const [r, c] of run || []) at(r, c)?.classList.add(cls);
+    };
+
+    const clearHint = () => {
+      for (const cell of cells) cell.classList.remove('is-hint');
+    };
+
+    const markFound = (word: string, cellsOf: [number, number][]) => {
+      solved.add(word);
+      paint(cellsOf, 'is-found');
+      document.querySelector(`[data-word="${word}"]`)?.classList.add('is-done');
+      if (tally) {
+        tally.textContent =
+          solved.size === data.words.length
+            ? 'All of them. Nothing left hidden.'
+            : `${solved.size} of ${data.words.length} found.`;
+      }
+    };
+
+    const tryRun = (run: [number, number][]) => {
+      const wanted = run.map(([r, c]) => key(r, c)).join('|');
+      const reversed = [...run].reverse().map(([r, c]) => key(r, c)).join('|');
+      for (const entry of data.words) {
+        if (solved.has(entry.word)) continue;
+        const theirs = entry.cells.map((x: number[]) => key(x[0], x[1])).join('|');
+        if (theirs === wanted || theirs === reversed) {
+          markFound(entry.word, entry.cells);
+          return true;
+        }
+      }
+      return false;
+    };
+
+    /**
+     * One pointer path, not two.
+     *
+     * An earlier version had a click handler and a drag handler both live.
+     * A tap fires pointerdown, pointerup AND click, so the drag handler kept
+     * resetting the anchor the click handler had just set, and tap-to-select
+     * could never complete a word. Now pointerup decides which gesture it was:
+     * ended on a different cell means drag, ended where it started means tap.
+     */
+    let start: { r: number; c: number } | null = null;
+
+    const cellFrom = (x: number, y: number) =>
+      document.elementFromPoint(x, y)?.closest('.cell') as HTMLElement | null;
+
+    const tap = (r: number, c: number) => {
+      if (!anchor) {
+        anchor = { r, c };
+        at(r, c)?.classList.add('is-hint');
+        return;
+      }
+      const run = runBetween(anchor, { r, c });
+      clearHint();
+      anchor = null;
+      if (run && run.length > 1) tryRun(run);
+    };
+
+    grid?.addEventListener('pointerdown', (ev) => {
+      const t = (ev.target as HTMLElement).closest('.cell') as HTMLElement | null;
+      if (!t) return;
+      ev.preventDefault();
+      start = { r: Number(t.dataset.r), c: Number(t.dataset.c) };
+      if (!anchor) t.classList.add('is-hint');
+    });
+
+    grid?.addEventListener('pointermove', (ev) => {
+      const e = ev as PointerEvent;
+      if (!start || anchor) return;
+      const t = cellFrom(e.clientX, e.clientY);
+      if (!t) return;
+      clearHint();
+      paint(runBetween(start, { r: Number(t.dataset.r), c: Number(t.dataset.c) }), 'is-hint');
+    });
+
+    grid?.addEventListener('pointerup', (ev) => {
+      const e = ev as PointerEvent;
+      if (!start) return;
+      const from = start;
+      start = null;
+      const t = cellFrom(e.clientX, e.clientY);
+      if (!t) {
+        clearHint();
+        anchor = null;
+        return;
+      }
+      const to = { r: Number(t.dataset.r), c: Number(t.dataset.c) };
+      if (to.r === from.r && to.c === from.c) {
+        // Released where it began: a tap. Undo the pointerdown highlight first
+        // so tap() sees a clean board.
+        if (!anchor) clearHint();
+        tap(to.r, to.c);
+        return;
+      }
+      clearHint();
+      anchor = null;
+      const run = runBetween(from, to);
+      if (run && run.length > 1) tryRun(run);
+    });
+
+    grid?.addEventListener('pointercancel', () => {
+      start = null;
+      anchor = null;
+      clearHint();
+    });
+
+    // The cells are real buttons, so Enter and Space must work too.
+    for (const cell of cells) {
+      cell.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        tap(Number(cell.dataset.r), Number(cell.dataset.c));
+      });
+    }
+
+    document.querySelector('[data-reveal]')?.addEventListener('click', () => {
+      for (const entry of data.words) if (!solved.has(entry.word)) markFound(entry.word, entry.cells);
+    });
+  }
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 58ch;
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, auto) minmax(12rem, 16rem);
+    align-items: start;
+  }
+
+  @media (max-width: 52rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .board {
+    overflow-x: auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--size), minmax(1.5rem, 1.9rem));
+    gap: 1px;
+    width: max-content;
+    background: var(--border);
+    border: 1px solid var(--border);
+    touch-action: none;
+  }
+
+  .cell {
+    aspect-ratio: 1;
+    border: 0;
+    background: var(--bg-raised);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    user-select: none;
+  }
+
+  .cell:hover {
+    background: var(--surface-hover);
+  }
+
+  .cell.is-hint {
+    background: color-mix(in srgb, var(--amber) 22%, transparent);
+    color: var(--text);
+  }
+
+  .cell.is-found {
+    background: color-mix(in srgb, var(--amber) 34%, transparent);
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .list h2 {
+    font-size: var(--step-0);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-block-start: 0;
+  }
+
+  .list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 2;
+    column-gap: var(--space-m);
+  }
+
+  @media (min-width: 52rem) {
+    .list ul {
+      columns: 1;
+    }
+  }
+
+  .list li {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    padding-block: 0.15rem;
+  }
+
+  .list li.is-done {
+    color: var(--text-faint);
+    text-decoration: line-through;
+  }
+
+  .tally {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-block: var(--space-m) var(--space-s);
+  }
+
+  .more-play {
+    margin-block-start: var(--space-2xl);
+  }
+</style>

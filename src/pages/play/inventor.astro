@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+/**
+ * A device generator in the archive's register.
+ *
+ * The joke the book keeps making is that the technology was never the problem:
+ * things worked, and then they were attached to something else. So every card
+ * this produces has three parts — what it is, what it did, and what it was
+ * quietly wired to afterwards.
+ */
+
+const prefixes = [
+  'Salt-Lattice', 'Halite', 'Hysteron', 'Fly-Ash', 'Monsoon', 'Thermal',
+  'Civic', 'Ration', 'Ledger', 'Census', 'Kerosene', 'Rooftop', 'Ward-Level',
+  'Low-Bandwidth', 'Hand-Cranked', 'Salvaged', 'Municipal', 'Dust-Sealed',
+];
+const cores = [
+  'Relay', 'Beacon', 'Sensor', 'Lattice', 'Register', 'Cache', 'Filter',
+  'Condenser', 'Loom', 'Ledger', 'Transcriber', 'Repeater', 'Tally',
+  'Governor', 'Dispenser', 'Aggregator', 'Lantern', 'Buffer',
+];
+const classes = [
+  'Civic Class', 'Field Class', 'Relief Class', 'Household Class',
+  'Municipal Class', 'Unrated', 'Decommissioned Class', 'Salvage Class',
+];
+const purposes = [
+  'Held one week of ward readings and gave them up to anyone who asked.',
+  'Broadcast the day’s ration tally to anybody within four hundred metres.',
+  'Turned a room’s temperature into a number a clinic could act on.',
+  'Wrote down what people said, in the language they said it in.',
+  'Kept a building’s water accounted for, litre by litre, in public.',
+  'Ran for nine hours on a hand crank and a good argument.',
+  'Told you which roads had flooded before the announcement did.',
+  'Made one copy of everything, and kept it somewhere else.',
+  'Counted who came through the gate. Only counted.',
+  'Held a signal open long enough for someone to finish a sentence.',
+];
+const twists = [
+  'Then it was tied to the Obedience Index, and people stopped standing near it.',
+  'Then the readings started being submitted upward, and only upward.',
+  'Then the licence lapsed and the manufacturer would not release the keys.',
+  'Then a firmware update added a field nobody had asked for.',
+  'Then the ward stopped being a ward, and the numbers had nowhere to go.',
+  'Then it was declared a security asset, which meant nobody could read it.',
+  'Then somebody worked out how to keep it running without the company. It is still running.',
+  'Then the company folded and the units kept working, which was the surprise.',
+  'Then it was found in a treasure room forty years later, still charged.',
+  'Then it was scored, ranked, and quietly used to decide who ate first.',
+];
+const fates = [
+  'In service', 'Recovered', 'One unit known', 'Widely copied', 'Withdrawn',
+  'Never approved', 'Locally maintained', 'Status unrecorded',
+];
+
+const banks = { prefixes, cores, classes, purposes, twists, fates };
+---
+
+<BaseLayout
+  title="The Inventor"
+  description="Make up a piece of 2075 technology — a salt-lattice relay, a ward-level tally, a hand-cranked ledger — and find out what it got wired to afterwards."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>The Inventor</h1>
+      <p class="text-muted lede">
+        Make up a piece of technology from 2075. The archive will file it, and then it will tell you
+        what happened to it — because in this book nothing fails because it did not work.
+      </p>
+    </header>
+
+    <article class="card" data-card>
+      <p class="card__desig" data-desig></p>
+      <h2 class="card__name" data-name></h2>
+      <p class="card__class" data-class></p>
+      <p class="card__body" data-purpose></p>
+      <p class="card__body card__twist" data-twist></p>
+      <p class="card__fate" data-fate></p>
+    </article>
+
+    <div class="tools">
+      <button type="button" class="button" data-roll>Invent another</button>
+      <button type="button" class="button button--quiet" data-copy>Copy</button>
+      <span class="hint" data-copied aria-live="polite"></span>
+    </div>
+
+    <p class="text-muted send">
+      Invented something you like? <a href="/fanfic">Reader Fiction</a> takes stories set in this
+      world, and the <a href="/contact#second-heading">corrections form</a> takes anything the
+      second edition should know about.
+    </p>
+
+    <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
+  </div>
+
+  <script type="application/json" id="inv-data" set:html={JSON.stringify(banks)} />
+</BaseLayout>
+
+<script>
+  const node = document.getElementById('inv-data');
+  if (node) {
+    const banks = JSON.parse(node.textContent || '{}');
+    const pick = (list: string[]) => list[Math.floor(Math.random() * list.length)];
+    const set = (sel: string, text: string) => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = text;
+    };
+
+    const roll = () => {
+      const letters = (pick(banks.prefixes)[0] + pick(banks.cores)[0]).toUpperCase();
+      const desig = letters + '-' + (Math.floor(Math.random() * 89) + 10);
+      const name = pick(banks.prefixes) + ' ' + pick(banks.cores);
+      set('[data-desig]', 'DESIGNATION ' + desig);
+      set('[data-name]', name);
+      set('[data-class]', pick(banks.classes));
+      set('[data-purpose]', pick(banks.purposes));
+      set('[data-twist]', pick(banks.twists));
+      set('[data-fate]', pick(banks.fates));
+      const copied = document.querySelector('[data-copied]');
+      if (copied) copied.textContent = '';
+    };
+
+    document.querySelector('[data-roll]')?.addEventListener('click', roll);
+
+    document.querySelector('[data-copy]')?.addEventListener('click', async () => {
+      const card = document.querySelector('[data-card]');
+      const copied = document.querySelector('[data-copied]');
+      if (!card) return;
+      const text = Array.from(card.children)
+        .map((n) => n.textContent?.trim())
+        .filter(Boolean)
+        .join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        if (copied) copied.textContent = 'Copied.';
+      } catch {
+        if (copied) copied.textContent = 'Select the card and copy it.';
+      }
+    });
+
+    roll();
+  }
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .card {
+    max-width: 40rem;
+    padding: var(--space-l);
+    border: 1px solid var(--border);
+    border-inline-start: 3px solid var(--amber);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+  }
+
+  .card__desig,
+  .card__class,
+  .card__fate {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  .card__name {
+    font-size: var(--step-2);
+    margin: 0.3rem 0 0.15rem;
+  }
+
+  .card__body {
+    margin-block: var(--space-s) 0;
+    max-width: 46ch;
+  }
+
+  .card__twist {
+    color: var(--text-muted);
+  }
+
+  .card__fate {
+    margin-block-start: var(--space-m);
+    padding-block-start: var(--space-s);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s);
+    margin-block-start: var(--space-l);
+  }
+
+  .hint {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-faint);
+  }
+
+  .send {
+    max-width: 52ch;
+    margin-block-start: var(--space-xl);
+    font-size: var(--step--1);
+  }
+
+  .more-play {
+    margin-block-start: var(--space-2xl);
+  }
+</style>

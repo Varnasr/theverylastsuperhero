@@ -144,9 +144,8 @@ export const navMoreGroups = [
   {
     name: 'Art and play',
     items: [
-      { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
       { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
-      { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
+      { href: '/play', label: 'Play', note: 'Crossword, jigsaws, word search and more' },
       { href: '/wallpapers', label: 'Wallpapers', note: 'For a phone or a desktop' },
     ],
   },

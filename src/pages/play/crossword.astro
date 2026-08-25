@@ -1,0 +1,350 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildCrossword, type Entry } from '../../lib/puzzle';
+
+/**
+ * A crossword built from the archive's own vocabulary.
+ *
+ * The layout is generated at build time from a seed, so it is the same puzzle
+ * for every reader and on every rebuild. Clues avoid the ending.
+ */
+
+const entries: Entry[] = [
+  { answer: 'HYSTERONS', clue: 'Crystal lattice at the heart of a Salt Lamp' },
+  { answer: 'FIREBIRD', clue: 'Emblem of the Resistance, one feather short' },
+  { answer: 'KISHANGANJ', clue: 'District where the Rekhas’ shrine is hidden' },
+  { answer: 'SUMATI', clue: 'Fourteen, and not a superhero' },
+  { answer: 'AASMA', clue: 'Runs youth outreach, five years on' },
+  { answer: 'MEERA', clue: 'A voice on a recording; her models reshaped policy' },
+  { answer: 'MEHTA', clue: 'The librarian who did not stop' },
+  { answer: 'VIKRAM', clue: 'Malhotra, later found in work clothes' },
+  { answer: 'ROHAN', clue: 'Kapoor, who ends up auditing the promises' },
+  { answer: 'HALITE', clue: 'Rock salt, cut to tolerance' },
+  { answer: 'MAGLEV', clue: 'How the Hyper-Express stays off the rail' },
+  { answer: 'OKHLA', clue: 'Delhi waste-to-energy plant that is not fiction' },
+  { answer: 'POLAROID', clue: 'Obsolete camera that outlived the cloud' },
+  { answer: 'GOLEM', clue: 'Clay ancestor of every obedient machine' },
+  { answer: 'COLOSSUS', clue: 'Forbin’s project, and a warning' },
+  { answer: 'OBEDIENCE', clue: 'The index that scored you' },
+  { answer: 'SATCOMM', clue: 'The tower, and the last way out' },
+  { answer: 'QUANTUM', clue: 'Kind of ethics framework nobody enforced' },
+  { answer: 'MONGOOSE', clue: 'What Moti is' },
+  { answer: 'ARCHIVE', clue: 'What survives when power does not' },
+  { answer: 'CYCLONE', clue: 'What the control display was tracking' },
+  { answer: 'RADHAS', clue: 'Twin bio-robots who took down the surveillance net' },
+  { answer: 'REKHAS', clue: 'Three of them, built the same and finishing differently' },
+  { answer: 'ASHA', clue: 'Decommissioned for rerouting floodwater without clearance' },
+  { answer: 'THAKUR', clue: 'GreenWorks, and the land it wrote off' },
+  { answer: 'BRIGADE', clue: 'The Delhi Climate ___, whose HQ was reclaimed' },
+];
+
+const cw = buildCrossword(entries);
+const across = cw.placed.filter((p) => p.dir === 'across');
+const down = cw.placed.filter((p) => p.dir === 'down');
+
+/** The solution never reaches the page as plain text — only the client script. */
+const payload = {
+  rows: cw.rows,
+  cols: cw.cols,
+  grid: cw.grid,
+};
+---
+
+<BaseLayout
+  title="Crossword"
+  description="A crossword built from the vocabulary of The Very Last Superhero — hysterons, halite, the Obedience Index and the people who kept the records."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Archive training</p>
+      <h1>Crossword</h1>
+      <p class="text-muted lede">
+        {cw.placed.length} entries, all of them out of the archive. If you are stuck, the
+        <a href="/glossary">Glossary</a> is not cheating — it is the point.
+      </p>
+    </header>
+
+    <div class="tools">
+      <button type="button" data-check class="button">Check</button>
+      <button type="button" data-reveal class="button button--quiet">Reveal all</button>
+      <button type="button" data-clear class="button button--quiet">Clear</button>
+      <p class="tally" data-tally aria-live="polite"></p>
+    </div>
+
+    <div class="board" role="group" aria-label="Crossword grid">
+      <div class="grid" style={`--cols:${cw.cols}`}>
+        {
+          cw.grid.map((row, r) =>
+            row.map((cell, c) =>
+              cell === null ? (
+                <span class="cell cell--void" aria-hidden="true" />
+              ) : (
+                <span class="cell">
+                  {cw.numbers[r][c] && <span class="cell__no">{cw.numbers[r][c]}</span>}
+                  <input
+                    type="text"
+                    inputmode="text"
+                    maxlength="1"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    data-r={r}
+                    data-c={c}
+                    aria-label={`Row ${r + 1} column ${c + 1}`}
+                  />
+                </span>
+              )
+            )
+          )
+        }
+      </div>
+    </div>
+
+    <div class="clues">
+      <section>
+        <h2>Across</h2>
+        <ol>
+          {
+            across.map((p) => (
+              <li value={p.number}>
+                <span class="clue__text">{p.clue}</span>
+                <span class="clue__len">({p.answer.length})</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+      <section>
+        <h2>Down</h2>
+        <ol>
+          {
+            down.map((p) => (
+              <li value={p.number}>
+                <span class="clue__text">{p.clue}</span>
+                <span class="clue__len">({p.answer.length})</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+    </div>
+
+    <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
+  </div>
+
+  <script type="application/json" id="cw-data" set:html={JSON.stringify(payload)} />
+</BaseLayout>
+
+<script>
+  const node = document.getElementById('cw-data');
+  if (node) {
+    const data = JSON.parse(node.textContent || '{}');
+    const inputs = Array.from(
+      document.querySelectorAll('.grid input')
+    ) as HTMLInputElement[];
+    const at = (r: number, c: number) =>
+      inputs.find((i) => Number(i.dataset.r) === r && Number(i.dataset.c) === c);
+    const tally = document.querySelector('[data-tally]');
+
+    const total = data.grid.flat().filter((x: string | null) => x !== null).length;
+
+    const report = (msg: string) => {
+      if (tally) tally.textContent = msg;
+    };
+
+    const check = () => {
+      let right = 0;
+      let filled = 0;
+      for (const input of inputs) {
+        const r = Number(input.dataset.r);
+        const c = Number(input.dataset.c);
+        const want = data.grid[r][c];
+        const got = input.value.toUpperCase();
+        input.classList.remove('is-wrong', 'is-right');
+        if (!got) continue;
+        filled += 1;
+        if (got === want) {
+          right += 1;
+          input.classList.add('is-right');
+        } else {
+          input.classList.add('is-wrong');
+        }
+      }
+      if (!filled) report('Nothing entered yet.');
+      else if (right === total) report('All of it. The archive is complete.');
+      else report(`${right} of ${total} squares correct.`);
+    };
+
+    document.querySelector('[data-check]')?.addEventListener('click', check);
+
+    document.querySelector('[data-reveal]')?.addEventListener('click', () => {
+      for (const input of inputs) {
+        const r = Number(input.dataset.r);
+        const c = Number(input.dataset.c);
+        input.value = data.grid[r][c];
+        input.classList.remove('is-wrong');
+        input.classList.add('is-right');
+      }
+      report('Revealed. Nobody is marking this.');
+    });
+
+    document.querySelector('[data-clear]')?.addEventListener('click', () => {
+      for (const input of inputs) {
+        input.value = '';
+        input.classList.remove('is-wrong', 'is-right');
+      }
+      report('');
+    });
+
+    for (const input of inputs) {
+      input.addEventListener('input', () => {
+        input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
+        input.classList.remove('is-wrong', 'is-right');
+        if (input.value) {
+          const r = Number(input.dataset.r);
+          const c = Number(input.dataset.c);
+          (at(r, c + 1) || at(r + 1, c))?.focus();
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        const r = Number(input.dataset.r);
+        const c = Number(input.dataset.c);
+        const go = (tr: number, tc: number) => {
+          const next = at(tr, tc);
+          if (next) {
+            e.preventDefault();
+            next.focus();
+            next.select();
+          }
+        };
+        if (e.key === 'ArrowRight') go(r, c + 1);
+        if (e.key === 'ArrowLeft') go(r, c - 1);
+        if (e.key === 'ArrowDown') go(r + 1, c);
+        if (e.key === 'ArrowUp') go(r - 1, c);
+        if (e.key === 'Backspace' && !input.value) go(r, c - 1);
+      });
+    }
+  }
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 60ch;
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s);
+    margin-block-end: var(--space-l);
+  }
+
+  .tally {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .board {
+    overflow-x: auto;
+    padding-block-end: var(--space-xs);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(1.55rem, 1.9rem));
+    gap: 1px;
+    width: max-content;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .cell {
+    position: relative;
+    aspect-ratio: 1;
+    background: var(--bg-raised);
+  }
+
+  .cell--void {
+    background: transparent;
+  }
+
+  .cell__no {
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-start: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    line-height: 1;
+    color: var(--text-faint);
+    pointer-events: none;
+  }
+
+  .cell input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    color: var(--text);
+    padding: 0;
+  }
+
+  .cell input:focus {
+    outline: 2px solid var(--amber);
+    outline-offset: -2px;
+  }
+
+  .cell input.is-right {
+    color: var(--amber);
+  }
+
+  .cell input.is-wrong {
+    color: #d8553f;
+    text-decoration: line-through;
+  }
+
+  .clues {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    margin-block-start: var(--space-xl);
+  }
+
+  .clues h2 {
+    font-size: var(--step-0);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .clues ol {
+    margin: 0;
+    padding-inline-start: 2.2rem;
+  }
+
+  .clues li {
+    margin-block-end: 0.45rem;
+    font-size: var(--step--1);
+  }
+
+  .clue__len {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .more-play {
+    margin-block-start: var(--space-2xl);
+  }
+</style>

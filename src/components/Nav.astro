@@ -122,15 +122,62 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     const more = document.querySelector('[data-more]');
     if (more) {
       document.addEventListener('click', (e) => {
+        if (window.matchMedia('(max-width: 68rem)').matches) return;
         if (more.open && !more.contains(e.target)) more.open = false;
       });
       document.addEventListener('keydown', (e) => {
+        if (window.matchMedia('(max-width: 68rem)').matches) return;
         if (e.key === 'Escape' && more.open) {
           more.open = false;
           more.querySelector('summary')?.focus();
         }
       });
     }
+
+    /**
+     * On a phone the header panel is already a disclosure, so leaving "More"
+     * and each of its groups as nested <details> put every secondary page
+     * three taps deep, and the exclusive accordion meant only one group could
+     * be seen at a time. Below the breakpoint they are all forced open and
+     * their summaries are inert, so the panel is a single scrollable list.
+     */
+    const compact = window.matchMedia('(max-width: 68rem)');
+    const groups = Array.from(document.querySelectorAll('.more__group'));
+
+    const applyLayout = () => {
+      const small = compact.matches;
+      if (more) {
+        if (small) more.open = true;
+        more.classList.toggle('is-static', small);
+      }
+      for (const group of groups) {
+        if (small) {
+          group.open = true;
+          // Drop the exclusive-accordion grouping, or opening one on the way
+          // back to a wide window would shut the rest.
+          if (group.hasAttribute('name')) {
+            group.dataset.name = group.getAttribute('name');
+            group.removeAttribute('name');
+          }
+        } else if (group.dataset.name) {
+          group.setAttribute('name', group.dataset.name);
+          delete group.dataset.name;
+        }
+      }
+    };
+
+    // A summary still toggles on click even with pointer-events disabled via
+    // the keyboard, so refuse the toggle outright while compact.
+    const blockToggle = (e) => {
+      if (compact.matches) e.preventDefault();
+    };
+    more?.querySelector('summary')?.addEventListener('click', blockToggle);
+    for (const group of groups) {
+      group.querySelector('summary')?.addEventListener('click', blockToggle);
+    }
+
+    applyLayout();
+    compact.addEventListener('change', applyLayout);
 
     // Keyboard shortcut: "/" focuses search from anywhere, the way an archive should.
     document.addEventListener('keydown', (e) => {
@@ -471,6 +518,12 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
       background: var(--bg-raised);
       border-block-end: 1px solid var(--border);
       box-shadow: var(--shadow);
+      /* The panel is taller than a phone once More is expanded. Without this
+         the last group and the buy button sit below the fold with no way to
+         reach them. */
+      max-height: calc(100dvh - 3.75rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
 
     .site-header.is-open .site-nav {
@@ -514,9 +567,35 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
       padding-inline-start: var(--space-m);
     }
 
+    /* Forced open here, so the headings are labels rather than controls: no
+       chevron, no button-like fill, no pointer. */
     .more__head {
       font-size: 0.7rem;
-      padding-block: 0.5rem 0.2rem;
+      padding: var(--space-s) 0.6rem 0.2rem;
+      cursor: default;
+      background: none;
+    }
+
+    .more__head:hover,
+    .more__group[open] .more__head {
+      background: none;
+      color: var(--text-faint);
+    }
+
+    .more__head svg {
+      display: none;
+    }
+
+    .more__wrap.is-static > summary svg {
+      display: none;
+    }
+
+    .more__wrap.is-static > summary {
+      cursor: default;
+    }
+
+    .more__group + .more__group {
+      border-block-start: 0;
     }
   }
 </style>
