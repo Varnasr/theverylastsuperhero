@@ -14,21 +14,35 @@ interface Props {
   recorded: string;
   duration?: string;
   transcript?: string;
+  /** 'testimony' is a human voice in a lamp; 'broadcast' is an institution talking. */
+  kind?: 'testimony' | 'broadcast';
 }
 
-const { src, title, speaker, recorded, duration, transcript } = Astro.props;
+const { src, title, speaker, recorded, duration, transcript, kind = 'testimony' } = Astro.props;
+const isBroadcast = kind === 'broadcast';
+const label = isBroadcast ? 'Intercepted broadcast' : 'Salt Lamp testimony';
 const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
-<figure class="lamp" data-lamp>
+<figure class:list={['lamp', isBroadcast && 'lamp--broadcast']} data-lamp>
   <div class="lamp__glow" aria-hidden="true">
-    <span class="lamp__crystal"></span>
+    {
+      isBroadcast ? (
+        /* A relay mast, not a lamp: this voice is transmitted, not remembered. */
+        <span class="lamp__mast">
+          <span class="lamp__wave" />
+          <span class="lamp__wave" />
+        </span>
+      ) : (
+        <span class="lamp__crystal" />
+      )
+    }
   </div>
 
   <div class="lamp__body">
     <figcaption>
-      <p class="eyebrow">Salt Lamp testimony</p>
-      <h3 class="lamp__title">{title}</h3>
+      <p class="eyebrow">{label}</p>
+      <h2 class="lamp__title">{title}</h2>
       <p class="lamp__meta">
         <span>{speaker}</span>
         <span aria-hidden="true">·</span>
@@ -151,6 +165,12 @@ const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
 </script>
 
 <style>
+  /* Broadcast: cold, regular, mechanical. Testimony: warm and breathing.
+     The palette carries the difference before a word is played. */
+  .lamp--broadcast {
+    --signal: var(--text-faint);
+  }
+
   .lamp {
     display: flex;
     gap: var(--space-m);
@@ -291,6 +311,90 @@ const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
     font-size: var(--step--1);
     color: var(--text-faint);
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Relay mast for broadcasts. */
+  .lamp__mast {
+    position: relative;
+    display: block;
+    width: 2px;
+    height: 2.6rem;
+    background: var(--signal, var(--text-faint));
+    opacity: 0.75;
+  }
+
+  .lamp__mast::before {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--signal, var(--text-faint));
+  }
+
+  .lamp__wave {
+    position: absolute;
+    inset-block-start: -0.35rem;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    border: 1px solid var(--signal, var(--text-faint));
+    border-block-end-color: transparent;
+    border-inline-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  .lamp__wave:nth-child(1) {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .lamp__wave:nth-child(2) {
+    width: 2.3rem;
+    height: 2.3rem;
+    inset-block-start: -0.8rem;
+  }
+
+  .lamp--broadcast.is-lit .lamp__wave {
+    animation: pulse 2s linear infinite;
+  }
+
+  .lamp--broadcast.is-lit .lamp__wave:nth-child(2) {
+    animation-delay: 0.6s;
+  }
+
+  .lamp--broadcast.is-lit .lamp__mast {
+    opacity: 1;
+    --signal: var(--text);
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0;
+    }
+    35% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lamp--broadcast.is-lit .lamp__wave {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
+  .lamp--broadcast .lamp__play {
+    color: var(--text-muted);
+  }
+
+  .lamp--broadcast .lamp__seek {
+    accent-color: var(--text-muted);
   }
 
   .lamp__transcript {

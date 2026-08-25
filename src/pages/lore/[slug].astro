@@ -69,6 +69,12 @@ const structuredData = {
       testimony && (
         <section class="entry__section">
           <SaltLampPlayer {...testimony} />
+          {testimony.kind === 'broadcast' && (
+            <p class="no-human">
+              The archive holds no human account of this — only the transmission.
+              <a href="/memory">Record one</a>.
+            </p>
+          )}
         </section>
       )
     }
@@ -233,6 +239,14 @@ const structuredData = {
   .related__meta {
     font-family: var(--font-mono);
     font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .no-human {
+    margin-block-start: var(--space-m);
+    padding-inline-start: var(--space-m);
+    border-inline-start: 2px solid var(--border-strong);
+    font-size: var(--step--1);
     color: var(--text-faint);
   }
 

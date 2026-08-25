@@ -5,6 +5,19 @@ designation: WTE | Emissions Integrity
 summary: The pilot plants Rohan Kapoor reviews — revivals of the old Belgian system that worked at Gazipur in the 2020s, promising to revolutionise Delhi's energy grid if the emissions controls hold.
 order: 2
 related: [rohan-kapoor, mr-joshi, dr-gupta, the-collapse]
+testimony:
+  src: /audio/emissions-bulletin.mp3
+  title: Emissions integrity bulletin
+  speaker: Pilot Oversight
+  recorded: "2074"
+  duration: "0:19"
+  kind: broadcast
+  transcript: >
+    Waste-to-energy pilot. Emissions integrity bulletin. Stack readings for this
+    cycle are within declared tolerance. Declared tolerance has been adjusted
+    this cycle. Particulate figures for the residential perimeter are pending
+    review and will be published following review. The pilot remains a model for
+    the zone.
 ---
 
 Consultations around going back to the old Belgian waste-to-energy system that

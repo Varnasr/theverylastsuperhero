@@ -46,7 +46,7 @@ The novel is built around the **Resistance Archive** — 33 lore entries, 12 tim
 | **Constellation** | All 33 entries and the 70 links between them as one graph, laid out at build time so it ships as static SVG |
 | **Resistance Map** | An interactive SVG schematic of lamp routes between zones, keyboard-navigable and linked to the archive |
 | **Search** | Client-side search across everything, no server and no search library. Press <kbd>/</kbd> anywhere |
-| **Salt Lamp testimony** | An oral-history player for lore entries that carry a recording, built on a real `<audio>` element with transcripts |
+| **Salt Lamp testimony** | An audio archive with two voices: human testimony held in a lamp, and synthetic state broadcasts on a relay mast. Built on a real `<audio>` element, with transcripts |
 | **Memory Wall** | Reader artwork and testimony, human-reviewed before anything appears |
 | **Wallpapers** | The Sumati Series, free for personal use |
 | **Firebird Sigil** | A wallpaper generator — sigil, palette and a line from the archive, drawn in canvas at real device resolution |

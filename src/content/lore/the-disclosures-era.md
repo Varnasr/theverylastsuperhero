@@ -5,6 +5,19 @@ designation: Two Decades | Ended 2060
 summary: For twenty years heroes soared in plasma suits and gravity-defying capes, and India worshipped them. The 2060 Disclosures ended it.
 order: 19
 related: [captain-indra, delhi-climate-brigade, quantum-corps, the-collapse]
+testimony:
+  src: /audio/curriculum-notice-2061.mp3
+  title: Curriculum Division notice
+  speaker: Curriculum Division
+  recorded: "2061"
+  duration: "0:26"
+  kind: broadcast
+  transcript: >
+    Curriculum Division notice. Academic year twenty sixty-one. The National
+    Curriculum has been regenerated. Chapters concerning the period 2055 to 2060
+    have been revised for accuracy. Unauthorised records held by individual
+    educators are to be surrendered. Teaching from superseded material is a
+    compliance matter. This notice will not be repeated.
 ---
 
 For two decades they soared across the skies in plasma suits and gravity-defying

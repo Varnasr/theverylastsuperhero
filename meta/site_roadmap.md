@@ -1,6 +1,9 @@
 # 🚧 Postheroic.World – Site Roadmap
 
 ## ✅ Done
+- Machine voices: four synthetic broadcasts (P.A.I., the intercepted fork, the
+  2061 Curriculum notice, an emissions bulletin) generated offline with Piper.
+  Human testimony is deliberately *not* synthesised — see docs/CONTENT.md
 - `/lamplighter` — a memory game: the archive plays a sequence of lamps, you
   repeat it back. The book's argument about memory, as a rule
 - `/sigil` — Firebird wallpaper generator (was "Firebird badge generator"),
@@ -31,7 +34,8 @@
 ## 💡 Ideas
 - Self-host the fonts to remove the last third-party request
 - p.ai whisper interface — an in-world way to query the archive
-- Salt Lamp testimony recordings — the player is built and waiting for audio
+- Human Salt Lamp testimony — the player and the empty slots are waiting. Even
+  two or three real voices would carry it against the machine broadcasts
 
 ## 📌 Canon reconciliation
 

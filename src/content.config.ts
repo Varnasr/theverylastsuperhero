@@ -35,8 +35,17 @@ const lore = defineCollection({
       image: image().optional(),
       imageAlt: z.string().optional(),
       /**
-       * Oral testimony held in this entry's Salt Lamp, if any. Path is relative to
-       * /public/audio. See docs/CONTENT.md for the recording conventions.
+       * Audio held against this entry. Two kinds, and the distinction is the
+       * point of the whole feature:
+       *
+       *   testimony — a human voice, held in a Salt Lamp. A record survives
+       *               because a person re-speaks it, so these are recorded, not
+       *               synthesised.
+       *   broadcast — an institution talking: P.A.I., the Curriculum Division,
+       *               an emissions bulletin. Machines recite rather than
+       *               remember, so a synthetic voice is the honest one here.
+       *
+       * Paths are relative to /public/audio. See docs/CONTENT.md.
        */
       testimony: z
         .object({
@@ -46,6 +55,7 @@ const lore = defineCollection({
           recorded: z.string(),
           duration: z.string().optional(),
           transcript: z.string().optional(),
+          kind: z.enum(['testimony', 'broadcast']).default('testimony'),
         })
         .optional(),
       related: z.array(reference('lore')).default([]),

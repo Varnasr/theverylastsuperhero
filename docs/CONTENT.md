@@ -58,35 +58,69 @@ maintain both sides.
 
 ---
 
-## Salt Lamp testimony (audio)
+## Audio: testimony and broadcasts
 
-Any lore entry can carry a recording, presented as testimony held in that
-entry's lamp.
+Lore entries can carry audio, and there are two kinds. The distinction is the
+whole point, not a formatting detail.
 
-1. Put the audio file in `public/audio/` (create the folder if it does not
-   exist). MP3 or M4A; keep it under about 10 MB.
-2. Add a `testimony` block to the entry's frontmatter:
+**Testimony** is a human voice held in a Salt Lamp. A record survives because a
+person re-speaks it — that is the novel's argument — so these are *recorded, never
+synthesised*. A synthetic voice reciting a memory is precisely the thing the
+Resistance is working against.
+
+**Broadcasts** are institutions talking: P.A.I., the Curriculum Division, an
+emissions bulletin. Machines recite rather than remember, so a synthetic voice is
+the honest choice there. Four are already generated.
+
+The player shows the difference before a word plays: testimony gets a warm salt
+crystal that breathes, a broadcast gets a cold relay mast with pulsing signal
+rings. An entry with a broadcast and no human account says so, and links to the
+Memory Wall.
+
+### Adding testimony (recorded)
+
+1. Put the file in `public/audio/`. MP3 or M4A, under about 10 MB.
+2. Add to the entry's frontmatter:
 
 ```yaml
 testimony:
   src: /audio/rohan-log-01.mp3
   title: Encrypted log, fragment one
   speaker: Rohan Kapoor
-  recorded: 2072
+  recorded: "2072"
   duration: "4:12"
+  kind: testimony      # the default; may be omitted
   transcript: >
     Collapse doesn't mean the end. It means the truth has outlived its
     suppressors.
 ```
 
-`src`, `title`, `speaker` and `recorded` are required; `duration` and
-`transcript` are optional but both are worth adding — the transcript is the only
-way a deaf reader gets the content, and it is indexed by search engines.
+`src`, `title`, `speaker` and `recorded` are required. Always write the
+transcript — it is the only way a deaf reader gets the content, and it is what
+search engines index.
 
-The player is built on a real `<audio>` element, so it still works with
-JavaScript disabled. Only one lamp plays at a time.
+The player is built on a real `<audio>` element, so it works with JavaScript
+disabled. Only one plays at a time.
 
----
+### Adding a broadcast (synthetic)
+
+Broadcasts are generated locally, offline, with no account and no per-word cost:
+
+```bash
+pip install piper-tts lameenc
+python3 -m piper.download_voices en_GB-alan-medium --data-dir .voices
+python3 scripts/generate-broadcasts.py
+```
+
+Add an entry to `BROADCASTS` in `scripts/generate-broadcasts.py` and re-run.
+Set `degrade: True` for an intercepted fragment — a tremolo, a noise floor and
+periodic dropouts, applied deterministically so builds stay reproducible.
+
+Then reference it from the entry with `kind: broadcast`. Keep the `transcript`
+identical to the script in that file.
+
+The voice model is ~63 MB and is git-ignored; re-download it with the command
+above. The generated MP3s *are* committed, so a normal build never needs Piper.
 
 ## Timeline events
 
