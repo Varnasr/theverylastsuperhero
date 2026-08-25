@@ -4,8 +4,6 @@ category: Infrastructure
 designation: Emergency Cooling | Militarised by 2056
 summary: Shade sheets, water, a fan run off a battery, and five people kneeling on hot stone. The state calls them relief. The people running them call it Tuesday.
 order: 14
-image: ../../assets/lore/relief-zones.webp
-imageAlt: Aid workers in cooling gear holding a shade sheet over an old man in the street, offering water from a steel urn
 related: [cooling-suits, kishanganj, the-collapse, the-resistance]
 mapZone: relief-zones
 ---
