@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
 import LoreCard from '../components/LoreCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import { site } from '../lib/site';
@@ -159,7 +160,8 @@ const structuredData = {
         </p>
       </div>
       <a class="button button--primary" href="/memory">Add to the archive</a>
-    </div>
+        <Newsletter />
+  </div>
   </section>
 </BaseLayout>
 

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
 
 /**
  * Glossary and Notes for the Curious Reader — the book's own back matter,
@@ -69,6 +70,7 @@ const rendered = await Promise.all(
       architecture of our present. If some parts feel too real, that is intentional. If others think
       it is impossible, perhaps that is where we should begin.
     </p>
+      <Newsletter />
   </div>
 </BaseLayout>
 

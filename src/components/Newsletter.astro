@@ -1,0 +1,162 @@
+---
+import { site } from '../lib/site';
+
+/**
+ * Updates signup, wired to Netlify Forms.
+ *
+ * Same mechanics as the Memory Wall form: `data-netlify` plus a hidden
+ * `form-name` so the build-time form detector registers it. Submissions land in
+ * the Netlify dashboard — no third-party mailing script, so no tracking and
+ * nothing to consent to.
+ *
+ * `variant="band"` is the full-width strip for the foot of a page; `inline` is
+ * the compact one for a sidebar or an aside.
+ */
+
+interface Props {
+  variant?: 'band' | 'inline';
+  heading?: string;
+  blurb?: string;
+}
+
+const {
+  variant = 'band',
+  heading = 'Word when there is word',
+  blurb = 'New archive entries, recovered artwork, and news about the book. Infrequent, and never your address to anyone else.',
+} = Astro.props;
+---
+
+<section class:list={['news', `news--${variant}`]} aria-labelledby="news-heading">
+  <div class="news__text">
+    <h2 id="news-heading">{heading}</h2>
+    <p class="text-muted">{blurb}</p>
+  </div>
+
+  <form
+    class="news__form"
+    name="updates"
+    method="POST"
+    action={site.formEndpoint || undefined}
+    data-netlify="true"
+    netlify-honeypot="_gotcha"
+  >
+    <input type="hidden" name="form-name" value="updates" />
+    <p class="hp" aria-hidden="true">
+      <label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="row">
+      <div class="field">
+        <label for="news-email">Email address</label>
+        <input
+          id="news-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+      </div>
+      <button type="submit">Keep me posted</button>
+    </div>
+    <p class="fine text-muted">
+      One list, run by the author. Unsubscribe whenever — see the
+      <a href="/privacy">privacy note</a>.
+    </p>
+  </form>
+</section>
+
+<style>
+  .news {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    padding: var(--space-l);
+  }
+
+  .news--band {
+    display: grid;
+    gap: var(--space-l);
+    align-items: start;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    margin-block-start: var(--space-2xl);
+  }
+
+  .news h2 {
+    font-size: var(--step-1);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .news__text p {
+    max-width: 46ch;
+    font-size: var(--step--1);
+    margin: 0;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    align-items: end;
+  }
+
+  .field {
+    flex: 1 1 14rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  input[type='email'] {
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+  }
+
+  input[type='email']:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+  }
+
+  button {
+    padding: 0.6rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--bg);
+    background: var(--amber);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  button:hover {
+    background: color-mix(in srgb, var(--amber) 85%, white);
+  }
+
+  .fine {
+    margin-block-start: var(--space-xs);
+    font-size: 0.72rem;
+  }
+
+  /* Honeypot: off-screen rather than display:none, which some bots skip. */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

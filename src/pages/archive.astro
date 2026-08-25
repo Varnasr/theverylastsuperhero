@@ -29,7 +29,7 @@ const statusLabel = {
       </p>
     </header>
 
-    <div class="grid-auto">
+    <div class="objects">
       {
         withLinks.map(({ object, related }) => (
           <article
@@ -82,6 +82,15 @@ const statusLabel = {
 </BaseLayout>
 
 <style>
+  /* Wider than the shared .grid-auto: object cards carry an image plus a
+     paragraph, and at 17rem they read as a scatter of thumbnails rather than a
+     catalogue. */
+  .objects {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
+  }
+
   .page-head {
     margin-block-end: var(--space-l);
   }

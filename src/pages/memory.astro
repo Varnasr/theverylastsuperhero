@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
 import { site } from '../lib/site';
 
 const contributions = (await getCollection('memory', ({ data }) => !data.draft)).sort(
@@ -137,6 +138,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         )
       }
     </section>
+      <Newsletter />
   </div>
 </BaseLayout>
 
