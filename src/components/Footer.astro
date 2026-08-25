@@ -1,0 +1,109 @@
+---
+import { site, footerLinks } from '../lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell inner">
+    <div class="col">
+      <p class="eyebrow">The Archive</p>
+      <p class="blurb">
+        {site.tagline} Written by {site.author}, published by {site.publisher}.
+      </p>
+    </div>
+
+    <div class="col">
+      <p class="eyebrow">Contact</p>
+      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p class="fine">
+        Reader artwork and testimony are welcome — see the
+        <a href="/memory">Memory Wall</a>.
+      </p>
+    </div>
+
+    <div class="col">
+      <p class="eyebrow">Elsewhere</p>
+      <ul>
+        {
+          footerLinks.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="shell legal">
+    <p>&copy; {year} {site.publisher}. Built with care and memory.</p>
+    <p class="fine">
+      Story, lore, and artwork are licensed
+      <a
+        href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+        rel="license noopener noreferrer">CC BY-NC-ND 4.0</a
+      >. Site code is MIT.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: var(--space-3xl);
+    border-block-start: 1px solid var(--border);
+    background: var(--bg-sunken);
+    padding-block: var(--space-xl) var(--space-l);
+  }
+
+  .inner {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+
+  .col p + p {
+    margin-block-start: var(--space-xs);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-xs);
+  }
+
+  .blurb {
+    max-width: 34ch;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+
+  .fine {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    font-size: var(--step--1);
+  }
+
+  .legal {
+    margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-m);
+    border-block-start: 1px solid var(--border);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+</style>

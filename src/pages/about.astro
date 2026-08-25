@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+---
+
+<BaseLayout
+  title="About"
+  description="The themes, influences and making of The Very Last Superhero — a speculative novel of climate collapse, memory and care set in a near-future India."
+  readingProgress
+>
+  <div class="shell section about">
+    <header class="page-head stack">
+      <p class="eyebrow">About</p>
+      <h1>What we choose to remember</h1>
+    </header>
+
+    <div class="prose stack">
+      <p class="lede">
+        <em>The Very Last Superhero</em> is a fully illustrated speculative fiction novel set in a
+        climate-collapsed India, blending AI, memory and resistance through the eyes of a
+        fourteen-year-old girl.
+      </p>
+
+      <p>
+        It begins after the era of superheroes rather than during it. In the 2040s and 50s, state-
+        and corporate-backed heroes publicly tackled crime, pollution and dissent, and surveillance
+        — welcomed at first — became ordinary. What followed was not a villain but a sequence: the
+        Bangladesh flood, the Disclosures, an AI-authored National Curriculum, and the failure of
+        four embankments on the Yamuna.
+      </p>
+
+      <p>
+        In the ruins, heroism is not superpowers or spectacle. It is memory, care, and the courage
+        to hold a community together when everything else has fallen apart. The Resistance is not an
+        army. It is librarians, scientists, elders and teenagers running a filing system nobody in
+        power can find.
+      </p>
+
+      <h2>Themes</h2>
+      <ul class="themes">
+        <li>Climate collapse and adaptation</li>
+        <li>Memory, oral history and the archive</li>
+        <li>AI, surveillance and technology ethics</li>
+        <li>Youth agency and intergenerational knowledge</li>
+        <li>Care economies and post-heroic politics</li>
+      </ul>
+
+      <h2>Influences</h2>
+      <p>
+        Literary: <em>Parable of the Sower</em> by Octavia Butler, the <em>Broken Earth</em> trilogy
+        by N.&nbsp;K. Jemisin, <em>Delhi: A Novel</em> by Khushwant Singh, and
+        <em>The Ministry for the Future</em> by Kim Stanley Robinson.
+      </p>
+      <p>
+        Visual: South Asian street photography, post-flood ruins, faded signage and handwritten
+        notes, Diwali lights against decay. Narrative: real oral-history archives, resistance zines,
+        and Indigenous mapmaking traditions.
+      </p>
+
+      <h2>On the making of it</h2>
+      <p>
+        The story emerged from a question about what happens <em>after</em> the era of superheroes —
+        in a world where memory, oral traditions and resilience outlast spectacle. The Salt Lamp
+        system was drawn from Himalayan salt's conductivity and its folklore. Centring a young
+        protagonist amid ruins was a response to how we imagine intergenerational knowledge in
+        collapsed states.
+      </p>
+      <p>Recurring motifs: birds, broken infrastructure, care, fragments, surveillance decay.</p>
+
+      <blockquote>
+        <p>Collapse doesn't mean the end. It means the truth has outlived its suppressors.</p>
+        <cite>— Rohan Kapoor, encrypted Salt Lamp log</cite>
+      </blockquote>
+
+      <blockquote>
+        <p>I don't want a hero. I want a neighbour.</p>
+        <cite>— Sumati</cite>
+      </blockquote>
+
+      <h2>Why waste-to-energy</h2>
+      <p>
+        The novel is dedicated in part to Dev, "for being the courageous father he is, battling
+        Delhi's waste-to-energy plants all along." That fight is not fictional, and the book's
+        argument — that the unglamorous, community-based work is the work that counts — comes
+        directly out of it.
+      </p>
+      <p>
+        You can read about the ongoing campaign at
+        <a href={site.campaign.url} rel="noopener">{site.campaign.label}</a>.
+      </p>
+
+      <h2>The book</h2>
+      <dl class="specs">
+        <div><dt>Author &amp; illustrator</dt><dd>{site.author}</dd></div>
+        <div><dt>Publisher</dt><dd>{site.publisher}, New Delhi</dd></div>
+        <div><dt>Edition</dt><dd>{site.edition}</dd></div>
+        <div><dt>ISBN</dt><dd>{site.isbn}</dd></div>
+        <div><dt>Chapters</dt><dd>{site.chapters}, plus a prologue and an afterword</dd></div>
+      </dl>
+
+      <h2>Credits</h2>
+      <p>
+        Written and illustrated by {site.author}. Published by {site.publisher}. Site and interior
+        artwork generated with AI image tools from written prompts, then selected and sequenced by
+        hand.
+      </p>
+      <p>
+        Story, lore and artwork are licensed
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener"
+          >CC BY-NC-ND 4.0</a
+        >; the site's source code is MIT. Enquiries:
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 52rem;
+  }
+
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+
+  .about h2 {
+    font-size: var(--step-2);
+    margin-block-start: var(--space-xl);
+  }
+
+  .themes {
+    padding-inline-start: var(--space-m);
+    color: var(--text-muted);
+  }
+
+  .themes li + li {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .specs {
+    display: grid;
+    gap: var(--space-xs);
+    margin: 0;
+  }
+
+  .specs > div {
+    display: grid;
+    grid-template-columns: minmax(9rem, 14rem) 1fr;
+    gap: var(--space-m);
+    padding-block: var(--space-xs);
+    border-block-end: 1px solid var(--border);
+  }
+
+  .specs dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .specs dd {
+    margin: 0;
+  }
+
+  @media (max-width: 30rem) {
+    .specs > div {
+      grid-template-columns: 1fr;
+      gap: var(--space-2xs);
+    }
+  }
+
+  cite {
+    display: block;
+    margin-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-style: normal;
+    color: var(--text-faint);
+  }
+</style>

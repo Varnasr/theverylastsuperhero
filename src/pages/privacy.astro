@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+const updated = 'August 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="What this site does and does not collect. No advertising, no analytics, no tracking cookies."
+>
+  <div class="shell section legal">
+    <header class="page-head stack">
+      <p class="eyebrow">Last updated {updated}</p>
+      <h1>Privacy Policy</h1>
+    </header>
+
+    <div class="prose stack">
+      <p class="lede">
+        This site runs no advertising, no analytics, and no tracking cookies. What follows is the
+        complete list of everything that does happen.
+      </p>
+
+      <h2>What is stored in your browser</h2>
+      <p>
+        If you switch between dark and light reading modes, that choice is saved in your browser's
+        local storage under <code>phw-theme</code>. It never leaves your device and is never sent to
+        us. Clearing your site data removes it.
+      </p>
+
+      <h2>What third parties see</h2>
+      <p>
+        The site is hosted on <strong>GitHub Pages</strong>. GitHub receives your IP address and
+        browser user-agent as part of serving the page, and may retain those in server logs. See
+        <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">
+          GitHub's privacy statement</a
+        >.
+      </p>
+      <p>
+        Typefaces are loaded from <strong>Google Fonts</strong>, which means Google also receives
+        your IP address when a page loads. No cookie is set by this request. If you would rather not
+        make it, a content blocker will prevent it and the site falls back to your system fonts.
+      </p>
+      <p>There are no other third-party requests. No embedded video, no social widgets, no pixels.</p>
+
+      <h2>If you contact us or submit to the Memory Wall</h2>
+      <p>
+        If you email us, or send artwork or testimony through the
+        <a href="/memory">Memory Wall</a>, we keep your message and the name you gave so we can reply
+        and, if you have agreed to it, display your contribution with attribution. We do not sell or
+        share it, and we do not add you to any mailing list.
+      </p>
+      <p>
+        You can ask us to remove your contribution or your details at any time by writing to
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        The novel is written for readers of around twelve and up. We do not knowingly collect
+        information from children, and the Memory Wall asks for no more than a name and an email
+        address.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this policy changes, the date at the top of this page changes with it. The full history of
+        every version is public in the
+        <a href="https://github.com/Varnasr/theverylastsuperhero" rel="noopener">site's repository</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal { max-width: 46rem; }
+  .page-head { margin-block-end: var(--space-l); }
+  .lede { font-family: var(--font-display); font-size: var(--step-1); color: var(--text-muted); }
+  .legal h2 { font-size: var(--step-2); margin-block-start: var(--space-xl); }
+</style>

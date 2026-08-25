@@ -1,0 +1,489 @@
+/* =========================================================================
+   Postheroic.World — design system
+   Dark-first, because the archive is. Light is an opt-in reading mode.
+   ========================================================================= */
+
+@layer reset, tokens, base, layout, components, utilities;
+
+/* ---------------------------------------------------------------- reset */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4 {
+    overflow-wrap: break-word;
+  }
+}
+
+/* --------------------------------------------------------------- tokens */
+@layer tokens {
+  :root {
+    /* Brand ---------------------------------------------------------- */
+    --amber: #ffcb6b;
+    --amber-bright: #ffd894;
+    --amber-dim: #c99a3f;
+    --ember: #e2703a;
+
+    /* Dark is the default identity ----------------------------------- */
+    --bg: #131211;
+    --bg-raised: #1d1b19;
+    --bg-sunken: #0c0b0a;
+    --surface: #232120;
+    --surface-hover: #2d2a28;
+    --border: #35312e;
+    --border-strong: #4a4441;
+
+    --text: #f2efe9;
+    --text-muted: #b3aca3;
+    --text-faint: #857e76;
+    --link: var(--amber);
+    --link-hover: var(--amber-bright);
+
+    color-scheme: dark;
+
+    /* Type ----------------------------------------------------------- */
+    --font-display: 'Merriweather', ui-serif, Georgia, 'Times New Roman', serif;
+    --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+    /* Fluid scale: comfortable on a phone, generous on a desktop ------ */
+    --step--1: clamp(0.83rem, 0.79rem + 0.18vw, 0.94rem);
+    --step-0: clamp(1rem, 0.95rem + 0.23vw, 1.13rem);
+    --step-1: clamp(1.2rem, 1.12rem + 0.38vw, 1.42rem);
+    --step-2: clamp(1.44rem, 1.31rem + 0.63vw, 1.8rem);
+    --step-3: clamp(1.73rem, 1.53rem + 0.98vw, 2.27rem);
+    --step-4: clamp(2.07rem, 1.78rem + 1.47vw, 2.87rem);
+    --step-5: clamp(2.49rem, 2.05rem + 2.16vw, 3.62rem);
+
+    /* Space ---------------------------------------------------------- */
+    --space-2xs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-s: 0.75rem;
+    --space-m: 1.25rem;
+    --space-l: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4.5rem;
+    --space-3xl: 7rem;
+
+    /* Measure & shell ------------------------------------------------ */
+    --measure: 68ch;
+    --shell: 78rem;
+    --radius: 10px;
+    --radius-s: 6px;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.45);
+    --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--amber);
+
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  /* Light reading mode. Deliberately opt-in rather than driven by
+     prefers-color-scheme: the archive's identity is dark, and readers who want
+     the other mode get a persistent toggle in the header. */
+  :root[data-theme='light'] {
+    --bg: #faf7f1;
+    --bg-raised: #fffdf9;
+    --bg-sunken: #efe9df;
+    --surface: #fffdf9;
+    --surface-hover: #f4efe6;
+    --border: #ded5c7;
+    --border-strong: #c3b8a6;
+
+    --text: #1c1a17;
+    --text-muted: #56504a;
+    --text-faint: #7d766e;
+    --link: #9a5b18;
+    --link-hover: #7a4611;
+
+    color-scheme: light;
+    --shadow: 0 1px 2px rgb(60 45 20 / 0.06), 0 8px 24px -10px rgb(60 45 20 / 0.18);
+  }
+}
+
+/* ----------------------------------------------------------------- base */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    text-wrap: balance;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: var(--step-4);
+  }
+  h2 {
+    font-size: var(--step-3);
+  }
+  h3 {
+    font-size: var(--step-1);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--link);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color 0.15s var(--ease);
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+    border-radius: var(--radius-s);
+  }
+
+  ::selection {
+    background: var(--amber);
+    color: #131211;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin-block: var(--space-l);
+  }
+
+  blockquote {
+    border-left: 3px solid var(--amber);
+    padding-left: var(--space-m);
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------- layout */
+@layer layout {
+  .shell {
+    width: min(100% - 2.5rem, var(--shell));
+    margin-inline: auto;
+  }
+
+  .prose {
+    width: min(100%, var(--measure));
+  }
+
+  .stack > * + * {
+    margin-block-start: var(--space-m);
+  }
+
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  main {
+    flex: 1;
+  }
+
+  .grid-auto {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  }
+}
+
+/* ----------------------------------------------------------- components */
+@layer components {
+  /* Skip link ------------------------------------------------------- */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-s);
+    inset-block-start: -100%;
+    z-index: 100;
+    background: var(--amber);
+    color: #131211;
+    padding: var(--space-xs) var(--space-m);
+    border-radius: var(--radius-s);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    inset-block-start: var(--space-s);
+  }
+
+  /* Eyebrow / metadata label ---------------------------------------- */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* Buttons --------------------------------------------------------- */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: 0.6em 1.2em;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.15s var(--ease),
+      border-color 0.15s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .button:hover {
+    background: var(--surface-hover);
+    border-color: var(--amber);
+    color: var(--text);
+  }
+
+  .button:active {
+    transform: translateY(1px);
+  }
+
+  .button--primary {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #131211;
+    font-weight: 600;
+  }
+
+  .button--primary:hover {
+    background: var(--amber-bright);
+    border-color: var(--amber-bright);
+    color: #131211;
+  }
+
+  /* Card ------------------------------------------------------------ */
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition:
+      border-color 0.2s var(--ease),
+      transform 0.2s var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+
+  .card__body {
+    padding: var(--space-m);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    flex: 1;
+  }
+
+  .card__media {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-sunken);
+    overflow: hidden;
+  }
+
+  .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Whole-card click target without nesting interactive elements ----- */
+  .card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card--linked {
+    position: relative;
+  }
+
+  /* Badge ----------------------------------------------------------- */
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+  }
+
+  .badge--corrupted {
+    border-color: var(--ember);
+    color: var(--ember);
+  }
+
+  .badge--pending {
+    border-style: dashed;
+  }
+}
+
+/* ------------------------------------------------------------ utilities */
+@layer utilities {
+  .visually-hidden:not(:focus):not(:active) {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .flow-tight > * + * {
+    margin-block-start: var(--space-xs);
+  }
+}
+
+/* ---------------------------------------------------------------- print */
+@media print {
+  :root {
+    --bg: #fff;
+    --surface: #fff;
+    --text: #000;
+    --text-muted: #333;
+    --border: #ccc;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  .site-header,
+  .site-footer,
+  .no-print,
+  .theme-toggle,
+  .search-field,
+  .reading-progress {
+    display: none !important;
+  }
+
+  main {
+    padding: 0;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  /* Make link targets visible on paper */
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #555;
+    word-break: break-all;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .card,
+  figure,
+  blockquote {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

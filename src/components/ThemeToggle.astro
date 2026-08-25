@@ -1,0 +1,97 @@
+---
+// Toggles between the archive's dark default and a light reading mode.
+// The choice persists per browser; if storage is unavailable the button still
+// works for the current page.
+---
+
+<button class="theme-toggle" type="button" aria-label="Switch to light reading mode">
+  <svg class="theme-toggle__icon theme-toggle__icon--dark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path
+      d="M13.4 9.9A5.8 5.8 0 0 1 6.1 2.6a5.8 5.8 0 1 0 7.3 7.3Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.4"
+      stroke-linejoin="round"
+    />
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--light" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <circle cx="8" cy="8" r="3.1" fill="none" stroke="currentColor" stroke-width="1.4" />
+    <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+      <path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1" />
+    </g>
+  </svg>
+</button>
+
+<script is:inline>
+  (() => {
+    const btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+
+    // Dark is the default when nothing has been chosen.
+    const current = () =>
+      document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+
+    const label = () => {
+      btn.setAttribute(
+        'aria-label',
+        current() === 'dark' ? 'Switch to light reading mode' : 'Switch to dark archive mode'
+      );
+    };
+
+    btn.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try {
+        localStorage.setItem('phw-theme', next);
+      } catch {
+        /* Nothing to persist to — the toggle still applies for this page. */
+      }
+      label();
+    });
+
+    label();
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition:
+      color 0.15s var(--ease),
+      border-color 0.15s var(--ease);
+  }
+
+  .theme-toggle:hover {
+    color: var(--amber);
+    border-color: var(--amber);
+  }
+
+  .theme-toggle__icon {
+    grid-area: 1 / 1;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Show the icon for the mode you would switch *to*. */
+  .theme-toggle__icon--light {
+    display: none;
+  }
+
+  :root[data-theme='light'] .theme-toggle__icon--dark {
+    display: none;
+  }
+
+  :root[data-theme='light'] .theme-toggle__icon--light {
+    display: block;
+  }
+
+</style>

@@ -1,0 +1,308 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LoreCard from '../components/LoreCard.astro';
+import { site } from '../lib/site';
+import hero from '../assets/wallpapers/on-rooftop.jpg';
+
+const lore = await getCollection('lore', ({ data }) => !data.draft);
+const featured = lore
+  .filter((e) => e.data.image)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const timeline = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
+const first = timeline.at(0);
+const last = timeline.at(-1);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: site.title,
+  author: { '@type': 'Person', name: site.author },
+  publisher: { '@type': 'Organization', name: site.publisher },
+  genre: ['Speculative fiction', 'Climate fiction', 'Young adult'],
+  inLanguage: 'en',
+  abstract: site.description,
+  url: site.url,
+  isbn: site.isbn,
+  bookEdition: site.edition,
+  bookFormat: 'https://schema.org/Paperback',
+  illustrator: { '@type': 'Person', name: site.author },
+  about: [
+    'Climate change',
+    'Memory and oral history',
+    'Artificial intelligence ethics',
+    'India',
+  ],
+};
+---
+
+<BaseLayout title={site.title} structuredData={structuredData}>
+  <section class="hero">
+    <Image
+      class="hero__img"
+      src={hero}
+      alt="Sumati stands on a rooftop above a drowned Delhi at dusk, a staff slung across her back, ruined towers fading into the haze."
+      widths={[640, 1024]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero__scrim"></div>
+    <div class="shell hero__content">
+      <p class="eyebrow">An illustrated speculative fiction novel</p>
+      <h1>The Very Last Superhero</h1>
+      <p class="hero__tagline">{site.tagline}</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="/lore">Enter the Lore Archive</a>
+        <a class="button" href="/timeline">Read the Timeline</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shell" id="about">
+    <div class="prose stack">
+      <p class="eyebrow">About the book</p>
+      <h2>Heroism, after the heroes</h2>
+      <p>
+        <em>The Very Last Superhero</em> is set in a near-future India where climate collapse,
+        authoritarian control, and digital decay have stripped the world of its myths — and its
+        memory. Fourteen-year-old Sumati inherits a Salt Lamp from her missing father: not a relic,
+        but a device that stores oral histories.
+      </p>
+      <p>
+        In a Delhi buried beneath surveillance and floodwater, she sets out to reboot the Resistance
+        archive and uncover what came before the Collapse. In this world, heroism is not superpowers
+        or spectacle. It is memory, care, and the courage to hold a community together when
+        everything else has fallen apart.
+      </p>
+      <p><a href="/about">More about the story and its making →</a></p>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">The world</p>
+        <h2>Lore Archive</h2>
+      </div>
+      <a class="button" href="/lore">All {lore.length} entries</a>
+    </header>
+    <div class="grid-auto">
+      {featured.map((entry) => <LoreCard entry={entry} />)}
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="split">
+      <div class="stack">
+        <p class="eyebrow">Chronology</p>
+        <h2>From the Heroic Period to the last lamp</h2>
+        <p class="text-muted">
+          {timeline.length} recorded events spanning {first?.data.yearLabel} to {
+            last?.data.yearLabel
+          } — the floods, the Disclosures, the curriculum rewrite, and the two years when no lamp
+          answered.
+        </p>
+        <p><a class="button" href="/timeline">Open the timeline</a></p>
+      </div>
+
+      <ol class="timeline-peek">
+        {
+          timeline.slice(-4).map((e) => (
+            <li>
+              <span class="timeline-peek__year">{e.data.yearLabel}</span>
+              <span class="timeline-peek__title">{e.data.title}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <figure class="epigraph">
+      <blockquote>
+        <p>{site.epigraph.text}</p>
+      </blockquote>
+      <figcaption>— {site.epigraph.attribution}</figcaption>
+    </figure>
+  </section>
+
+  <section class="section shell">
+    <div class="callout">
+      <div class="stack">
+        <p class="eyebrow">Contribute</p>
+        <h2>The Memory Wall</h2>
+        <p class="text-muted">
+          The archive was never meant to be read only. Send artwork, or a piece of testimony in your
+          own voice, and it may join the wall.
+        </p>
+      </div>
+      <a class="button button--primary" href="/memory">Add to the archive</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    place-items: end start;
+    min-height: min(78svh, 44rem);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Framed on the horizon and the figure, not the empty foreground. Astro's
+       scoped-style attribute wins over its own responsive-image rule, so this
+       takes effect without !important. The <Image> `position` prop is not an
+       alternative — that value is passed to sharp, which wants a gravity
+       keyword and rejects a percentage. */
+    object-position: 50% 26%;
+    z-index: -2;
+  }
+
+  /* Keeps the headline legible whatever the art behind it is doing. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bg) 94%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 72%, transparent) 38%,
+      color-mix(in srgb, var(--bg) 18%, transparent) 100%
+    );
+  }
+
+  .hero__content {
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+
+  .hero h1 {
+    font-size: var(--step-5);
+    margin-block: var(--space-xs) var(--space-s);
+  }
+
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    max-width: 34ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-l);
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-m);
+    margin-block-end: var(--space-l);
+  }
+
+  .split {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    align-items: center;
+  }
+
+  .timeline-peek {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-inline-start: 2px solid var(--border);
+  }
+
+  .timeline-peek li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem var(--space-s);
+    padding: var(--space-s) 0 var(--space-s) var(--space-m);
+    position: relative;
+  }
+
+  .timeline-peek li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -5px;
+    inset-block-start: 1.35rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  .timeline-peek__year {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--amber);
+    min-width: 4ch;
+  }
+
+  .timeline-peek__title {
+    font-family: var(--font-display);
+  }
+
+  .callout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-l);
+    padding: var(--space-xl);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+  }
+
+  .callout .stack {
+    max-width: 46ch;
+  }
+
+  .epigraph {
+    margin: 0;
+    max-width: 42rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .epigraph blockquote {
+    border: 0;
+    padding: 0;
+  }
+
+  .epigraph blockquote p {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-style: normal;
+    line-height: 1.35;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .epigraph figcaption {
+    margin-block-start: var(--space-m);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+</style>

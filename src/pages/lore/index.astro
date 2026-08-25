@@ -1,0 +1,158 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LoreCard from '../../components/LoreCard.astro';
+
+const entries = (await getCollection('lore', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const categories = [...new Set(entries.map((e) => e.data.category))].sort();
+---
+
+<BaseLayout
+  title="Lore Archive"
+  description="Every recovered entry in the Resistance Archive — Salt Lamps, the Firebird, P.A.I., and the people who carried the memory of a drowned Delhi."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">The Resistance Archive</p>
+      <h1>Lore Archive</h1>
+      <p class="text-muted lede">
+        {entries.length} recovered entries. Filter by kind, or
+        <a href="/search">search the whole archive</a>.
+      </p>
+    </header>
+
+    <div class="filters" role="group" aria-label="Filter entries by category">
+      <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+        All <span class="chip__count">{entries.length}</span>
+      </button>
+      {
+        categories.map((c) => (
+          <button type="button" class="chip" data-filter={c} aria-pressed="false">
+            {c}
+            <span class="chip__count">{entries.filter((e) => e.data.category === c).length}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="result-count" data-count aria-live="polite"></p>
+
+    <div class="grid-auto" data-grid>
+      {
+        entries.map((entry) => (
+          <div data-category={entry.data.category}>
+            <LoreCard entry={entry} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+  const items = document.querySelectorAll<HTMLElement>('[data-grid] > [data-category]');
+  const count = document.querySelector<HTMLElement>('[data-count]');
+
+  const apply = (filter: string) => {
+    let shown = 0;
+    items.forEach((item) => {
+      const match = filter === 'all' || item.dataset.category === filter;
+      item.hidden = !match;
+      if (match) shown++;
+    });
+    if (count) {
+      count.textContent =
+        filter === 'all' ? '' : `Showing ${shown} ${shown === 1 ? 'entry' : 'entries'} in ${filter}`;
+    }
+    // Reflect the filter in the URL so a filtered view can be linked and reloaded.
+    const url = new URL(location.href);
+    if (filter === 'all') url.searchParams.delete('kind');
+    else url.searchParams.set('kind', filter);
+    history.replaceState(null, '', url);
+  };
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      apply(chip.dataset.filter ?? 'all');
+    });
+  });
+
+  const initial = new URL(location.href).searchParams.get('kind');
+  if (initial) {
+    const match = [...chips].find((c) => c.dataset.filter === initial);
+    if (match) match.click();
+  }
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 52ch;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-block-end: var(--space-m);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition:
+      color 0.15s var(--ease),
+      border-color 0.15s var(--ease),
+      background-color 0.15s var(--ease);
+  }
+
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .chip.is-active {
+    color: var(--amber);
+    border-color: var(--amber);
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+  }
+
+  .chip__count {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+
+  .chip.is-active .chip__count {
+    color: var(--amber-dim);
+  }
+
+  .result-count {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    min-height: 1.5em;
+    margin-block-end: var(--space-s);
+  }
+</style>

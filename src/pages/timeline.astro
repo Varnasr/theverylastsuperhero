@@ -1,0 +1,156 @@
+---
+import { getCollection, getEntries } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const events = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
+
+const withLinks = await Promise.all(
+  events.map(async (e) => ({ event: e, related: await getEntries(e.data.related) }))
+);
+---
+
+<BaseLayout
+  title="Collapse & Resistance Timeline"
+  description="From the Heroic Period through the Bangladesh flood, the Disclosures, the Yamuna breach and the years the archive went dark — the chronology behind The Very Last Superhero."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Chronology</p>
+      <h1>Collapse &amp; Resistance</h1>
+      <p class="text-muted lede">
+        {events.length} recorded events. Entries marked <span class="badge badge--corrupted"
+          >redacted</span
+        > were recovered only in fragments.
+      </p>
+    </header>
+
+    <ol class="timeline">
+      {
+        withLinks.map(({ event, related }) => (
+          <li class:list={['event', { 'event--classified': event.data.classified }]} id={event.id}>
+            <div class="event__marker" aria-hidden="true" />
+            <div class="event__card">
+              <p class="event__year">{event.data.yearLabel}</p>
+              <h2>{event.data.title}</h2>
+              <p class="text-muted">{event.data.summary}</p>
+              {related.length > 0 && (
+                <p class="event__links">
+                  {related.map((r, i) => (
+                    <>
+                      {i > 0 && <span aria-hidden="true"> · </span>}
+                      <a href={`/lore/${r.id}`}>{r.data.title}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 54ch;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    max-width: 46rem;
+  }
+
+  /* The spine. Kept on one side at every width — the classic alternating
+     desktop timeline forces the eye to zig-zag and reads worse, not better. */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.9rem 0.9rem;
+    inset-inline-start: 0.3125rem;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--border-strong) 8%,
+      var(--border-strong) 92%,
+      transparent
+    );
+  }
+
+  .event {
+    position: relative;
+    padding-inline-start: var(--space-xl);
+    padding-block-end: var(--space-l);
+  }
+
+  .event__marker {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 1rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+
+  .event--classified .event__marker {
+    background: var(--ember);
+  }
+
+  .event__card {
+    padding: var(--space-m) var(--space-l);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .event--classified .event__card {
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--ember) 45%, var(--border));
+  }
+
+  /* A target from a lore page's "In the chronology" link. */
+  .event:target .event__card {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--amber) 20%, transparent);
+  }
+
+  .event__year {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    color: var(--amber);
+  }
+
+  .event h2 {
+    font-size: var(--step-2);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .event__links {
+    margin-block-start: var(--space-s);
+    padding-block-start: var(--space-s);
+    border-block-start: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 30rem) {
+    .event {
+      padding-inline-start: var(--space-l);
+    }
+    .event__card {
+      padding: var(--space-m);
+    }
+  }
+</style>

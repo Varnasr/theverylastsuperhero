@@ -1,0 +1,293 @@
+---
+import { nav, site } from '../lib/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header">
+  <div class="shell bar">
+    <a class="brand" href="/">
+      <span class="brand__mark" aria-hidden="true">✦</span>
+      <span class="brand__text">{site.name}</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Open menu"
+    >
+      <span aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="nav-tools">
+        <a class="nav-search" href="/search" aria-label="Search the archive">
+          <svg class="nav-search__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg><span class="nav-search__label">Search</span>
+        </a>
+        <ThemeToggle />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const toggle = document.querySelector('.nav-toggle');
+    const header = document.querySelector('.site-header');
+    if (!toggle || !header) return;
+
+    const close = () => {
+      header.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = header.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('is-open')) {
+        close();
+        toggle.focus();
+      }
+    });
+
+    // Keyboard shortcut: "/" focuses search from anywhere, the way an archive should.
+    document.addEventListener('keydown', (e) => {
+      const t = e.target;
+      const typing =
+        t instanceof HTMLElement &&
+        (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+      if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey) {
+        const field = document.querySelector('#archive-search');
+        if (field instanceof HTMLInputElement) {
+          e.preventDefault();
+          field.focus();
+          field.select();
+        }
+      }
+    });
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-block-end: 1px solid var(--border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    min-height: 3.75rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand__mark {
+    color: var(--amber);
+  }
+
+  .brand:hover {
+    color: var(--amber);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+  }
+
+  .site-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-s);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  .site-nav a[aria-current='page'] {
+    color: var(--amber);
+    background: color-mix(in srgb, var(--amber) 12%, transparent);
+  }
+
+  .nav-tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding-inline-start: var(--space-xs);
+    border-inline-start: 1px solid var(--border);
+  }
+
+  .nav-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-s);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-search__icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: none;
+  }
+
+  .nav-search:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    position: relative;
+  }
+
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    position: absolute;
+    left: 50%;
+    width: 1.05rem;
+    height: 1.5px;
+    background: var(--text);
+    translate: -50% 0;
+    transition: all 0.2s var(--ease);
+  }
+
+  .nav-toggle span {
+    top: 50%;
+  }
+  .nav-toggle span::before {
+    content: '';
+    top: -6px;
+    left: 50%;
+  }
+  .nav-toggle span::after {
+    content: '';
+    top: 6px;
+    left: 50%;
+  }
+
+  .site-header.is-open .nav-toggle span {
+    background: transparent;
+  }
+  .site-header.is-open .nav-toggle span::before {
+    top: 0;
+    rotate: 45deg;
+  }
+  .site-header.is-open .nav-toggle span::after {
+    top: 0;
+    rotate: -45deg;
+  }
+
+  /* Below the point where the eight nav items stop fitting on one line. */
+  @media (max-width: 62rem) {
+    .nav-toggle {
+      display: block;
+    }
+
+    .site-nav {
+      display: none;
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-s);
+      background: var(--bg-raised);
+      border-block-end: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .site-header.is-open .site-nav {
+      display: flex;
+    }
+
+    .site-nav ul {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .site-nav a {
+      padding: 0.7rem 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    .nav-tools {
+      margin-block-start: var(--space-xs);
+      padding-block-start: var(--space-xs);
+      padding-inline-start: 0;
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--border);
+      justify-content: space-between;
+    }
+  }
+</style>
