@@ -1,28 +1,28 @@
 ---
 title: Hysterons
 category: Technology
-designation: Memory Substrate | Salt Lamp Component
-summary: The second material in every Salt Lamp. A hysteron holds the shape of what has already happened to it — which is why a lamp remembers rather than merely stores.
+designation: Shape Memory Materials | Salt Lamp Component
+summary: Memory materials — Nitinol and other Shape Memory Materials — blended into the salt. Combined with halite under the right compression and lattice integrity, the result can remember.
 order: 3
-related: [salt-lamps, memory-tablets, myaknju]
+related: [salt-lamps, myaknju, the-treasure-room]
 ---
 
 Salt gives a lamp its lattice. Hysterons give it its memory.
 
-A hysteron does not hold a value. It holds a *history* — the shape of everything
-that has already happened to it. Put the same signal through two hysterons that
-have lived different lives and you get two different answers, both of them
-correct. Engineers before the Collapse treated this as a defect to be
-compensated for. The Resistance treated it as the entire point.
+They are memory materials — Nitinol, or other Shape Memory Materials — blended
+into the salt itself. Halite can store vibrational patterns; combined with
+hysterons it holds sound, heat, even trace electromagnetic signatures. Under the
+right compression and lattice integrity, it can *remember*.
 
-It is why a lamp answers the room it is in. It is why the same testimony,
-recovered twice, comes back with different weight. It is why a lamp that has sat
-in a school sounds unlike a lamp that has sat in a relay station, even when both
-hold the same recording.
+Not magic salt. Magic in a very real, very engineered way.
 
-And it is why no two lamps can be made identical, which turns out to matter more
-than any encryption. A network of interchangeable devices can be cloned,
-audited, and replaced. A network in which every node is marked by its own past
-cannot be counterfeited by anyone who was not there.
+The lamps are precision-carved crystalline lattices, and the engineering came
+from [Myaknju](/lore/myaknju), the tech sage of the early Resistance, who
+combined acoustic resonance with nanoscale tuning. IKS texts — oral and written —
+have long spoken of stones that remember, and of temples aligned not only to the
+stars but to sound. The lamps are that idea, built.
 
-The state could copy the data. It could never copy the remembering.
+Record, reflect, relay. They pick up history, not just heat.
+
+They are repositories, which is why the Resistance placed them at its sites. And
+if you know how to listen, a lamp will tell you what happened nearby.

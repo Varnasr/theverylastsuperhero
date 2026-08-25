@@ -1,16 +1,26 @@
 ---
 title: Myaknju
 category: Character
-designation: Nandini's Silent Companion
-summary: A thin, wiry man whose watchful eyes take in everything while revealing nothing — and the mind behind the Audible Enclave upgrade embedded in Salt Lamps.
+designation: Tech Sage of the Early Resistance
+summary: The tech sage who designed the Salt Lamps — combining the old wisdom of stones that remember with acoustic resonance and nanoscale tuning.
 order: 9
-related: [nandini-maa, salt-lamps, p-ai, virtual-layer-flooring]
+related: [salt-lamps, hysterons, nandini-maa, p-ai, virtual-layer-flooring]
 ---
 
-A thin, wiry man whose watchful eyes seem to take in everything while revealing
-nothing. He moves with deliberate precision, arranging objects in patterns that
-seem random and are not.
+The tech sage from the early Resistance, and the mind that designed the lamps.
 
-He is the underground mind behind the Audible Enclave upgrade embedded in Salt
-Lamps — which is why a lamp can whisper rather than merely play back, and why it
-answers the room it is in instead of reciting into it.
+Not pretty pink rock: precision-carved crystalline lattices of halite blended
+with [hysterons](/lore/hysterons). IKS texts, oral and written, have long spoken
+of stones that remember, and of ancient temples aligned not only to the stars
+but to sound. Myaknju took that wisdom and combined it with acoustic resonance
+and some rather nifty nanoscale tuning.
+
+The result picks up history, not just heat.
+
+He is also the Audible Enclave embedded in a lamp's base — which is why a lamp
+can whisper rather than merely play back, and why it answers the room it is in
+instead of reciting into it.
+
+In person: a thin, wiry man, Nandini's silent companion, whose watchful eyes seem
+to take in everything while revealing nothing. He moves with deliberate
+precision, arranging objects in patterns that seem random and are not.

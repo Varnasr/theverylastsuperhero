@@ -1,20 +1,31 @@
 ---
 title: Kishore Mehta
 category: Character
-designation: Also Rishi, also Axl
-summary: Once an idealist, now a chameleon. Three names that belong to the same man, and no reliable account of which came first.
+designation: Librarian | also Rishi, also Axl
+summary: A librarian of more than thirty years who keeps the Treasure Room and gathers explanations for mysterious phenomena. Also the eleven-year-old who broke P.A.I.
+order: 24
+related: [p-a-i, p-ai, the-treasure-room, salt-lamps, sumati, aasma]
 image: ../../assets/illustrations/london-fireplace.webp
 imageAlt: A heavily wrapped man seated before a roaring fireplace in a rich wood-panelled room, law journals behind him
-order: 24
-related: [vikram-malhotra, the-resistance, p-a-i]
 ---
 
-Once an idealist, now a chameleon.
+A librarian who has worked at the same library for over thirty years. He pours
+the tea, listens to the whole story, and then goes rummaging through the piles
+in the Treasure Room until he finds the tattered manuscript that explains it.
 
-Kishore Mehta. Rishi. Axl. The archive holds all three names and cannot say with
-confidence which is the original — only that the same man answers to each, in
-different rooms, to different people.
+> The world is full of inexplicable things. The Treasure Room is where I gather
+> explanations to many mysterious phenomena.
 
-In a world where identity is the thing being indexed, a man with three of them is
-either the safest person alive or the most dangerous. The Resistance has never
-entirely settled which.
+He is also Axl.
+
+He was eleven when he breached P.A.I.'s first training loop — the system that
+monitored for deviance and punished it. It took five more years to make it
+forget the words *command* and *obedience*. What he built instead trains agents
+for ethical pathing: least destructive, least undemocratic, not the fastest
+route but the rightest one.
+
+> Changed the dots. Lowercase. P.A.I. to P.ai. It's not a god anymore. Just a
+> tool that learns.
+
+Kishore Mehta. Rishi. Axl. A man who spends his days explaining crows to
+children and, somewhere in between, took a god apart and handed back a tool.

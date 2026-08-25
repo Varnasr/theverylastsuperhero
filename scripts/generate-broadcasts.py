@@ -65,7 +65,7 @@ BROADCASTS = [
             {
                 "voice": "hi",
                 "text": (
-                    "सार्वजनिक कृत्रिम बुद्धिमत्ता। नागरिक अनुपालन प्रसारण, सेक्टर नौ। "
+                    "पी. ए. आई.। नागरिक अनुपालन प्रसारण, सेक्टर नौ। "
                     "अगले चार घंटों तक तापमान जीवित रहने योग्य सीमा में है। "
                     "प्रमाणित शीतलन के बिना निवासियों को घर के अंदर रहने की सलाह दी जाती है। "
                     "आपके ज़िले का अनुपालन स्कोर अद्यतन कर दिया गया है। "
@@ -75,7 +75,7 @@ BROADCASTS = [
             {
                 "voice": "en",
                 "text": (
-                    "Public Artificial Intelligence. Civic compliance broadcast, "
+                    "Predictive Autonomous Interface. Civic compliance broadcast, "
                     "sector nine. "
                     "Ambient temperature is within survivable range for the next four hours. "
                     "Residents without certified cooling are advised to remain indoors. "
