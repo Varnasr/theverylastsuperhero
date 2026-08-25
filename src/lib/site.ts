@@ -167,6 +167,7 @@ export const navMore: readonly { href: string; label: string; note: string }[] =
 export const footerLinks = [
   { href: '/author', label: 'The Author' },
   { href: '/contact', label: 'Contact' },
+  { href: '/contact#second-heading', label: 'Corrections' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
 ] as const;
