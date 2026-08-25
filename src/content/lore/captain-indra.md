@@ -5,6 +5,8 @@ designation: Fallen Hero | Weather Control
 summary: He single-handedly evacuated thousands during the 2055 Bangladesh flooding. He also signed contracts with the corporations he claimed to fight, and so did twelve others.
 order: 20
 related: [the-disclosures-era, delhi-climate-brigade, quantum-corps]
+image: ../../assets/lore/captain-indra.webp
+imageAlt: A weather-control hero in white and blue holding a staff, exhibited beside a glass case of signed contracts
 ---
 
 The legendary hero who single-handedly evacuated thousands during the 2055

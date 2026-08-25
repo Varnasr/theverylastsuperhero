@@ -5,6 +5,8 @@ designation: Data Storage
 summary: Portable bricks used to capture oral testimony. Activated by Salt Lamps or object tags.
 order: 10
 related: [salt-lamps, obj-v078]
+image: ../../assets/archive/memory-tablet.webp
+imageAlt: A memory tablet, its surface scored and clouded with age
 ---
 
 Portable bricks used to capture oral testimony, activated by Salt Lamps or object

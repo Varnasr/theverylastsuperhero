@@ -5,6 +5,8 @@ designation: VIKRAM-09 | The Name, and the Man Who Took It
 summary: Two people. Vikram was the last state-designed environmental hero, obedient to the end. Sanil took his name — not to honour him, but to mark the risk of forgetting.
 order: 23
 related: [asha, prahlad, obj-v078, delhi-climate-brigade, the-disclosures-era]
+image: ../../assets/lore/vikram-malhotra.webp
+imageAlt: A man in a patched green and brown suit with a hand-stitched leaf emblem, the sleek state-designed hero he is named for ghosted in behind him
 ---
 
 There are two Vikrams, and the archive is careful about the difference.

@@ -5,6 +5,8 @@ designation: Vikram Protocol
 summary: Classified object tag leading to corrupted fragments of betrayal and exile.
 order: 11
 related: [memory-tablets, rohan-kapoor]
+image: ../../assets/archive/obj-v078.webp
+imageAlt: A scorched object tag, its markings partly burned away
 ---
 
 Classified object tag leading to corrupted fragments of betrayal and exile.

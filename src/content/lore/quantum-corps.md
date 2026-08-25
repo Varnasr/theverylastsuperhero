@@ -5,6 +5,8 @@ designation: Hero Organisation | Defunct
 summary: Masters of particle manipulation who could purify water with a touch and cleanse the air with a gesture. Their cyclone diversions worsened drought in vulnerable regions.
 order: 22
 related: [captain-indra, delhi-climate-brigade, the-disclosures-era]
+image: ../../assets/lore/quantum-corps.webp
+imageAlt: Two figures before a control display: a cyclone being turned away from the coast on one panel, a cracked drought map of India on the other
 ---
 
 Masters of particle manipulation who could purify water with a touch and cleanse

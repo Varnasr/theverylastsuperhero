@@ -5,6 +5,8 @@ designation: Algorithmic Trust Score
 summary: The score that decides privileges, mobility rights and employment. Aasma's was never assigned, which is either an oversight or the only piece of luck in her file.
 order: 7
 related: [p-a-i, aasma, the-collapse, indigenous-knowledge-systems]
+image: ../../assets/archive/compliance-index.webp
+imageAlt: A compliance index chart, columns of scores ruled and stamped
 ---
 
 An algorithmic trust score, used to assign privileges, mobility rights and

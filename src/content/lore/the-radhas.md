@@ -5,6 +5,8 @@ designation: RADHA-A / RADHA-B | Early Martyrs
 summary: Twin bio-robots who self-destructed to disable the surveillance net. Known for tactical sabotage, and for dying during the intervention that made the rest possible.
 order: 13
 related: [the-rekhas, the-resistance, p-a-i]
+image: ../../assets/lore/the-radhas.webp
+imageAlt: Two bio-robot women in saris working at the head of a surveillance mast, its sensor node opened and its network dissolving behind them
 ---
 
 Two of them. Known for tactical sabotage, and then for one act.
