@@ -51,18 +51,28 @@ export const site = {
   formEndpoint: '' as string,
 } as const;
 
+/**
+ * Primary navigation. Keep this short — the header also carries the brand,
+ * search, a buy button and the theme toggle, and the row ran off the screen at
+ * 1024–1440px once it grew past about seven links. Everything else lives in
+ * `navMore`, which renders as a disclosure.
+ */
 export const nav = [
-  { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/lore', label: 'Lore Archive' },
-  { href: '/constellation', label: 'Constellation' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
-  { href: '/archive', label: 'Objects' },
-  { href: '/memory', label: 'Memory Wall' },
   { href: '/illustrations', label: 'Illustrations' },
-  { href: '/wallpapers', label: 'Wallpapers' },
-  { href: '/lamplighter', label: 'Lamplighter' },
+] as const;
+
+/** Secondary destinations, grouped under "More" in the header. */
+export const navMore = [
+  { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
+  { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
+  { href: '/memory', label: 'Memory Wall', note: 'Reader artwork and testimony' },
+  { href: '/wallpapers', label: 'Wallpapers', note: 'The Sumati Series' },
+  { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
+  { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
 ] as const;
 
 export const footerLinks = [

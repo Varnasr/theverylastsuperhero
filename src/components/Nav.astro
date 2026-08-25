@@ -1,10 +1,11 @@
 ---
-import { nav, site } from '../lib/site';
+import { nav, navMore, site } from '../lib/site';
 import ThemeToggle from './ThemeToggle.astro';
 import BuyButton from './BuyButton.astro';
 
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
 ---
 
 <header class="site-header">
@@ -35,6 +36,29 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
             </li>
           ))
         }
+        <li class="more">
+          {/* <details> gives a keyboard-accessible disclosure with no JS. */}
+          <details class="more__wrap" data-more>
+            <summary aria-current={moreIsCurrent ? 'page' : undefined}>
+              More
+              <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </summary>
+            <ul class="more__menu">
+              {
+                navMore.map((item) => (
+                  <li>
+                    <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                      <span class="more__label">{item.label}</span>
+                      <span class="more__note">{item.note}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
       </ul>
       <div class="nav-tools">
         <a class="nav-search" href="/search" aria-label="Search the archive">
@@ -75,6 +99,20 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
       }
     });
 
+    // Close the More disclosure on outside click or Escape.
+    const more = document.querySelector('[data-more]');
+    if (more) {
+      document.addEventListener('click', (e) => {
+        if (more.open && !more.contains(e.target)) more.open = false;
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && more.open) {
+          more.open = false;
+          more.querySelector('summary')?.focus();
+        }
+      });
+    }
+
     // Keyboard shortcut: "/" focuses search from anywhere, the way an archive should.
     document.addEventListener('keydown', (e) => {
       const t = e.target;
@@ -109,6 +147,13 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     justify-content: space-between;
     gap: var(--space-m);
     min-height: 3.75rem;
+    /* Belt and braces: even if the nav grows again, it wraps to a second row
+       rather than pushing the whole page into a horizontal scroll. */
+    flex-wrap: wrap;
+  }
+
+  .site-header {
+    overflow-x: clip;
   }
 
   .brand {
@@ -199,6 +244,85 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     background: var(--surface-hover);
   }
 
+  /* Disclosure ------------------------------------------------------ */
+  .more__wrap {
+    position: relative;
+  }
+
+  .more__wrap summary {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-s);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  .more__wrap summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .more__wrap summary:hover,
+  .more__wrap[open] summary {
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  .more__wrap summary[aria-current='page'] {
+    color: var(--amber);
+  }
+
+  .more__wrap summary svg {
+    width: 0.6rem;
+    height: 0.6rem;
+    transition: rotate 0.15s var(--ease);
+  }
+
+  .more__wrap[open] summary svg {
+    rotate: 180deg;
+  }
+
+  .more__menu {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-start: calc(100% + 0.4rem);
+    z-index: 20;
+    min-width: 15rem;
+    padding: var(--space-xs);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .more__menu a {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.05rem;
+    padding: 0.5rem 0.6rem;
+    text-align: start;
+  }
+
+  .more__label {
+    font-size: 0.85rem;
+    color: inherit;
+  }
+
+  .more__note {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
   .nav-toggle {
     display: none;
     width: 2.5rem;
@@ -248,8 +372,9 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     rotate: -45deg;
   }
 
-  /* Below the point where the eight nav items stop fitting on one line. */
-  @media (max-width: 62rem) {
+  /* Below the width where the primary row plus brand, search, buy and toggle
+     stop fitting comfortably on one line. */
+  @media (max-width: 68rem) {
     .nav-toggle {
       display: block;
     }
@@ -290,6 +415,21 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
       border-inline-start: 0;
       border-block-start: 1px solid var(--border);
       justify-content: space-between;
+    }
+
+    /* In the mobile panel the disclosure is just a nested list, always open. */
+    .more__wrap summary {
+      font-size: 0.95rem;
+      padding: 0.7rem 0.6rem;
+    }
+
+    .more__menu {
+      position: static;
+      min-width: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      padding-inline-start: var(--space-m);
     }
   }
 </style>

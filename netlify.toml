@@ -1,0 +1,45 @@
+# Netlify build configuration.
+#
+# The GitHub Pages workflow (.github/workflows/deploy.yml) is left in place so
+# both hosts can serve the same commit while DNS moves; delete it once Netlify
+# is the only one serving www.postheroic.world.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Astro emits directory-style URLs, so /lore and /lore/ are the same page.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+# The apex should land on the canonical host rather than 404, which is exactly
+# what went wrong on GitHub Pages.
+[[redirects]]
+  from = "https://postheroic.world/*"
+  to = "https://www.postheroic.world/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    # Astro fingerprints these filenames, so they can be cached indefinitely.
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/audio/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

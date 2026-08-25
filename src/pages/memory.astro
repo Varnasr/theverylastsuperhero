@@ -8,6 +8,9 @@ const contributions = (await getCollection('memory', ({ data }) => !data.draft))
   (a, b) => b.data.added.valueOf() - a.data.added.valueOf()
 );
 
+// Netlify detects forms at deploy time by scanning the built HTML, so the
+// attributes below are what switch submissions on once the site is on Netlify.
+// Until then the mailto fallback keeps the form working rather than dead.
 const formLive = site.formEndpoint.length > 0;
 const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
 ---
@@ -31,12 +34,20 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
       <h2>Add to the archive</h2>
 
       <p class="submit__lede text-muted">
-        Fill this in and it opens in your own email app, already written, addressed to
-        <a href={`mailto:${site.email}`}>{site.email}</a>. Nothing is sent until you press send
-        there, and no third party sees it.
+        Send artwork, or a piece of testimony in your own voice. Every submission is read by a
+        person before anything appears on the wall.
       </p>
 
-      <form class="form" action={site.formEndpoint || undefined} method="POST" data-fallback={formLive ? undefined : 'mailto'}>
+      <form
+        class="form"
+        name="memory-wall"
+        method="POST"
+        action={site.formEndpoint || undefined}
+        data-netlify="true"
+        netlify-honeypot="_gotcha"
+        data-fallback={formLive ? undefined : 'mailto'}
+      >
+        <input type="hidden" name="form-name" value="memory-wall" />
         <div class="field">
           <label for="name">Your name, or the name you archive under</label>
           <input id="name" name="name" type="text" required autocomplete="name" />
