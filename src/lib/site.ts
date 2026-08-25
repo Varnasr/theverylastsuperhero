@@ -15,15 +15,12 @@ export const site = {
   email: 'info@storywell.in',
   isbn: '978-93-95373-08-1',
   /**
-   * Where to buy. Paste the exact Amazon product URL (the .../dp/XXXXXXXXXX one)
-   * into `amazon` and every buy button on the site points at it.
-   *
-   * Until then the buttons fall back to an Amazon search on the book's ISBN,
-   * which always resolves to the right listing once it is live — better than a
-   * dead link or a hidden button.
+   * Where to buy. `amazon` is the author's own share link for the listing; if it
+   * is ever emptied, every buy button falls back to an Amazon search on the
+   * book's ISBN rather than going dead.
    */
   buy: {
-    amazon: '',
+    amazon: 'https://amzn.in/d/0dqr7bi1',
     publisher: 'https://storywell.in',
   },
   edition: 'First Edition 2026',
