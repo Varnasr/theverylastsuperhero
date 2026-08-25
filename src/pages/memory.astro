@@ -1,0 +1,245 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+const contributions = (await getCollection('memory')).sort(
+  (a, b) => b.data.added.valueOf() - a.data.added.valueOf()
+);
+
+const formLive = site.formEndpoint.length > 0;
+const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title="The Memory Wall"
+  description="Reader artwork and testimony contributed to the Resistance Archive — and how to add your own."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Contribute</p>
+      <h1>The Memory Wall</h1>
+      <p class="text-muted lede">
+        The archive was never meant to be read only. Send artwork, or a piece of testimony in your
+        own voice, and it may join the wall. Everything here is added by hand after a human has read
+        it — nothing posts itself.
+      </p>
+    </header>
+
+    <section class="submit">
+      <h2>Add to the archive</h2>
+
+      {
+        formLive ? (
+          <form class="form" action={site.formEndpoint} method="POST">
+            <div class="field">
+              <label for="name">Your name, or the name you archive under</label>
+              <input id="name" name="name" type="text" required autocomplete="name" />
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
+              <p class="hint">Used only to reply about your contribution.</p>
+            </div>
+
+            <div class="field">
+              <label for="kind">What are you sending?</label>
+              <select id="kind" name="kind">
+                <option value="testimony">A piece of testimony</option>
+                <option value="artwork">Artwork</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="message">Your contribution</label>
+              <textarea id="message" name="message" rows="7" required></textarea>
+              <p class="hint">
+                For artwork, describe it and include a link — please don't paste image data.
+              </p>
+            </div>
+
+            {/* Honeypot: bots fill it, people never see it. */}
+            <div class="honeypot" aria-hidden="true">
+              <label for="lamp">Leave this field empty</label>
+              <input id="lamp" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <p class="consent">
+              By sending this you agree it may be displayed on this site with your attribution, as
+              described in the <a href="/terms">Terms</a>. You can ask for it to be removed at any
+              time.
+            </p>
+
+            <button class="button button--primary" type="submit">Send to the archive</button>
+          </form>
+        ) : (
+          <div class="form form--offline">
+            <p class="offline-note">
+              <span class="badge badge--pending">Form not yet connected</span>
+            </p>
+            <p>
+              Submissions are currently taken by email. Write to{' '}
+              <a href={`mailto:${site.email}?subject=Memory%20Wall%20contribution`}>{site.email}</a>{' '}
+              with your artwork or testimony and the name you would like it archived under.
+            </p>
+            <p class="hint">
+              To switch the form on, set <code>formEndpoint</code> in{' '}
+              <code>src/lib/site.ts</code> — see <code>docs/SUBMISSIONS.md</code>.
+            </p>
+          </div>
+        )
+      }
+    </section>
+
+    <section class="wall">
+      <h2>On the wall</h2>
+
+      {
+        contributions.length === 0 ? (
+          <p class="empty">
+            Nothing has been added yet. The first contribution goes here — and the wall is designed
+            to look deliberately empty until it arrives, rather than pretending otherwise.
+          </p>
+        ) : (
+          <div class="grid-auto">
+            {contributions.map((c) => (
+              <article class="card contribution">
+                {c.data.image && (
+                  <div class="card__media">
+                    <Image
+                      src={c.data.image}
+                      alt={c.data.imageAlt ?? ''}
+                      widths={[320, 480, 640]}
+                      sizes="(max-width: 40rem) 90vw, 20rem"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="card__body">
+                  <p class="eyebrow">
+                    {c.data.kind === 'artwork' ? 'Artwork' : 'Testimony'} ·{' '}
+                    {dateFmt.format(c.data.added)}
+                  </p>
+                  <h3>{c.data.title}</h3>
+                  <p class="text-muted byline">
+                    {c.data.contributor}
+                    {c.data.location && `, ${c.data.location}`}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 56ch;
+  }
+
+  .submit {
+    max-width: 38rem;
+    margin-block-end: var(--space-3xl);
+  }
+
+  .submit h2,
+  .wall h2 {
+    font-size: var(--step-2);
+    margin-block-end: var(--space-m);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-m);
+    padding: var(--space-l);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .field label {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 0.6rem var(--space-s);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+    color: var(--text);
+    font-size: var(--step-0);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 8rem;
+    font-family: inherit;
+  }
+
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    border-color: var(--amber);
+  }
+
+  .hint {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .consent {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .form--offline {
+    gap: var(--space-s);
+  }
+
+  .offline-note {
+    margin: 0;
+  }
+
+  .empty {
+    max-width: 52ch;
+    padding: var(--space-l);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+  }
+
+  .contribution h3 {
+    font-size: var(--step-1);
+  }
+
+  .byline {
+    font-size: var(--step--1);
+  }
+</style>

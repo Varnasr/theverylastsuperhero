@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'lore'>;
+}
+
+const { entry } = Astro.props;
+const { title, designation, summary, category, image, imageAlt, testimony } = entry.data;
+---
+
+<article class="card card--linked lore-card">
+  {
+    image && (
+      <div class="card__media">
+        <Image
+          src={image}
+          alt={imageAlt ?? ''}
+          widths={[320, 480, 640]}
+          sizes="(max-width: 40rem) 90vw, 20rem"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+  <div class="card__body">
+    <p class="eyebrow">{category} &middot; {designation}</p>
+    <h2>
+      <a class="card__link" href={`/lore/${entry.id}`}>{title}</a>
+    </h2>
+    <p class="text-muted summary">{summary}</p>
+    {
+      testimony && (
+        <p class="testimony-flag">
+          <span aria-hidden="true">◉</span> Salt Lamp testimony held
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .lore-card h2 {
+    font-size: var(--step-1);
+  }
+
+  .lore-card h2 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .lore-card:hover h2 a {
+    color: var(--amber);
+  }
+
+  .summary {
+    font-size: var(--step--1);
+    margin-block-start: var(--space-2xs);
+  }
+
+  .testimony-flag {
+    margin-block-start: auto;
+    padding-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+  }
+</style>

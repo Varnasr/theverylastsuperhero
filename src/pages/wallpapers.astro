@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Wallpapers"
+  description="Phone wallpapers from the Sumati Series — free to download for personal use."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">The Sumati Series</p>
+      <h1>Wallpapers</h1>
+      <p class="text-muted lede">
+        Free for personal use under
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener"
+          >CC BY-NC-ND 4.0</a
+        >. Open one to view it full size, then save it the way you normally save an image.
+      </p>
+    </header>
+
+    <div class="wall-grid">
+      {
+        wallpapers.map((w) => (
+          <figure class="paper">
+            <a
+              href={w.data.image.src}
+              target="_blank"
+              rel="noopener"
+              aria-label={`Open ${w.data.title} at full size`}
+            >
+              <Image
+                src={w.data.image}
+                alt={w.data.imageAlt}
+                widths={[240, 400, 600]}
+                sizes="(max-width: 40rem) 45vw, 15rem"
+                loading="lazy"
+              />
+            </a>
+            <figcaption>
+              <h2>{w.data.title}</h2>
+              <p class="text-muted">{w.data.summary}</p>
+              <a class="button" href={w.data.image.src} target="_blank" rel="noopener">
+                Open full size
+              </a>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede {
+    max-width: 54ch;
+  }
+
+  .wall-grid {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  }
+
+  .paper {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+
+  .paper img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .paper a:hover img {
+    border-color: var(--amber);
+  }
+
+  .paper h2 {
+    font-size: var(--step-1);
+  }
+
+  .paper p {
+    font-size: var(--step--1);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+</style>

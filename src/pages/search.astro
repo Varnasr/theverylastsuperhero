@@ -1,0 +1,280 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Search the Archive"
+  description="Search every lore entry, timeline event, archive object and wallpaper in the Resistance Archive."
+  noindex
+>
+  <div class="shell section search-page">
+    <header class="page-head stack">
+      <p class="eyebrow">Query the archive</p>
+      <h1>Search</h1>
+    </header>
+
+    <form class="search-field" role="search" onsubmit="return false">
+      <label class="visually-hidden" for="archive-search">Search the archive</label>
+      <svg class="search-field__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <input
+        id="archive-search"
+        type="search"
+        placeholder="Salt Lamps, Yamuna, Sumati…"
+        autocomplete="off"
+        spellcheck="false"
+        enterkeyhint="search"
+      />
+      <kbd class="search-field__kbd" aria-hidden="true">/</kbd>
+    </form>
+
+    <p class="status" data-status role="status" aria-live="polite">Loading the archive…</p>
+
+    <ul class="results" data-results></ul>
+
+    <noscript>
+      <p class="text-muted">
+        Search needs JavaScript. You can still browse the
+        <a href="/lore">Lore Archive</a>, the <a href="/timeline">Timeline</a> and the
+        <a href="/archive">Objects</a> catalogue directly.
+      </p>
+    </noscript>
+  </div>
+</BaseLayout>
+
+<script>
+  interface Doc {
+    t: string;
+    u: string;
+    k: string;
+    d: string;
+  }
+
+  const field = document.querySelector<HTMLInputElement>('#archive-search');
+  const list = document.querySelector<HTMLUListElement>('[data-results]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  if (!field || !list || !status) throw new Error('search markup missing');
+
+  let docs: Doc[] = [];
+
+  const norm = (s: string) =>
+    s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+  /**
+   * Scores a document against the query terms. Every term must appear
+   * somewhere, so "salt delhi" does not match an entry containing only one.
+   * Title matches outrank description matches, and a prefix match outranks a
+   * match buried mid-word.
+   */
+  const score = (doc: Doc, terms: string[]) => {
+    const title = norm(doc.t);
+    const body = norm(`${doc.d} ${doc.k}`);
+    let total = 0;
+
+    for (const term of terms) {
+      const inTitle = title.indexOf(term);
+      const inBody = body.indexOf(term);
+      if (inTitle === -1 && inBody === -1) return 0;
+
+      if (inTitle === 0) total += 10;
+      else if (inTitle > 0) total += title[inTitle - 1] === ' ' ? 7 : 4;
+
+      if (inBody === 0) total += 3;
+      else if (inBody > 0) total += body[inBody - 1] === ' ' ? 2 : 1;
+    }
+    return total;
+  };
+
+  const mark = (text: string, terms: string[]) => {
+    const escaped = text.replace(
+      /[&<>"']/g,
+      (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string
+    );
+    if (!terms.length) return escaped;
+    const pattern = terms
+      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .filter(Boolean)
+      .join('|');
+    if (!pattern) return escaped;
+    return escaped.replace(new RegExp(`(${pattern})`, 'gi'), '<mark>$1</mark>');
+  };
+
+  const render = (query: string) => {
+    const terms = norm(query).split(/\s+/).filter(Boolean);
+
+    if (!terms.length) {
+      list.innerHTML = '';
+      status.textContent = `${docs.length} entries in the archive. Start typing.`;
+      return;
+    }
+
+    const hits = docs
+      .map((doc) => ({ doc, s: score(doc, terms) }))
+      .filter((r) => r.s > 0)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 40);
+
+    status.textContent = hits.length
+      ? `${hits.length} ${hits.length === 1 ? 'result' : 'results'} for “${query}”`
+      : `Nothing in the archive matches “${query}”.`;
+
+    list.innerHTML = hits
+      .map(
+        ({ doc }) => `
+        <li class="result">
+          <a href="${doc.u}">
+            <span class="result__kind">${mark(doc.k, [])}</span>
+            <span class="result__title">${mark(doc.t, terms)}</span>
+            <span class="result__desc">${mark(doc.d, terms)}</span>
+          </a>
+        </li>`
+      )
+      .join('');
+  };
+
+  // Debounced so typing does not re-render on every keystroke.
+  let timer: ReturnType<typeof setTimeout>;
+  field.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      render(field.value.trim());
+      const url = new URL(location.href);
+      if (field.value.trim()) url.searchParams.set('q', field.value.trim());
+      else url.searchParams.delete('q');
+      history.replaceState(null, '', url);
+    }, 120);
+  });
+
+  fetch('/search-index.json')
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json() as Promise<Doc[]>;
+    })
+    .then((data) => {
+      docs = data;
+      const initial = new URL(location.href).searchParams.get('q') ?? '';
+      if (initial) field.value = initial;
+      render(initial);
+      field.focus();
+    })
+    .catch(() => {
+      status.textContent =
+        'The archive index could not be loaded. Try browsing the Lore Archive directly.';
+    });
+</script>
+
+<style>
+  .search-page {
+    max-width: 46rem;
+  }
+
+  .page-head {
+    margin-block-end: var(--space-m);
+  }
+
+  .search-field {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: 0.6rem var(--space-m);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .search-field:focus-within {
+    border-color: var(--amber);
+  }
+
+  .search-field__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex: none;
+    color: var(--text-faint);
+  }
+
+  .search-field input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: none;
+    outline: none;
+    font-size: var(--step-1);
+    font-family: var(--font-display);
+  }
+
+  .search-field input::-webkit-search-cancel-button {
+    filter: grayscale(1);
+  }
+
+  .search-field__kbd {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+  }
+
+  .status {
+    margin-block: var(--space-m);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .results {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .results :global(.result a) {
+    display: grid;
+    gap: 0.15rem;
+    padding: var(--space-s) var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    text-decoration: none;
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .results :global(.result a:hover) {
+    border-color: var(--amber);
+  }
+
+  .results :global(.result__kind) {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .results :global(.result__title) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-0);
+  }
+
+  .results :global(.result__desc) {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .results :global(mark) {
+    background: color-mix(in srgb, var(--amber) 30%, transparent);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 0.1em;
+  }
+</style>

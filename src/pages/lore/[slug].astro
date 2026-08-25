@@ -1,0 +1,244 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, getEntries, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SaltLampPlayer from '../../components/SaltLampPlayer.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('lore', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { title, designation, category, summary, image, imageAlt, testimony, mapZone } = entry.data;
+const { Content } = await render(entry);
+
+const related = await getEntries(entry.data.related);
+
+// Timeline events that point back at this entry, so the two views stay in sync
+// without either side hand-maintaining a list.
+const appearsIn = (await getCollection('timeline'))
+  .filter((e) => e.data.related.some((r) => r.id === entry.id))
+  .sort((a, b) => a.data.year - b.data.year);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: summary,
+  articleSection: category,
+  isPartOf: { '@type': 'Book', name: 'The Very Last Superhero' },
+};
+---
+
+<BaseLayout title={title} description={summary} structuredData={structuredData} readingProgress>
+  <article class="shell section entry">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/lore">Lore Archive</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/lore?kind=${encodeURIComponent(category)}`}>{category}</a>
+    </nav>
+
+    <header class="entry__head stack">
+      <p class="eyebrow">{category} &middot; {designation}</p>
+      <h1>{title}</h1>
+      <p class="entry__summary">{summary}</p>
+    </header>
+
+    {
+      image && (
+        <figure class="entry__figure">
+          <Image
+            src={image}
+            alt={imageAlt ?? ''}
+            widths={[480, 800, 1024]}
+            sizes="(max-width: 50rem) 92vw, 46rem"
+            loading="eager"
+          />
+          {imageAlt && <figcaption>{imageAlt}</figcaption>}
+        </figure>
+      )
+    }
+
+    <div class="prose entry__body">
+      <Content />
+    </div>
+
+    {
+      testimony && (
+        <section class="entry__section">
+          <SaltLampPlayer {...testimony} />
+        </section>
+      )
+    }
+
+    {
+      appearsIn.length > 0 && (
+        <section class="entry__section">
+          <h2>In the chronology</h2>
+          <ol class="events">
+            {appearsIn.map((e) => (
+              <li>
+                <a href={`/timeline#${e.id}`}>
+                  <span class="events__year">{e.data.yearLabel}</span>
+                  <span>{e.data.title}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    {
+      related.length > 0 && (
+        <section class="entry__section">
+          <h2>Connected entries</h2>
+          <ul class="related">
+            {related.map((r) => (
+              <li>
+                <a href={`/lore/${r.id}`}>
+                  <span class="related__title">{r.data.title}</span>
+                  <span class="related__meta">{r.data.designation}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      mapZone && (
+        <p class="map-link">
+          <a href={`/map#${mapZone}`}>Locate on the Resistance map →</a>
+        </p>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .entry {
+    max-width: 52rem;
+  }
+
+  .crumbs {
+    display: flex;
+    gap: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    margin-block-end: var(--space-m);
+  }
+
+  .entry__head {
+    margin-block-end: var(--space-l);
+  }
+
+  .entry__summary {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    max-width: 46ch;
+  }
+
+  .entry__figure {
+    margin: 0 0 var(--space-l);
+  }
+
+  /* Portrait artwork would otherwise run to several screens tall; cap the
+     height and let width follow, rather than cropping someone's illustration. */
+  .entry__figure img {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    max-height: 32rem;
+    width: auto;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .entry__figure figcaption {
+    margin-block-start: var(--space-xs);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .entry__body :global(p + p) {
+    margin-block-start: var(--space-m);
+  }
+
+  .entry__section {
+    margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .entry__section h2 {
+    font-size: var(--step-2);
+    margin-block-end: var(--space-m);
+  }
+
+  .events,
+  .related {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .related {
+    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+  }
+
+  .events a,
+  .related a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: var(--space-s) var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s var(--ease);
+  }
+
+  .events a {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-m);
+  }
+
+  .events a:hover,
+  .related a:hover {
+    border-color: var(--amber);
+  }
+
+  .events__year {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--amber);
+    flex: none;
+  }
+
+  .related__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .related__meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .map-link {
+    margin-block-start: var(--space-l);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+</style>

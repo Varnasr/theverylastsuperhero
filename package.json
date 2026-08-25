@@ -1,0 +1,24 @@
+{
+  "name": "theverylastsuperhero",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Companion site for The Very Last Superhero — postheroic.world",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "optimise:images": "node scripts/optimise-images.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.6.1",
+    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/check": "^0.9.4",
+    "sharp": "^0.34.1",
+    "typescript": "^5.8.3"
+  }
+}

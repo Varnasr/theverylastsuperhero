@@ -21,6 +21,7 @@ env/
 # Build output
 build/
 dist/
+.astro/
 out/
 coverage/
 *.lcov

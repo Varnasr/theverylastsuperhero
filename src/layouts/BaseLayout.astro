@@ -1,0 +1,158 @@
+---
+import { site } from '../lib/site';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Absolute or site-relative path to the social share image. */
+  image?: string;
+  /** Rendered into <head> as JSON-LD. */
+  structuredData?: Record<string, unknown>;
+  /** Adds the thin reading-progress bar — used on long-form pages. */
+  readingProgress?: boolean;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og-default.jpg',
+  structuredData,
+  readingProgress = false,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site ?? site.url);
+const ogImage = new URL(image, Astro.site ?? site.url);
+const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${title} | ${site.title}`;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content={site.themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="book" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={site.locale} />
+
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
+
+    {
+      structuredData && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(structuredData)}
+        />
+      )
+    }
+
+    {/* Applied before first paint so the chosen theme never flashes. */}
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('phw-theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch {
+          /* Private mode, or site data blocked — the dark default still applies. */
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {readingProgress && <div class="reading-progress" aria-hidden="true"><span></span></div>}
+    <Nav />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+
+    {
+      readingProgress && (
+        <script is:inline>
+          (() => {
+            const bar = document.querySelector('.reading-progress span');
+            if (!bar) return;
+            let ticking = false;
+            const update = () => {
+              const max = document.documentElement.scrollHeight - window.innerHeight;
+              const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+              bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+              ticking = false;
+            };
+            addEventListener(
+              'scroll',
+              () => {
+                if (!ticking) {
+                  ticking = true;
+                  requestAnimationFrame(update);
+                }
+              },
+              { passive: true }
+            );
+            addEventListener('resize', update, { passive: true });
+            update();
+          })();
+        </script>
+      )
+    }
+  </body>
+</html>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 3px;
+    z-index: 60;
+    background: transparent;
+  }
+
+  .reading-progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--amber);
+    transition: width 0.08s linear;
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

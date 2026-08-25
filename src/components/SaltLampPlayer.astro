@@ -1,0 +1,323 @@
+---
+/**
+ * Oral-testimony player, dressed as a Salt Lamp.
+ *
+ * Built on a real <audio> element so screen readers, keyboard users and
+ * browsers without JS all still get a working control. The custom chrome is
+ * layered on top and only replaces the native UI once the script has run.
+ */
+
+interface Props {
+  src: string;
+  title: string;
+  speaker: string;
+  recorded: string;
+  duration?: string;
+  transcript?: string;
+}
+
+const { src, title, speaker, recorded, duration, transcript } = Astro.props;
+const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<figure class="lamp" data-lamp>
+  <div class="lamp__glow" aria-hidden="true">
+    <span class="lamp__crystal"></span>
+  </div>
+
+  <div class="lamp__body">
+    <figcaption>
+      <p class="eyebrow">Salt Lamp testimony</p>
+      <h3 class="lamp__title">{title}</h3>
+      <p class="lamp__meta">
+        <span>{speaker}</span>
+        <span aria-hidden="true">·</span>
+        <span>Recorded {recorded}</span>
+        {duration && (<><span aria-hidden="true">·</span><span>{duration}</span></>)}
+      </p>
+    </figcaption>
+
+    <audio id={id} preload="none" controls src={src}>
+      Your browser cannot play this recording.
+      <a href={src}>Download the audio file</a> instead.
+    </audio>
+
+    <div class="lamp__controls" hidden data-controls>
+      <button type="button" class="lamp__play" data-play aria-label={`Play: ${title}`}>
+        <span class="icon-play" aria-hidden="true">▶</span>
+        <span class="icon-pause" aria-hidden="true">❚❚</span>
+      </button>
+
+      <input
+        type="range"
+        class="lamp__seek"
+        data-seek
+        min="0"
+        max="100"
+        value="0"
+        step="0.1"
+        aria-label={`Seek within ${title}`}
+      />
+
+      <span class="lamp__time" data-time aria-hidden="true">0:00</span>
+    </div>
+
+    {
+      transcript && (
+        <details class="lamp__transcript">
+          <summary>Read the transcript</summary>
+          <p>{transcript}</p>
+        </details>
+      )
+    }
+  </div>
+</figure>
+
+<script>
+  const fmt = (s: number) => {
+    if (!Number.isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const r = Math.floor(s % 60);
+    return `${m}:${String(r).padStart(2, '0')}`;
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-lamp]').forEach((lamp) => {
+    const audio = lamp.querySelector('audio');
+    const controls = lamp.querySelector<HTMLElement>('[data-controls]');
+    const play = lamp.querySelector<HTMLButtonElement>('[data-play]');
+    const seek = lamp.querySelector<HTMLInputElement>('[data-seek]');
+    const time = lamp.querySelector<HTMLElement>('[data-time]');
+    if (!audio || !controls || !play || !seek || !time) return;
+
+    // Only now swap the native chrome for ours — if this script never runs,
+    // the reader keeps a fully working native player.
+    audio.removeAttribute('controls');
+    audio.preload = 'metadata';
+    controls.hidden = false;
+
+    let scrubbing = false;
+
+    play.addEventListener('click', () => {
+      if (audio.paused) {
+        // Only one lamp speaks at a time.
+        document.querySelectorAll('audio').forEach((other) => {
+          if (other !== audio) other.pause();
+        });
+        void audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play', () => {
+      lamp.classList.add('is-lit');
+      play.setAttribute('aria-label', play.getAttribute('aria-label')!.replace('Play:', 'Pause:'));
+    });
+
+    audio.addEventListener('pause', () => {
+      lamp.classList.remove('is-lit');
+      play.setAttribute('aria-label', play.getAttribute('aria-label')!.replace('Pause:', 'Play:'));
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (scrubbing || !Number.isFinite(audio.duration)) return;
+      seek.value = String((audio.currentTime / audio.duration) * 100);
+      time.textContent = fmt(audio.currentTime);
+    });
+
+    audio.addEventListener('ended', () => {
+      seek.value = '0';
+      time.textContent = '0:00';
+    });
+
+    audio.addEventListener('error', () => {
+      lamp.classList.add('is-dark');
+      controls.hidden = true;
+    });
+
+    seek.addEventListener('pointerdown', () => (scrubbing = true));
+    seek.addEventListener('pointerup', () => (scrubbing = false));
+    seek.addEventListener('input', () => {
+      if (!Number.isFinite(audio.duration)) return;
+      const t = (Number(seek.value) / 100) * audio.duration;
+      time.textContent = fmt(t);
+    });
+    seek.addEventListener('change', () => {
+      if (!Number.isFinite(audio.duration)) return;
+      audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+      scrubbing = false;
+    });
+  });
+</script>
+
+<style>
+  .lamp {
+    display: flex;
+    gap: var(--space-m);
+    align-items: flex-start;
+    margin: 0;
+    padding: var(--space-m);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .lamp__glow {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 4.5rem;
+  }
+
+  /* A lamp: tapered crystal on a base. Drawn in CSS so it inherits the theme. */
+  .lamp__crystal {
+    display: block;
+    width: 2rem;
+    height: 2.75rem;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--amber) 35%, transparent),
+      color-mix(in srgb, var(--ember) 45%, transparent)
+    );
+    clip-path: polygon(35% 0, 65% 0, 88% 100%, 12% 100%);
+    box-shadow: 0 0 0 rgb(255 203 107 / 0);
+    transition:
+      box-shadow 0.6s var(--ease),
+      filter 0.6s var(--ease);
+    filter: saturate(0.4) brightness(0.7);
+  }
+
+  .lamp.is-lit .lamp__crystal {
+    filter: saturate(1.3) brightness(1.25);
+    box-shadow:
+      0 0 18px 2px rgb(255 203 107 / 0.55),
+      0 0 44px 8px rgb(226 112 58 / 0.3);
+    animation: breathe 3.2s ease-in-out infinite;
+  }
+
+  .lamp.is-dark .lamp__crystal {
+    filter: grayscale(1) brightness(0.4);
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.82;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lamp.is-lit .lamp__crystal {
+      animation: none;
+    }
+  }
+
+  .lamp__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lamp__title {
+    font-size: var(--step-1);
+    margin-block: var(--space-2xs) var(--space-2xs);
+  }
+
+  .lamp__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  audio {
+    width: 100%;
+    margin-block-start: var(--space-s);
+  }
+
+  .lamp__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    margin-block-start: var(--space-s);
+  }
+
+  .lamp__play {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-raised);
+    color: var(--amber);
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+
+  .lamp__play:hover {
+    border-color: var(--amber);
+    background: var(--surface-hover);
+  }
+
+  .icon-pause {
+    display: none;
+  }
+
+  .lamp.is-lit .icon-play {
+    display: none;
+  }
+
+  .lamp.is-lit .icon-pause {
+    display: block;
+  }
+
+  .lamp__seek {
+    flex: 1;
+    min-width: 0;
+    accent-color: var(--amber);
+    cursor: pointer;
+  }
+
+  .lamp__time {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lamp__transcript {
+    margin-block-start: var(--space-s);
+    font-size: var(--step--1);
+  }
+
+  .lamp__transcript summary {
+    cursor: pointer;
+    color: var(--link);
+    font-family: var(--font-mono);
+  }
+
+  .lamp__transcript p {
+    margin-block-start: var(--space-xs);
+    color: var(--text-muted);
+    border-left: 2px solid var(--border-strong);
+    padding-left: var(--space-s);
+  }
+
+  @media (max-width: 30rem) {
+    .lamp {
+      flex-direction: column;
+    }
+    .lamp__glow {
+      width: 100%;
+      height: 3.5rem;
+    }
+  }
+</style>

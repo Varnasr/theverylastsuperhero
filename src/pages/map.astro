@@ -1,0 +1,363 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { zones, routes, statusLabel, type ZoneStatus } from '../lib/map-zones';
+
+const byId = new Map(zones.map((z) => [z.id, z]));
+const edges = routes
+  .map(([a, b]) => ({ a: byId.get(a), b: byId.get(b) }))
+  .filter((e): e is { a: NonNullable<typeof e.a>; b: NonNullable<typeof e.b> } =>
+    Boolean(e.a && e.b)
+  );
+
+const statuses: ZoneStatus[] = ['active', 'dark', 'lost'];
+---
+
+<BaseLayout
+  title="Resistance Map"
+  description="A schematic of the Resistance network — lamp routes between the Treasure Room, the drowned embankments, the schools and the rooftops of a submerged Delhi."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Network schematic</p>
+      <h1>Resistance Map</h1>
+      <p class="text-muted lede">
+        Lamp routes between the zones the archive still names. Select a node to read what the
+        archive holds about it. This is a schematic, not a survey — the Resistance never drew a map
+        anyone else could use.
+      </p>
+    </header>
+
+    <div class="map-wrap">
+      <figure class="map">
+        <svg
+          viewBox="0 0 100 72"
+          role="img"
+          aria-labelledby="map-title map-desc"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <title id="map-title">Schematic of the Resistance lamp network</title>
+          <desc id="map-desc">
+            {zones.length} zones connected by {edges.length} lamp routes. Each zone is listed with its
+            status and description in the panel beneath this diagram.
+          </desc>
+
+          <g class="routes">
+            {
+              edges.map((e) => (
+                <line
+                  x1={e.a.x}
+                  y1={e.a.y}
+                  x2={e.b.x}
+                  y2={e.b.y}
+                  class:list={[
+                    'route',
+                    (e.a.status === 'lost' || e.b.status === 'lost') && 'route--broken',
+                  ]}
+                />
+              ))
+            }
+          </g>
+
+          <g class="nodes">
+            {
+              zones.map((z) => (
+                <g
+                  class:list={['node', `node--${z.status}`]}
+                  data-zone={z.id}
+                  transform={`translate(${z.x} ${z.y})`}
+                >
+                  <circle class="node__halo" r="4.2" />
+                  <circle class="node__dot" r="1.9" />
+                  <text class="node__label" y={z.y > 55 ? 8 : -5.5} text-anchor="middle">
+                    {z.label}
+                  </text>
+                </g>
+              ))
+            }
+          </g>
+        </svg>
+
+        <figcaption class="legend">
+          {
+            statuses.map((s) => (
+              <span class="legend__item">
+                <span class:list={['legend__dot', `legend__dot--${s}`]} aria-hidden="true" />
+                {statusLabel[s]}
+              </span>
+            ))
+          }
+        </figcaption>
+      </figure>
+
+      <ul class="zone-list">
+        {
+          zones.map((z) => (
+            <li id={z.id} class:list={['zone', `zone--${z.status}`]} data-zone-card={z.id}>
+              <p class="zone__status">{statusLabel[z.status]}</p>
+              <h2>{z.label}</h2>
+              <p class="text-muted">{z.note}</p>
+              {z.lore && (
+                <p class="zone__link">
+                  <a href={`/lore/${z.lore}`}>Read the archive entry →</a>
+                </p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const nodes = document.querySelectorAll<SVGGElement>('[data-zone]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-zone-card]');
+
+  const highlight = (id: string | null) => {
+    nodes.forEach((n) => n.classList.toggle('is-active', n.dataset.zone === id));
+    cards.forEach((c) => c.classList.toggle('is-active', c.dataset.zoneCard === id));
+  };
+
+  nodes.forEach((node) => {
+    const id = node.dataset.zone;
+    if (!id) return;
+
+    // The SVG node is a shortcut to its card, which holds the readable content.
+    node.setAttribute('tabindex', '0');
+    node.setAttribute('role', 'link');
+
+    const go = () => {
+      const card = document.getElementById(id);
+      card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      highlight(id);
+    };
+
+    node.addEventListener('click', go);
+    node.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        go();
+      }
+    });
+    node.addEventListener('mouseenter', () => highlight(id));
+    node.addEventListener('focus', () => highlight(id));
+    node.addEventListener('mouseleave', () => highlight(null));
+    node.addEventListener('blur', () => highlight(null));
+  });
+
+  // Arriving from a lore page's "Locate on the map" link.
+  const hash = location.hash.slice(1);
+  if (hash) highlight(hash);
+</script>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-l);
+  }
+
+  .lede {
+    max-width: 56ch;
+  }
+
+  .map-wrap {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (max-width: 62rem) {
+    .map-wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .map {
+    margin: 0;
+    position: sticky;
+    top: 5rem;
+    background:
+      radial-gradient(
+        circle at 50% 40%,
+        color-mix(in srgb, var(--amber) 7%, transparent),
+        transparent 62%
+      ),
+      var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-m);
+  }
+
+  @media (max-width: 62rem) {
+    .map {
+      position: static;
+    }
+  }
+
+  .map svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .route {
+    stroke: var(--border-strong);
+    stroke-width: 0.35;
+    stroke-linecap: round;
+  }
+
+  .route--broken {
+    stroke-dasharray: 1.2 1.4;
+    stroke: color-mix(in srgb, var(--ember) 50%, var(--border));
+  }
+
+  .node {
+    cursor: pointer;
+  }
+
+  .node__halo {
+    fill: transparent;
+    transition: fill 0.2s var(--ease);
+  }
+
+  .node__dot {
+    fill: var(--amber);
+    stroke: var(--bg-raised);
+    stroke-width: 0.6;
+    transition:
+      r 0.2s var(--ease),
+      fill 0.2s var(--ease);
+  }
+
+  .node--dark .node__dot {
+    fill: var(--text-faint);
+  }
+
+  .node--lost .node__dot {
+    fill: var(--ember);
+  }
+
+  .node__label {
+    font-family: var(--font-mono);
+    font-size: 2.1px;
+    fill: var(--text-muted);
+    /* Halo keeps labels legible where they cross a route line. */
+    paint-order: stroke;
+    stroke: var(--bg-raised);
+    stroke-width: 0.8px;
+    stroke-linejoin: round;
+    transition: fill 0.2s var(--ease);
+    pointer-events: none;
+  }
+
+  .node:hover .node__halo,
+  .node:focus-visible .node__halo,
+  .node.is-active .node__halo {
+    fill: color-mix(in srgb, var(--amber) 22%, transparent);
+  }
+
+  .node:hover .node__dot,
+  .node.is-active .node__dot {
+    r: 2.4;
+  }
+
+  .node:hover .node__label,
+  .node.is-active .node__label {
+    fill: var(--text);
+  }
+
+  .node:focus-visible {
+    outline: none;
+  }
+
+  .node:focus-visible .node__dot {
+    stroke: var(--amber);
+    stroke-width: 1;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    margin-block-start: var(--space-m);
+    padding-block-start: var(--space-s);
+    border-block-start: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  .legend__dot--dark {
+    background: var(--text-faint);
+  }
+
+  .legend__dot--lost {
+    background: var(--ember);
+  }
+
+  .zone-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .zone {
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-inline-start: 3px solid var(--amber);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    scroll-margin-block: 6rem;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .zone--dark {
+    border-inline-start-color: var(--text-faint);
+  }
+
+  .zone--lost {
+    border-inline-start-color: var(--ember);
+  }
+
+  .zone.is-active,
+  .zone:target {
+    background: var(--surface-hover);
+    border-color: var(--amber);
+  }
+
+  .zone__status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .zone h2 {
+    font-size: var(--step-1);
+    margin-block: var(--space-2xs) var(--space-2xs);
+  }
+
+  .zone__link {
+    margin-block-start: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+</style>
