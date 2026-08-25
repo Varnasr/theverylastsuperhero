@@ -122,7 +122,6 @@ export const nav = [
   { href: '/glossary', label: 'Glossary' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
-  { href: '/illustrations', label: 'Illustrations' },
   { href: '/memory', label: 'Testimonials' },
   { href: '/making', label: 'Making' },
   { href: '/reading', label: 'Reading' },
@@ -130,6 +129,7 @@ export const nav = [
 
 /** Secondary destinations, grouped under "More" in the header. */
 export const navMore = [
+  { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
   { href: '/act', label: 'How to Help', note: 'The parts that are not fiction' },
   { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
   { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },

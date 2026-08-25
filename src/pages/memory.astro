@@ -31,6 +31,48 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
       </p>
     </header>
 
+    <section class="wall">
+      <h2>On the wall</h2>
+
+      {
+        contributions.length === 0 ? (
+          <p class="empty">
+            Nothing has been added yet. The first contribution goes here — and the wall is designed
+            to look deliberately empty until it arrives, rather than pretending otherwise.
+          </p>
+        ) : (
+          <div class="grid-auto">
+            {contributions.map((c) => (
+              <article class="card contribution">
+                {c.data.image && (
+                  <div class="card__media">
+                    <Image
+                      src={c.data.image}
+                      alt={c.data.imageAlt ?? ''}
+                      widths={[320, 480, 640]}
+                      sizes="(max-width: 40rem) 90vw, 20rem"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="card__body">
+                  <p class="eyebrow">
+                    {c.data.kind === 'artwork' ? 'Artwork' : 'Testimony'} ·{' '}
+                    {dateFmt.format(c.data.added)}
+                  </p>
+                  <h3>{c.data.title}</h3>
+                  <p class="text-muted byline">
+                    {c.data.contributor}
+                    {c.data.location && `, ${c.data.location}`}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </section>
+
     <section class="submit">
       <h2>Add to the archive</h2>
 
@@ -95,48 +137,6 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
           <a href={`mailto:${site.email}`}>{site.email}</a> directly.
         </p>
       </form>
-    </section>
-
-    <section class="wall">
-      <h2>On the wall</h2>
-
-      {
-        contributions.length === 0 ? (
-          <p class="empty">
-            Nothing has been added yet. The first contribution goes here — and the wall is designed
-            to look deliberately empty until it arrives, rather than pretending otherwise.
-          </p>
-        ) : (
-          <div class="grid-auto">
-            {contributions.map((c) => (
-              <article class="card contribution">
-                {c.data.image && (
-                  <div class="card__media">
-                    <Image
-                      src={c.data.image}
-                      alt={c.data.imageAlt ?? ''}
-                      widths={[320, 480, 640]}
-                      sizes="(max-width: 40rem) 90vw, 20rem"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                <div class="card__body">
-                  <p class="eyebrow">
-                    {c.data.kind === 'artwork' ? 'Artwork' : 'Testimony'} ·{' '}
-                    {dateFmt.format(c.data.added)}
-                  </p>
-                  <h3>{c.data.title}</h3>
-                  <p class="text-muted byline">
-                    {c.data.contributor}
-                    {c.data.location && `, ${c.data.location}`}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        )
-      }
     </section>
       <Newsletter />
   </div>
