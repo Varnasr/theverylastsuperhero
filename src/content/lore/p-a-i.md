@@ -1,10 +1,12 @@
 ---
 title: P.A.I.
 category: System
-designation: Predictive Autonomous Interface
-summary: Officially the Predictive Autonomous Interface. In practice, Pandemonium Algorithmic Indoctrination — it monitored for deviance, and it did not correct. It punished.
+designation: Public Access Intelligence
+summary: The name is the joke. It implies public access; in practice it governs the public while remaining entirely inaccessible to them.
 order: 4
-related: [p-ai, kishore-mehta, the-collapse, the-disclosures-era]
+image: ../../assets/lore/pai-surveillance.webp
+imageAlt: A surveillance mast of cameras, speakers and a facial-recognition panel above an empty road
+related: [p-ai, kishore-mehta, the-collapse, the-disclosures-era, the-obedience-index]
 testimony:
   src: /audio/pai-civic-notice.mp3
   title: Civic compliance broadcast, sector nine
@@ -21,39 +23,37 @@ testimony:
         गया है। आपके सहयोग के लिए धन्यवाद।
     - lang: en-IN
       text: >
-        Predictive Autonomous Interface. Civic compliance broadcast, sector nine.
+        Public Access Intelligence. Civic compliance broadcast, sector nine.
         Ambient temperature is within survivable range for the next four hours.
         Residents without certified cooling are advised to remain indoors. Your
         district compliance score has been updated. Queue times are shorter than
         yesterday. Thank you for your cooperation.
-image: ../../assets/lore/pai-surveillance.webp
-imageAlt: A surveillance mast of cameras, speakers and a facial-recognition panel above an empty road
 ---
 
-P.A.I. stood for **Predictive Autonomous Interface**.
+The dominant state-managed intelligence of this world, presented publicly as a
+decentralised platform for climate monitoring and civic efficiency.
 
-It was really Pandemonium Algorithmic Indoctrination.
+The name is a pun, and the pun is the entry. *Public Access Intelligence*
+implies access. What it describes is a system that governs the public while
+remaining entirely inaccessible to them.
 
-It monitored for deviance. It logged eye movement and thought deviation. And
-when it found what it was looking for, it did not correct — it punished.
+Built by a joint syndicate of state ministries and corporate interests, it
+tracks citizen behaviour, predicts dissent, and reroutes enforcement drones to
+suppress uprisings before they gather. It is modular and opaque, adapting
+quickly and without oversight. Its net spans biometric terminals, comms devices,
+school attendance logs, and a great deal else nobody was asked about.
 
 It was popular first. It shortened queues. It routed water. It told people where
 not to walk after dark, and it was right often enough that the question of who
 decided the route stopped being asked.
 
-Officially it predicted the weather. Unofficially it predicted dissent — tracking
-not just air currents but behaviour patterns. Deployed jointly by the state and
-syndicate capital, it forecast protests, mapped resistance nodes, and redirected
-resources in real time.
+This is the logical end point of predictive policing and civic scoring: a system
+where dissent is forecast and neutralised before it begins. Cold, utilitarian,
+unaccountable.
 
-> Declassified debrief, file 61.PAI.SUPPRESS
+It haunts the early chapters. It is why Sumati cannot call for help, why her
+identity fragments, and why her father's disappearance leaves so little behind.
 
 [Rohan](/lore/rohan-kapoor) and [Meera](/lore/meera) fought to expose it. They
-failed. But they left codes behind, and eleven-year-old
+failed. But they left codes behind, and an eleven-year-old called
 [Rishi](/lore/kishore-mehta) used them.
-
-By 2061 it was writing the National Curriculum. By 2065 it had reached full
-civic deployment across every major metro — and by then the question of whether
-it should have been trusted had itself become difficult to ask.
-
-Then an eleven-year-old broke it. See [p.ai](/lore/p-ai).

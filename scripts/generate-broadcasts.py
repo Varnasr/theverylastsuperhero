@@ -75,7 +75,7 @@ BROADCASTS = [
             {
                 "voice": "en",
                 "text": (
-                    "Predictive Autonomous Interface. Civic compliance broadcast, "
+                    "Public Access Intelligence. Civic compliance broadcast, "
                     "sector nine. "
                     "Ambient temperature is within survivable range for the next four hours. "
                     "Residents without certified cooling are advised to remain indoors. "

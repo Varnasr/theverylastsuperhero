@@ -168,7 +168,12 @@ for (const e of rendered) {
 
   dd {
     margin: 0;
-    max-width: 68ch;
+    max-width: 66ch;
+    line-height: 1.7;
+  }
+
+  dd :global(p + p) {
+    margin-block-start: var(--space-s);
   }
 
   .closing {

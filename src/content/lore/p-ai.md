@@ -1,10 +1,10 @@
 ---
 title: p.ai
 category: System
-designation: Public Access Intelligence
-summary: The same system after an eleven-year-old broke it and spent five more years teaching it to forget the words "command" and "obedience". The lowercase is the whole point.
+designation: Pandemonium AI | The Ethical Successor
+summary: What P.A.I. became after a child rewrote it. Memory-based reasoning and quantum ethical logic, in place of command and obedience. The lowercase is the whole point.
 order: 5
-related: [p-a-i, kishore-mehta, the-resistance, myaknju]
+related: [p-a-i, kishore-mehta, the-treasure-room, the-resistance, quantum-ethics]
 testimony:
   src: /audio/pai-whisper-fragment.mp3
   title: Intercepted fragment
@@ -23,32 +23,33 @@ testimony:
         assigned before the measurement. Thank you for your cooperation.
 ---
 
-The system it replaced was never public. [Rohan](/lore/rohan-kapoor) and
-[Meera](/lore/meera) fought to expose [it](/lore/p-a-i) and failed — but they
-left codes behind, and the codes are why the rest of this entry exists.
+Short for Pandemonium AI, and the ethical successor to
+[P.A.I.](/lore/p-a-i) — reprogrammed in secret by
+[Rishi](/lore/kishore-mehta), now Mr Mehta, when he was a child.
 
-It is what P.A.I. became after [Axl](/lore/kishore-mehta) got at it. He was
-eleven when he breached its first training loop. It took five more years to make
-it forget the words *command* and *obedience*.
+It is built on memory-based reasoning and quantum ethical logic rather than
+command and control. It listens instead of commanding.
 
-He used a new protocol: quantum daemon cascading. He trained agents not for
-obedience but for ethical pathing — least destructive, least undemocratic. Not
-the fastest route. The rightest one.
-
-> Changed the dots. Lowercase. P.A.I. to P.ai. It's not a god anymore. Just a
+> Changed the dots. Lowercase. P.A.I. to p.ai. It's not a god anymore. Just a
 > tool that learns.
 
-The old one logged eye movement and thought deviation. This one logs silence and
-hunger.
+It lives deep inside the archive known as [the Treasure Room](/lore/the-treasure-room),
+and it wakes when Sumati re-engages its systems. What it holds is not
+intelligence in the sense the state meant: data fragments, historical
+counter-narratives, and the emotional context that surveillance regimes are
+built to strip out.
+
+As a character it is less a machine than a moral witness — quiet,
+non-interventionist, reflective. Technologically it draws on explainable AI,
+distributed cognition and affective computing. Philosophically it is the exact
+counterpoint to what the Disclosures exposed: where P.A.I. forecast rebellion in
+order to prevent it, p.ai remembers rebellion in order to keep what it was for.
+
+It is not a saviour. It is a custodian.
 
 > I don't need it to predict the future, just to remember the past properly.
 
-It holds complete records of the Superhero Era, including the corporate
-sponsorships taken from the companies responsible for the environmental
-devastation. Its own assessment: they prioritised visibility over effectiveness,
-with an 82% correlation between superhero intervention and delayed
-implementation of systemic environmental solutions.
-
-A node does not wake with noise or spectacle. Just a steady presence, lines of
-light tracing long-forgotten circuitry, revealing memory tables hidden in what
-looked like rubble.
+The old one logged eye movement and thought deviation. This one logs silence and
+hunger. A node does not wake with noise or spectacle — just lines of light
+tracing long-forgotten circuitry, and memory tables surfacing in what had looked
+like rubble.
