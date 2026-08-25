@@ -1,0 +1,7 @@
+---
+term: "Hologram / Holographic Display"
+section: "Surveillance Tools and Public Infrastructure"
+order: 18
+---
+
+A standard communication and information interface by 2075, holographic displays are three-dimensional projections used across homes, classrooms, transit systems, and memory archives. They range from grainy, budget-grade emitters (like the flickering news display in Sumati’s kitchen) to immersive high-fidelity systems in museums and state buildings. Holograms can transmit live feeds, replay stored memories, simulate environments, or interface with AI assistants. In The Very Last Superhero, they function as both tools of instruction and instruments of control. The Fallen Heroes Museum uses them to replay tribunal footage and simulate past disasters. In classrooms, they project interactive maps or state-approved lesson content. At home, Meera’s presence is often mediated via a semi-static hologram, her projection floating above data dashboards even when her physical location is undisclosed. While widely accessible, most civilian-grade holograms are glitchy, flickering around the edges due to infrastructure degradation or throttled power access. Holograms reflect a future where presence is fragmented, and people are seen without being reachable. They are emotionally charged in the story: memory made visible, yet untouchable. For Sumati, holographic displays serve as early signals that the world is curated, and not all images are equal in clarity or truth.

@@ -128,6 +128,7 @@ export const nav = [
 /** Secondary destinations, grouped under "More" in the header. */
 export const navMore = [
   { href: '/making', label: 'On the Making', note: "The author's afterword" },
+  { href: '/reading', label: 'Further Reading', note: 'The books behind the book' },
   { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
   { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },

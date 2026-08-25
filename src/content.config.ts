@@ -80,9 +80,26 @@ const glossary = defineCollection({
   schema: z.object({
     /** The headword exactly as the book prints it. */
     term: z.string(),
+    /** The book groups terms; the page keeps those groupings. */
+    section: z.string().optional(),
     order: z.number().default(100),
     /** Lore entries this term explains, for cross-linking back into the archive. */
     related: z.array(reference('lore')).default([]),
+  }),
+});
+
+const reading = defineCollection({
+  loader: glob({ base: './src/content/reading', pattern: '**/*.md' }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    /** The bibliography's own grouping, e.g. "Surveillance, AI, and Control Systems". */
+    section: z.string(),
+    publisher: z.string().optional(),
+    year: z.number().optional(),
+    /** The book's note on why this work matters to the novel. */
+    relevance: z.string().optional(),
+    order: z.number().default(100),
   }),
 });
 
@@ -190,4 +207,4 @@ const memory = defineCollection({
 });
 
 export const collections = {
-  glossary, fanfic, lore, timeline, archive, wallpapers, memory };
+  glossary, fanfic, reading, lore, timeline, archive, wallpapers, memory };

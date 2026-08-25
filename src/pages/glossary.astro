@@ -15,6 +15,15 @@ const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - 
 const rendered = await Promise.all(
   entries.map(async (e) => ({ ...e, Body: (await render(e)).Content }))
 );
+
+/** Preserve the book's grouping and its order, rather than sorting sections. */
+const sections: { name: string; terms: typeof rendered }[] = [];
+for (const e of rendered) {
+  const name = e.data.section ?? 'Other';
+  const last = sections.at(-1);
+  if (last?.name === name) last.terms.push(e);
+  else sections.push({ name, terms: [e] });
+}
 ---
 
 <BaseLayout
@@ -47,22 +56,27 @@ const rendered = await Promise.all(
       </ul>
     </nav>
 
-    <dl class="glossary">
-      {
-        rendered.map(({ id, data, Body }) => (
-          <div class="term" id={id}>
-            <dt>
-              <a href={`#${id}`} class="term__anchor">
-                {data.term}
-              </a>
-            </dt>
-            <dd class="prose">
-              <Body />
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
+    {
+      sections.map((section) => (
+        <section class="group">
+          <h2 class="group__name">{section.name}</h2>
+          <dl class="glossary">
+            {section.terms.map(({ id, data, Body }) => (
+              <div class="term" id={id}>
+                <dt>
+                  <a href={`#${id}`} class="term__anchor">
+                    {data.term}
+                  </a>
+                </dt>
+                <dd class="prose">
+                  <Body />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))
+    }
 
     <p class="closing">
       This glossary is not exhaustive. It is an invitation. The world of
@@ -109,6 +123,21 @@ const rendered = await Promise.all(
   .jump a:hover {
     color: var(--amber);
     border-block-end-color: currentColor;
+  }
+
+  .group + .group {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .group__name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    padding-block-end: var(--space-xs);
+    margin-block-end: var(--space-xl);
+    border-block-end: 1px solid var(--border);
   }
 
   .glossary {

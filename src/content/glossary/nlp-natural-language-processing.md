@@ -1,0 +1,7 @@
+---
+term: "NLP (Natural Language Processing)"
+section: "Surveillance Tools and Public Infrastructure"
+order: 20
+---
+
+NLP refers to the suite of technologies that enable machines to process, interpret, and generate human language. By 2075, NLP systems will be embedded in nearly every interface in Sumati’s world—from train AIs responding to voice commands to educational assistants to surveillance drones monitoring dissent. These systems analyse what is said and how it's said—tone, hesitation, even breath patterns—to flag anomalies or infer intent. In government systems, NLP is weaponised: used to predict unrest, suppress unauthorised narratives, or redact communication streams deemed subversive. Sumati’s mother, Meera, once worked on an open-source NLP tool meant for inclusive governance training, before the tool was absorbed into state surveillance systems. After the 2060 Disclosures, NLP became a contested technology: both resistance groups and state agencies rely on it, but have opposing goals. In The Very Last Superhero, NLP is part of the invisible infrastructure—always listening, interpreting, and often misjudging. While rarely named aloud, its presence is felt in automated classroom corrections, one-way comms, and the chilling neutrality of AI voices. NLP systems don’t forget; they misremember selectively. Their outputs are not facts but forecasts—shaped by bias, training data, and authority. Understanding them is key to resisting their influence.
