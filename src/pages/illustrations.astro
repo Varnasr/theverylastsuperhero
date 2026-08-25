@@ -18,27 +18,36 @@ const files = import.meta.glob<{ default: ImageMetadata }>(
 interface Caption {
   title: string;
   note: string;
-  /** true where the image (or a version of it) appears in the published book. */
-  inBook?: boolean;
+  /**
+   * The book's own figure legend, transcribed from the manuscript, where this
+   * plate carries one.
+   *
+   * This replaced a hand-set `inBook` boolean. That flag was guesswork — only
+   * the first third of the manuscript is machine-readable, so "not in the book"
+   * could never be established for the rest, and the page was asserting it
+   * anyway. A legend is evidence: it is either printed under the plate or it
+   * is not. Absence of one here means unverified, not cut.
+   */
+  legend?: string;
 }
 
 const CAPTIONS: Record<string, Caption> = {
-  'salt-lamp-shack': { title: 'The Lamp in the Shack', note: 'A dimly lit shack, straw on the floor, and a salt lamp glowing red in the middle of it.', inBook: true },
-  'treasure-room': { title: 'The Treasure Room', note: 'Broken fans, old parchment, coins with holes, shiny metal balls, lamps, embroidered fabric, bottles of every colour.', inBook: true },
-  'nandinis-tea-corner': { title: "Nandini's Tea Corner", note: 'The tea stall at the end of the platform, and the woman who tells a lost girl they will figure it out together.', inBook: true },
-  'virtual-layer-flooring': { title: 'Virtual Layer Flooring', note: 'Footsteps leaving a blue blur of soft light along a train corridor.', inBook: true },
-  'superhero-flees': { title: 'The Hero Leaves', note: 'A bus in the river, a collapsed bridge, women and children in the water — and a figure in neon green heading the other way.', inBook: true },
-  'fly-ash-fields': { title: 'Fly Ash', note: 'Pushing the fronds aside to find long white fields of ash behind them.', inBook: true },
-  'bench-weeping': { title: 'The Bench', note: 'The moment before the dog gets a name.', inBook: true },
-  'cardboard-boxes': { title: 'Behind the Boxes', note: 'Pulling apart a pile of cardboard to find someone already living there.', inBook: true },
-  'chased-by-crow': { title: 'The Crow', note: 'Down the platform at speed, a girl, a dog, and a bird that will not be shooed.', inBook: true },
-  'professor-with-books': { title: 'Papa and the Books', note: 'Stepping off a train under a pile of books, watched from the platform.', inBook: true },
-  'delhi-station-2045': { title: 'The Station', note: 'Solar panels, a hyperloop, and robots that guide confused travellers with soft blue light.', inBook: true },
-  'arid-land': { title: 'Cracked Ground', note: 'Fields that were once lush green, bearing the brunt of it. Wide-brimmed hats and parasols.', inBook: true },
-  'animal-team': { title: 'The Animals', note: 'A mongoose, a cat, a dog, a parrot, a crow. Between them they upend more scan sweeps than the Resistance ever planned.', inBook: true },
+  'salt-lamp-shack': { title: 'The Lamp in the Shack', note: 'A dimly lit shack, straw on the floor, and a salt lamp glowing red in the middle of it.', legend: 'Sumati and Aasma talk by a Salt Lamp' },
+  'treasure-room': { title: 'The Treasure Room', note: 'Broken fans, old parchment, coins with holes, shiny metal balls, lamps, embroidered fabric, bottles of every colour.', legend: 'Mr Mehta shows Sumati the Treasure Room' },
+  'nandinis-tea-corner': { title: "Nandini's Tea Corner", note: 'The tea stall at the end of the platform, and the woman who tells a lost girl they will figure it out together.' },
+  'virtual-layer-flooring': { title: 'Virtual Layer Flooring', note: 'Footsteps leaving a blue blur of soft light along a train corridor.' },
+  'superhero-flees': { title: 'The Hero Leaves', note: 'A bus in the river, a collapsed bridge, women and children in the water — and a figure in neon green heading the other way.' },
+  'fly-ash-fields': { title: 'Fly Ash', note: 'Pushing the fronds aside to find long white fields of ash behind them.', legend: 'Rohan kneels to see a sole plant sapling in an enormous white field of ash' },
+  'bench-weeping': { title: 'The Bench', note: 'The moment before the dog gets a name.' },
+  'cardboard-boxes': { title: 'Behind the Boxes', note: 'Pulling apart a pile of cardboard to find someone already living there.' },
+  'chased-by-crow': { title: 'The Crow', note: 'Down the platform at speed, a girl, a dog, and a bird that will not be shooed.' },
+  'professor-with-books': { title: 'Papa and the Books', note: 'Stepping off a train under a pile of books, watched from the platform.' },
+  'delhi-station-2045': { title: 'The Station', note: 'Solar panels, a hyperloop, and robots that guide confused travellers with soft blue light.', legend: 'The Hyperloop at Serenity Junction' },
+  'arid-land': { title: 'Cracked Ground', note: 'Fields that were once lush green, bearing the brunt of it. Wide-brimmed hats and parasols.' },
+  'animal-team': { title: 'The Animals', note: 'A mongoose, a cat, a dog, a parrot, a crow. Between them they upend more scan sweeps than the Resistance ever planned.' },
   'library-disarray': { title: 'The Library, After', note: 'Books off the shelves, pages fluttering like confetti.' },
   'library-librarian': { title: 'The Head Librarian', note: 'A stern woman at a high table, surrounded by books, being asked for something she is not supposed to give.' },
-  'sumati-face': { title: 'Sumati', note: 'Looking up.', inBook: true },
+  'sumati-face': { title: 'Sumati', note: 'Looking up.' },
   'london-fireplace': { title: 'A Room in London', note: 'Wood panelling, law journals, a roaring fire, and a man who is a long way from Delhi.' },
   'bazaar-from-train': { title: 'Bazaars from a Train Window', note: 'Colourful fabric and shimmering jewels, the smell of street food, all of it going past.' },
   'museum': { title: 'The Museum', note: 'Holographic biospheres, ecosystem simulations, augmented tours through an Earth that is no longer there.' },
@@ -74,8 +83,7 @@ const images = Object.entries(files)
     return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
   });
 
-const inBook = images.filter((i) => i.caption?.inBook).length;
-const cut = images.length - inBook;
+const withLegend = images.filter((i) => i.caption?.legend).length;
 
 // A representative image for the social card.
 const first = images[0]?.src;
@@ -92,11 +100,11 @@ const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) :
       <p class="eyebrow">The artwork</p>
       <h1>Illustrations</h1>
       <p class="text-muted lede">
-        {images.length} pieces made while writing the book. {inBook} of them made it in; the other {
-          cut
-        } did not — rooms that were described and then cut, characters who lost their scene, versions
-        that were nearly right. They are here because the world is bigger than the book that came out
-        of it.
+        {images.length} pieces made while writing the book. Some were printed; others were rooms
+        described and then cut, characters who lost their scene, versions that were nearly right.
+        They are all here, because the world is bigger than the book that came out of it. Where a
+        plate carries the book's own figure legend, it is quoted underneath — {withLegend} so far,
+        transcribed from the manuscript as more of it becomes readable.
       </p>
     </header>
 
@@ -114,9 +122,10 @@ const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) :
             <figcaption>
               <h2>
                 {caption?.title ?? slug.replace(/-/g, ' ')}
-                {!caption?.inBook && <span class="plate__cut">not in the book</span>}
+                {caption?.legend && <span class="plate__printed">in the book</span>}
               </h2>
               {caption?.note && <p class="text-muted">{caption.note}</p>}
+              {caption?.legend && <p class="plate__legend">{caption.legend}</p>}
             </figcaption>
           </figure>
         ))
@@ -173,15 +182,28 @@ const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) :
     font-size: var(--step-1);
   }
 
-  .plate__cut {
+  .plate__printed {
     font-family: var(--font-mono);
     font-size: 0.66rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text-faint);
-    border: 1px dashed var(--border-strong);
+    color: var(--amber);
+    border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent);
+    background: color-mix(in srgb, var(--amber) 10%, transparent);
     border-radius: 999px;
     padding: 0.15em 0.6em;
+  }
+
+  /* The book's own words for the plate, so it reads as a quotation from the
+     printed page rather than another line of site copy. */
+  .plate__legend {
+    margin-block-start: var(--space-2xs);
+    padding-inline-start: var(--space-s);
+    border-inline-start: 2px solid color-mix(in srgb, var(--amber) 35%, transparent);
+    font-size: var(--step--1);
+    font-style: italic;
+    color: var(--text-muted);
+    max-width: 48ch;
   }
 
   .plate figcaption p {
