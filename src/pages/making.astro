@@ -1,13 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SecondEdition from '../components/SecondEdition.astro';
 import Newsletter from '../components/Newsletter.astro';
 import BuyButton from '../components/BuyButton.astro';
+import { getCollection, render } from 'astro:content';
 
 /**
  * "On the Making of The Very Last Superhero" — the author's own afterword,
  * reproduced verbatim from the manuscript. Nothing here is site copy; if it
  * needs changing, it changes in the book first.
  */
+
+const works = (await getCollection('reading')).sort((a, b) => a.data.order - b.data.order);
+const readings = await Promise.all(
+  works.map(async (w) => ({ ...w, Body: (await render(w)).Content }))
+);
+const groups: { name: string; works: typeof readings }[] = [];
+for (const w of readings) {
+  const last = groups.at(-1);
+  if (last?.name === w.data.section) last.works.push(w);
+  else groups.push({ name: w.data.section, works: [w] });
+}
 ---
 
 <BaseLayout
@@ -44,6 +57,46 @@ import BuyButton from '../components/BuyButton.astro';
 
     </div>
 
+    <section class="reading" id="further-reading">
+      <header class="reading__head">
+        <h2>Further Reading</h2>
+        <p class="text-muted">
+          The book's annotated bibliography — {works.length} works in {groups.length} groups, each
+          with the author's note on why it matters to the novel.
+        </p>
+      </header>
+
+      {
+        groups.map((group) => (
+          <div class="rgroup">
+            <h3 class="rgroup__name">{group.name}</h3>
+            <ol class="works">
+              {group.works.map(({ id, data, Body }) => (
+                <li class="work" id={id}>
+                  <p class="work__author">{data.author}</p>
+                  <h4>{data.title}</h4>
+                  {data.publisher && (
+                    <p class="work__pub">
+                      {data.publisher}
+                      {data.year && `, ${data.year}`}
+                    </p>
+                  )}
+                  <div class="work__note prose">
+                    <Body />
+                  </div>
+                  {data.relevance && (
+                    <p class="work__rel">
+                      <span>Relevance</span> {data.relevance}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </section>
+
     <aside class="after">
       <p class="text-muted">
         Varna Sri Raman is the author and illustrator. The afterword above is printed in the book,
@@ -52,6 +105,7 @@ import BuyButton from '../components/BuyButton.astro';
       <BuyButton />
     </aside>
       <Newsletter />
+      <SecondEdition />
   </div>
 </BaseLayout>
 
@@ -74,6 +128,87 @@ import BuyButton from '../components/BuyButton.astro';
     font-family: var(--font-display);
     font-size: var(--step-1);
     color: var(--amber);
+  }
+
+  .reading {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .reading__head {
+    max-width: 62ch;
+    margin-block-end: var(--space-2xl);
+  }
+
+  .reading__head h2 {
+    font-size: var(--step-2);
+  }
+
+  .rgroup + .rgroup {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .rgroup__name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    padding-block-end: var(--space-xs);
+    margin-block-end: var(--space-xl);
+    border-block-end: 1px solid var(--border);
+  }
+
+  .works {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .work {
+    max-width: 64ch;
+    scroll-margin-block-start: 6rem;
+  }
+
+  .work__author {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .work h4 {
+    font-size: var(--step-1);
+    margin-block: var(--space-3xs) var(--space-3xs);
+  }
+
+  .work__pub {
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .work__note {
+    margin-block-start: var(--space-xs);
+    font-size: var(--step--1);
+  }
+
+  .work__rel {
+    margin-block-start: var(--space-xs);
+    padding-inline-start: var(--space-s);
+    border-inline-start: 2px solid color-mix(in srgb, var(--amber) 40%, transparent);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .work__rel span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    display: block;
   }
 
   .after {

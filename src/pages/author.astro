@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BuyButton from '../components/BuyButton.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { site } from '../lib/site';
+---
+
+<BaseLayout
+  title="About the Author"
+  description="Varna Sri Raman wrote and illustrated The Very Last Superhero. Her personal site is idealog.works."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Author and illustrator</p>
+      <h1>{site.author}</h1>
+      <p class="text-muted lede">
+        She wrote this book and drew it. Both halves matter here — the illustrations are not
+        decoration commissioned afterwards, and the afterword is explicit about it: <em
+          >they are not illustrations, they are records</em
+        >.
+      </p>
+    </header>
+
+    <div class="prose author stack">
+      <h2>The book</h2>
+      <p>
+        <em>The Very Last Superhero</em> is a speculative novel set in a climate-collapsed India of
+        2075, published by {site.publisher} in {site.edition.toLowerCase()}. It begins after the era
+        of superheroes rather than during it, and its argument is that what survives collapse is not
+        power but memory — held by ordinary people, animals, salvaged tech and archivists who did
+        not stop.
+      </p>
+      <p>
+        <a href="/making">On the Making</a> is her own account of why she wrote it, printed in the
+        book and reproduced here in full. It is the best short answer to what the novel is for.
+      </p>
+
+      <h2>Elsewhere</h2>
+      <p>
+        Her personal site is <a href="https://idealog.works" rel="noopener me">idealog.works</a>.
+        This site is about the book; that one is about her.
+      </p>
+
+      <h2>What is real in it</h2>
+      <p>
+        The Okhla waste-to-energy plant exists. The heat exists. The book is dedicated in part to
+        someone fighting Delhi's waste-to-energy plants, and <a href="/act">How to Help</a> points
+        at the people doing that work now.
+      </p>
+
+      <h2>Getting in touch</h2>
+      <p>
+        <a href="/contact">Write to her directly</a> — about the book, a correction, a reader
+        submission, or anything on this site that looks wrong.
+      </p>
+    </div>
+
+    <aside class="buy">
+      <BuyButton />
+      <p class="text-muted">
+        {site.publisher} · {site.edition} · ISBN {site.isbn}
+      </p>
+    </aside>
+
+    <Newsletter />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .lede,
+  .author {
+    max-width: 62ch;
+  }
+
+  .author h2 {
+    font-size: var(--step-1);
+    margin-block-start: var(--space-xl);
+  }
+
+  .buy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m);
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 62ch;
+  }
+
+  .buy p {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin: 0;
+  }
+</style>

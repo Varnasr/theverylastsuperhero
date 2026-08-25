@@ -141,6 +141,19 @@ const structuredData = {
   </section>
 
   <section class="section shell">
+    <aside class="better">
+      <div class="better__text">
+        <p class="eyebrow">Not fiction</p>
+        <h2>Make the World Better</h2>
+        <p>
+          The Okhla waste-to-energy plant exists. The heat exists. The book's answer is not a hero
+          — it is documentation, doubt, and people who keep turning up. Sixteen organisations
+          already doing that work, and the campaign this book is dedicated to.
+        </p>
+      </div>
+      <a class="button better__cta" href="/act">See how to help →</a>
+    </aside>
+
     <figure class="epigraph">
       <blockquote>
         <p>{site.epigraph.text}</p>
@@ -319,6 +332,39 @@ const structuredData = {
 
   .callout .stack {
     max-width: 46ch;
+  }
+
+  /* The novel's argument, made actionable, sitting above the epigraph rather
+     than buried in the More menu. */
+  .better {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-l);
+    margin-block-end: var(--space-2xl);
+    padding: var(--space-l);
+    border: 1px solid color-mix(in srgb, var(--amber) 45%, var(--border));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--amber) 7%, var(--bg-sunken));
+  }
+
+  .better__text {
+    flex: 1 1 26rem;
+  }
+
+  .better h2 {
+    font-size: var(--step-2);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .better p {
+    max-width: 58ch;
+    color: var(--text-muted);
+  }
+
+  .better__cta {
+    flex: none;
   }
 
   .buy-band {

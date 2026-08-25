@@ -123,14 +123,13 @@ export const nav = [
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
   { href: '/memory', label: 'Testimonials' },
-  { href: '/making', label: 'Making' },
-  { href: '/reading', label: 'Reading' },
+  { href: '/making', label: 'Making the Book' },
 ] as const;
 
 /** Secondary destinations, grouped under "More" in the header. */
 export const navMore = [
   { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
-  { href: '/act', label: 'How to Help', note: 'The parts that are not fiction' },
+  { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
   { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
   { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
   { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
@@ -141,6 +140,7 @@ export const navMore = [
 ] as const;
 
 export const footerLinks = [
+  { href: '/author', label: 'The Author' },
   { href: '/contact', label: 'Contact' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },

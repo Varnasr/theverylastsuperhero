@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntries, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SecondEdition from '../components/SecondEdition.astro';
 
 const events = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
 
@@ -63,6 +64,7 @@ const withLinks = await Promise.all(
         ))
       }
     </ol>
+      <SecondEdition />
   </div>
 </BaseLayout>
 

@@ -43,3 +43,15 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
+
+# Further Reading moved into the afterword page, which is where it sits in the
+# book. The old URL stays alive rather than 404ing for anyone who bookmarked it.
+[[redirects]]
+  from = "/reading"
+  to = "/making/#further-reading"
+  status = 301
+
+[[redirects]]
+  from = "/reading/*"
+  to = "/making/#further-reading"
+  status = 301

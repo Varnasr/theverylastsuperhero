@@ -1,0 +1,165 @@
+---
+import { site } from '../lib/site';
+
+/**
+ * Corrections and ideas for a second edition.
+ *
+ * Separate from the updates list on purpose: this one wants a specific thing
+ * (a factual error, a continuity slip, something that should exist) and the
+ * replies go somewhere different. Netlify Forms, same as the others.
+ */
+interface Props {
+  variant?: 'panel' | 'aside';
+}
+const { variant = 'panel' } = Astro.props;
+---
+
+<section class:list={['second', `second--${variant}`]} aria-labelledby="second-heading">
+  <p class="eyebrow">For the second edition</p>
+  <h2 id="second-heading">Found something?</h2>
+  <p class="text-muted blurb">
+    A fact that has gone out of date, a continuity slip, a name spelled two ways, or something the
+    world needs and does not have yet. The archive is a working document and corrections are the
+    point of it.
+  </p>
+
+  <form
+    class="form"
+    name="corrigenda"
+    method="POST"
+    action={site.formEndpoint || undefined}
+    data-netlify="true"
+    netlify-honeypot="_gotcha"
+  >
+    <input type="hidden" name="form-name" value="corrigenda" />
+    <p class="hp" aria-hidden="true">
+      <label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="field">
+      <label for="se-kind">What kind of thing</label>
+      <select id="se-kind" name="kind">
+        <option value="correction">A correction — something here is wrong</option>
+        <option value="continuity">A continuity slip in the book</option>
+        <option value="idea">An idea for the second edition</option>
+        <option value="missing">Something missing from the archive</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="se-where">Where</label>
+      <input id="se-where" name="where" type="text" placeholder="Page 141, or /lore/hysterons" />
+    </div>
+
+    <div class="field">
+      <label for="se-detail">What it is</label>
+      <textarea id="se-detail" name="detail" rows="5" required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="se-email">Email, if you would like a reply</label>
+      <input id="se-email" name="email" type="email" autocomplete="email" />
+      <p class="hint">Optional. Used only to write back about this.</p>
+    </div>
+
+    <button type="submit">Send it in</button>
+  </form>
+</section>
+
+<style>
+  .second {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    padding: var(--space-l);
+    margin-block-start: var(--space-2xl);
+  }
+
+  .second--aside {
+    padding: var(--space-m);
+  }
+
+  .second h2 {
+    font-size: var(--step-1);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .blurb {
+    max-width: 52ch;
+    font-size: var(--step--1);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-s);
+    max-width: 34rem;
+    margin-block-start: var(--space-m);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  button {
+    justify-self: start;
+    padding: 0.55rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--bg);
+    background: var(--amber);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: color-mix(in srgb, var(--amber) 85%, white);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

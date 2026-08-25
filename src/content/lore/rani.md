@@ -5,8 +5,8 @@ designation: Parrot | Nandini's
 summary: Nandini's talking parrot, perched on a wooden stand, with opinions about the weather.
 order: 15
 related: [nandini-maa, momo, buddy]
-image: ../../assets/illustrations/lit-room.jpg
-imageAlt: A green and orange parrot on a stool beside a fat ginger cat in a bright window corner
+image: ../../assets/lore/rani.webp
+imageAlt: "A green and orange parrot perched on a wooden stool by a bright window, fruit and an open book below"
 ---
 
 Perched on a wooden stand, bobbing her colourful head at anyone new.

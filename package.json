@@ -13,7 +13,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "optimise:images": "node scripts/optimise-images.mjs"
+    "optimise:images": "node scripts/optimise-images.mjs",
+    "deploy": "bash scripts/deploy-netlify.sh"
   },
   "dependencies": {
     "astro": "^5.6.1",

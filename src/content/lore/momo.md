@@ -5,8 +5,8 @@ designation: Ginger Cat | Nandini's
 summary: Nandini's fat ginger cat, and a plump distraction who upends more than one scan sweep.
 order: 14
 related: [nandini-maa, rani, buddy, moti]
-image: ../../assets/illustrations/lit-room.jpg
-imageAlt: A green and orange parrot on a stool beside a fat ginger cat in a bright window corner
+image: ../../assets/lore/momo.webp
+imageAlt: "A fat ginger cat sitting upright on floorboards beside a potted plant and a coral curtain"
 ---
 
 Nandini's cat: fat, ginger, and entirely unbothered by new arrivals sniffing

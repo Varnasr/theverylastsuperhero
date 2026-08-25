@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SecondEdition from '../components/SecondEdition.astro';
 import Newsletter from '../components/Newsletter.astro';
 
 /**
@@ -106,6 +107,7 @@ for (const e of rendered) {
       it is impossible, perhaps that is where we should begin.
     </p>
       <Newsletter />
+      <SecondEdition />
   </div>
 </BaseLayout>
 
