@@ -9,10 +9,26 @@ import { site } from '../lib/site';
 import hero from '../assets/wallpapers/on-rooftop.jpg';
 
 const lore = await getCollection('lore', ({ data }) => !data.draft);
-const featured = lore
+
+/**
+ * The three entries on the front page rotate.
+ *
+ * The site is static, so this turns at build time rather than per visitor —
+ * every deploy moves the window on by one, and a day-of-year offset means even
+ * a week without a deploy does not show the same three. Deterministic, so a
+ * rebuild of the same commit on the same day produces identical output.
+ */
+const illustrated = lore
   .filter((e) => e.data.image)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+  .sort((a, b) => a.data.order - b.data.order);
+
+const dayOfYear = Math.floor(
+  (Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86_400_000
+);
+const offset = illustrated.length ? dayOfYear % illustrated.length : 0;
+const featured = Array.from({ length: Math.min(3, illustrated.length) }, (_, i) =>
+  illustrated[(offset + i) % illustrated.length]
+);
 
 const timeline = (await getCollection('timeline')).sort((a, b) => a.data.year - b.data.year);
 const first = timeline.at(0);
@@ -212,11 +228,20 @@ const structuredData = {
     margin-block: var(--space-xs) var(--space-s);
   }
 
+  /* The scrim above is built from --bg, so it darkens in dark mode and
+     lightens in light mode. That means hero text must stay on theme tokens —
+     a fixed white reads well on the dark scrim and disappears on the cream
+     one. What was wrong here was only the weight: --text-faint and
+     --text-muted are too quiet over a photograph, so both step up. */
+  .hero .eyebrow {
+    color: var(--amber);
+  }
+
   .hero__tagline {
     font-family: var(--font-display);
     font-style: italic;
     font-size: var(--step-1);
-    color: var(--text-muted);
+    color: var(--text);
     max-width: 34ch;
   }
 

@@ -3,8 +3,6 @@ title: Moti
 category: Creature
 designation: Mongoose
 summary: Watchful and nosy, known to carry messages or disrupt AI drones when trained.
-image: ../../assets/illustrations/animal-team.webp
-imageAlt: A mongoose, a cat, a dog, a parrot and a crow together
 order: 13
 related: [momo, chandra]
 ---

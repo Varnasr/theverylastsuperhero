@@ -2,9 +2,11 @@
 title: Crow Surveillance Drone
 designation: Obj-CSD/??
 summary: Rumoured bio-drones used for covert surveillance. No confirmed specimen has ever been catalogued, which is either proof of nothing or proof of the design working.
-status: corrupted
+status: recovered
 order: 8
 related: [chandra, p-a-i, the-resistance]
+image: ../../assets/archive/crow-drone.webp
+imageAlt: A crow with visible mechanical joints at wing, leg and shoulder, perched on a rusted pipe
 ---
 
 Rumoured. That word is doing all the work in this entry.

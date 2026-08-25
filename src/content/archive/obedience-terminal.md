@@ -2,9 +2,11 @@
 title: Compliance Scoring Terminal
 designation: Obj-CST/09
 summary: A kiosk that watches behaviour and withholds services accordingly. Recovered intact, which tells you how much anyone wanted it.
-status: pending
+status: recovered
 order: 6
 related: [the-obedience-index, p-a-i]
+image: ../../assets/archive/obedience-terminal.webp
+imageAlt: A weathered public kiosk with a cracked screen, a camera above it and a palm reader below
 ---
 
 A public kiosk. It reads a biometric ID, consults the

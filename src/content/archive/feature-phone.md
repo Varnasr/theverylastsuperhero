@@ -2,9 +2,11 @@
 title: Feature Phone
 designation: Obj-FP/RK
 summary: A simple unconnected handset of the kind issued to children for emergencies. Sumati's father gave her one. It is the reason the first day is survivable.
-status: pending
+status: recovered
 order: 7
 related: [sumati, rohan-kapoor]
+image: ../../assets/archive/feature-phone.webp
+imageAlt: A scuffed keypad handset with a small dark screen, lying on a dusty surface
 ---
 
 Simple, unconnected, durable. The kind of device that came back into use once
