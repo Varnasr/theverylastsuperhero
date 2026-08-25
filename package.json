@@ -13,8 +13,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "optimise:images": "node scripts/optimise-images.mjs",
-    "deploy:manual": "bash scripts/deploy-gh-pages.sh"
+    "optimise:images": "node scripts/optimise-images.mjs"
   },
   "dependencies": {
     "astro": "^5.6.1",

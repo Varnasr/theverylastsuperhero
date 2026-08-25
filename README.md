@@ -64,7 +64,7 @@ The novel is built around the **Resistance Archive** — 33 lore entries, 12 tim
 | Language | TypeScript (strict) | `astro check` runs before every build and deploy |
 | Styling | Modern CSS — `@layer`, custom properties, `clamp()`, `color-mix()` | No CSS framework, no runtime |
 | Images | Astro's built-in pipeline (sharp) | Automatic WebP at multiple widths with correct `srcset` and intrinsic sizing |
-| Hosting | GitHub Pages via GitHub Actions | Same host, same domain, now with a real build step |
+| Hosting | Netlify | Moved from GitHub Pages; same domain, plus forms and a real build step |
 
 No UI framework. No client-side router. The interactive pieces — search, filters, the map, the audio player, the theme toggle — are a few kilobytes of vanilla TypeScript, and every one of them degrades to something usable without JavaScript.
 
@@ -131,21 +131,23 @@ See **[docs/SUBMISSIONS.md](./docs/SUBMISSIONS.md)** to switch on the Memory Wal
 
 ## Deployment
 
-Pushing to `main` triggers `.github/workflows/deploy.yml`, which type-checks, builds, and publishes `dist/` to GitHub Pages. `CNAME` and `.nojekyll` live in `public/` so they survive the build.
+The site is hosted on **Netlify** and nowhere else. DNS moved in August 2026:
+`www` is a CNAME to `postheroic-world.netlify.app`, and the apex points at
+Netlify's load balancer and redirects to `www`.
 
-The repository's Pages setting must be **Source: GitHub Actions** rather than *Deploy from a branch*.
+Build settings live in `netlify.toml` — command, publish directory, redirects
+and cache headers. Netlify Forms picks up the three forms (`memory-wall`,
+`fanfic`, `updates`) from the built HTML at deploy time.
 
-Every pull request additionally runs a build, a type-check, an internal link check across the built site, and an external link check.
+Every pull request runs a build, a type-check, an internal link check across the
+built site, and an external link check.
 
-### If GitHub Actions is unavailable
-
-```bash
-npm run deploy:manual
-```
-
-This builds, verifies every internal link, and publishes `dist/` to a `gh-pages` branch. Set **Pages → Source** to *Deploy from a branch*, branch `gh-pages`, folder `/ (root)`.
-
-Nothing from the build lands on `main`. When Actions is working again, switch **Pages → Source** back to *GitHub Actions* — the workflow is already in place and needs no changes.
+> **Note.** The site ran on GitHub Pages until the move, in parallel with
+> Netlify so both hosts served the same commit while DNS propagated. That
+> workflow and its manual fallback script have been removed. If GitHub Pages is
+> still enabled in repository settings, turn it off — nothing publishes there
+> any more, and leaving it on keeps GitHub's legacy Jekyll builder running and
+> failing on every push.
 
 ---
 

@@ -1,6 +1,6 @@
 # Turning on the Memory Wall form
 
-The site is static and hosted on GitHub Pages, which cannot run server code.
+The site is static and hosted on Netlify, which cannot run server code on a page request.
 A submission form therefore needs a third-party relay that accepts the POST and
 emails it on.
 

@@ -1,8 +1,8 @@
 # Netlify build configuration.
 #
-# The GitHub Pages workflow (.github/workflows/deploy.yml) is left in place so
-# both hosts can serve the same commit while DNS moves; delete it once Netlify
-# is the only one serving www.postheroic.world.
+# Netlify is the only host. DNS moved in August 2026: www is a CNAME to
+# postheroic-world.netlify.app and the apex points at Netlify's load balancer.
+# The GitHub Pages workflow that ran alongside during the move has been removed.
 
 [build]
   command = "npm run build"
