@@ -23,12 +23,13 @@ The story follows **Sumati**, a 14-year-old girl navigating a post-collapse land
 
 ## The world
 
-The novel is built around the **Resistance Archive** — 27 lore entries, 12 timeline events and a catalogue of recovered objects, all authored as data rather than as pages.
+The novel is built around the **Resistance Archive** — 32 lore entries, 12 timeline events and a catalogue of recovered objects, all authored as data rather than as pages.
 
 | Element | Description |
 |---------|-------------|
 | **The Age of Heroes** | Two decades of plasma suits and corporate sponsorship, ended by the 2060 Disclosures |
 | **Salt Lamps** | Memory-storage technology central to the Resistance's oral archive |
+| **Waste-to-energy** | The pilot plants Rohan reviews — the novel's link to a real, ongoing Delhi campaign |
 | **The Firebird** | The symbol that signals the return of belief, risk, and memory |
 | **Sumati** | The protagonist — a teenager who becomes an unexpected keeper of collective memory |
 | **P.A.I. / p.ai** | The state surveillance network, and the Resistance's sabotaged fork of it |
@@ -71,7 +72,7 @@ No UI framework. No client-side router. The interactive pieces — search, filte
 ```
 src/
 ├── content/            # The world, as data
-│   ├── lore/           #   27 archive entries
+│   ├── lore/           #   32 archive entries
 │   ├── timeline/       #   12 chronology events
 │   ├── archive/        #   catalogued objects
 │   ├── wallpapers/     #   the Sumati Series

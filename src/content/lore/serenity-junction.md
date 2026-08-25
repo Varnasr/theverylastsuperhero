@@ -1,12 +1,17 @@
 ---
 title: Serenity Junction
 category: Location
-designation: Station | Hyperloop
-summary: The quaint platform where the train announces its next stop and a father steps off — the last place Sumati sees him.
+designation: Station | Two Platforms
+summary: A quaint platform in Kishanganj with memorabilia on the walls, where the train stops for two minutes and a father steps off.
 order: 17
-related: [sumati, rohan-kapoor, nandini-sharma]
+related: [kishanganj, sumati, rohan-kapoor, mr-joshi, nandini-sharma, hyper-express]
 ---
 
-A quaint platform, memorabilia on the station walls, and the hyperloop coming in.
+*Next stop: Serenity Junction*, the train's AI announces.
 
-*Next stop: Serenity Junction.*
+A quaint platform with memorabilia on the station walls, in the town of
+Kishanganj. Two platforms, and no more than that.
+
+Sumati is left a few feet away, staring at the memorabilia, while the papers
+change hands. Then she is pressing her palms against the station walls, feeling
+the vibrations of the Hyper Express leaving without her.
