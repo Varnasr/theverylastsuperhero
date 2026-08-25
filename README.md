@@ -135,6 +135,16 @@ The repository's Pages setting must be **Source: GitHub Actions** rather than *D
 
 Every pull request additionally runs a build, a type-check, an internal link check across the built site, and an external link check.
 
+### If GitHub Actions is unavailable
+
+```bash
+npm run deploy:manual
+```
+
+This builds, verifies every internal link, and publishes `dist/` to a `gh-pages` branch. Set **Pages → Source** to *Deploy from a branch*, branch `gh-pages`, folder `/ (root)`.
+
+Nothing from the build lands on `main`. When Actions is working again, switch **Pages → Source** back to *GitHub Actions* — the workflow is already in place and needs no changes.
+
 ---
 
 ## Contributing
