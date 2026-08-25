@@ -1,0 +1,120 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../lib/site';
+
+/**
+ * A single contribution.
+ *
+ * The wall cards were dead ends: the body each contributor wrote was never
+ * rendered anywhere, so the wall showed only a title and a name.
+ */
+
+export const getStaticPaths = (async () => {
+  const items = await getCollection('memory', ({ data }) => !data.draft);
+  return items.map((m) => ({ params: { slug: m.id }, props: { item: m } }));
+}) satisfies GetStaticPaths;
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const d = item.data;
+const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
+---
+
+<BaseLayout title={d.title} description={`${d.kind === 'artwork' ? 'Artwork' : 'Testimony'} from ${d.contributor} on the Memory Wall.`}>
+  <div class="shell section">
+    <p class="back"><a href="/memory">← Testimonials</a></p>
+
+    <article class="entry">
+      <header class="head stack">
+        <p class="eyebrow">
+          {d.kind === 'artwork' ? 'Artwork' : 'Testimony'} · {dateFmt.format(d.added)}
+        </p>
+        <h1>{d.title}</h1>
+        <p class="by">
+          {d.contributor}{d.age && `, ${d.age}`}{d.location && ` · ${d.location}`}
+        </p>
+      </header>
+
+      {
+        d.image && (
+          <figure class="plate">
+            <Image src={d.image} alt={d.imageAlt ?? ''} widths={[480, 800, 1200]} sizes="(max-width: 60rem) 92vw, 42rem" />
+          </figure>
+        )
+      }
+
+      <div class="prose body">
+        <Content />
+      </div>
+    </article>
+
+    <footer class="foot">
+      <p class="text-muted">
+        Sent in by a reader and published with their permission. It comes down on request — write to
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+      <p><a href="/memory#submit">Add your own →</a></p>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .back {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin-block-end: var(--space-l);
+  }
+
+  .back a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back a:hover {
+    color: var(--amber);
+  }
+
+  .entry {
+    max-width: 62ch;
+  }
+
+  .head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .by {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--amber);
+  }
+
+  .plate {
+    margin: 0 0 var(--space-xl);
+  }
+
+  .plate img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .body :global(blockquote) {
+    font-size: var(--step-1);
+  }
+
+  .foot {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+    max-width: 62ch;
+    font-size: var(--step--1);
+  }
+
+  .foot p + p {
+    margin-block-start: var(--space-xs);
+  }
+</style>
