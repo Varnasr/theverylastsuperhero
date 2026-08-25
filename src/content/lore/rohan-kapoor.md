@@ -3,8 +3,8 @@ title: Rohan Kapoor
 category: Character
 designation: Climate Scientist | Whistleblower
 summary: Twenty years of climate adaptation research, work on the Yamuna Action Plan, and a cooling suit he still finds fascinating. His disappearance sets Sumati's journey in motion.
-image: ../../assets/illustrations/professor-with-books.webp
-imageAlt: A silver-haired man stepping off a train carrying a huge pile of books, a girl watching from the platform with a crow at her hair
+image: ../../assets/illustrations/vision-board.jpg
+imageAlt: A board of maps, photographs and sticky notes strung together around one portrait
 order: 6
 related: [sumati, meera, waste-to-energy, mr-joshi, salt-lamps, obj-v078]
 ---

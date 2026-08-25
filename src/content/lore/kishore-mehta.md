@@ -5,8 +5,8 @@ designation: Librarian | also Rishi, also Axl
 summary: A librarian of more than thirty years who keeps the Treasure Room and gathers explanations for mysterious phenomena. Also the eleven-year-old who broke P.A.I.
 order: 24
 related: [p-a-i, p-ai, the-treasure-room, salt-lamps, sumati, aasma]
-image: ../../assets/illustrations/london-fireplace.webp
-imageAlt: A heavily wrapped man seated before a roaring fireplace in a rich wood-panelled room, law journals behind him
+image: ../../assets/illustrations/professor-with-books.webp
+imageAlt: A tall thin man with silver hair stepping down from an old train, reading, his arms full of books
 ---
 
 A librarian who has worked at the same library for over thirty years. He pours

@@ -23,14 +23,9 @@ testimony:
         assigned before the measurement. Thank you for your cooperation.
 ---
 
-P.ai — Public Access Intelligence — was never public.
-
-Officially it predicted the weather. Unofficially it predicted dissent, tracking
-not just air currents but behaviour patterns. Deployed jointly by the state and
-syndicate capital, it forecast protests, mapped resistance nodes, and redirected
-resources in real time. [Rohan](/lore/rohan-kapoor) and [Meera](/lore/meera)
-fought to expose it. They failed — but they left codes behind, and the codes are
-why the rest of this entry exists.
+The system it replaced was never public. [Rohan](/lore/rohan-kapoor) and
+[Meera](/lore/meera) fought to expose [it](/lore/p-a-i) and failed — but they
+left codes behind, and the codes are why the rest of this entry exists.
 
 It is what P.A.I. became after [Axl](/lore/kishore-mehta) got at it. He was
 eleven when he breached its first training loop. It took five more years to make

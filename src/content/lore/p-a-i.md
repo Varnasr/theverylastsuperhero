@@ -39,6 +39,17 @@ It was popular first. It shortened queues. It routed water. It told people where
 not to walk after dark, and it was right often enough that the question of who
 decided the route stopped being asked.
 
+Officially it predicted the weather. Unofficially it predicted dissent — tracking
+not just air currents but behaviour patterns. Deployed jointly by the state and
+syndicate capital, it forecast protests, mapped resistance nodes, and redirected
+resources in real time.
+
+> Declassified debrief, file 61.PAI.SUPPRESS
+
+[Rohan](/lore/rohan-kapoor) and [Meera](/lore/meera) fought to expose it. They
+failed. But they left codes behind, and eleven-year-old
+[Rishi](/lore/kishore-mehta) used them.
+
 By 2061 it was writing the National Curriculum. By 2065 it had reached full
 civic deployment across every major metro — and by then the question of whether
 it should have been trusted had itself become difficult to ask.
