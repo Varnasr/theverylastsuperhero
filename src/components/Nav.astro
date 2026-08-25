@@ -1,5 +1,5 @@
 ---
-import { nav, navMore, site } from '../lib/site';
+import { nav, navMore, navMoreGroups, site } from '../lib/site';
 import ThemeToggle from './ThemeToggle.astro';
 import BuyButton from './BuyButton.astro';
 
@@ -45,18 +45,25 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
                 <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </summary>
-            <ul class="more__menu">
+            <div class="more__menu">
               {
-                navMore.map((item) => (
-                  <li>
-                    <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-                      <span class="more__label">{item.label}</span>
-                      <span class="more__note">{item.note}</span>
-                    </a>
-                  </li>
+                navMoreGroups.map((group) => (
+                  <div class="more__group">
+                    <p class="more__head">{group.name}</p>
+                    <ul class="more__list">
+                      {group.items.map((item) => (
+                        <li>
+                          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                            <span class="more__label">{item.label}</span>
+                            <span class="more__note">{item.note}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))
               }
-            </ul>
+            </div>
           </details>
         </li>
       </ul>
@@ -290,10 +297,7 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     rotate: 180deg;
   }
 
-  /* Specificity note: `.site-nav ul` (0,1,1) outranks a bare `.more__menu`
-     (0,1,0), so the horizontal row's align-items:center would win here and
-     centre every item in the column. Qualifying with the parent settles it. */
-  .site-nav ul.more__menu {
+  .more__menu {
     position: absolute;
     inset-inline-end: 0;
     inset-block-start: calc(100% + 0.4rem);
@@ -306,10 +310,32 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
-    /* .site-nav ul sets align-items:center for the horizontal row; this list is
-       a column, where that centres every item and leaves the labels ragged. */
+    gap: var(--space-2xs);
+  }
+
+  /* `.site-nav ul` (0,1,1) sets a centred horizontal row and outranks a bare
+     `.more__list` (0,1,0) — which would centre every item and leave the labels
+     ragged. Qualifying with the parent settles it. */
+  .site-nav ul.more__list {
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
     gap: 0.1rem;
+  }
+
+  .more__group + .more__group {
+    padding-block-start: var(--space-2xs);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .more__head {
+    margin: 0;
+    padding: 0.35rem 0.6rem 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
   }
 
   .more__menu a {
@@ -432,16 +458,20 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
       padding: 0.7rem 0.6rem;
     }
 
-    /* Qualified to match the desktop rule above: a bare `.more__menu` (0,1,0)
-       loses to `.site-nav ul.more__menu` (0,2,1), which left this absolutely
-       positioned inside the mobile panel and hanging off the screen edge. */
-    .site-nav ul.more__menu {
+    /* In the mobile panel this is part of the flow, not a floating card —
+       otherwise it hangs off the screen edge. */
+    .more__menu {
       position: static;
       min-width: 0;
       border: 0;
       box-shadow: none;
       background: transparent;
       padding-inline-start: var(--space-m);
+    }
+
+    .more__head {
+      font-size: 0.7rem;
+      padding-block: 0.5rem 0.2rem;
     }
   }
 </style>

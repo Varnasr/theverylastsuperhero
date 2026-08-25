@@ -34,8 +34,7 @@ import { site } from '../lib/site';
         Her subject is measurement, policy and power — unpaid care, budget allocations for informal
         workers, welfare schemes and who they actually reach — written about from the inside. She
         writes at <a href="https://policygrounds.press" rel="noopener">PolicyGrounds.press</a>, and
-        carries bylines across the Indian press, among them
-        <a href="https://behanbox.com/author/varna-sri-raman/" rel="noopener">BehanBox</a> and
+        carries bylines across the Indian press, among them The Hindu and
         <a href="https://thewire.in/author/varna-sri-raman" rel="noopener">The Wire</a>.
         <a href="https://idealog.works" rel="noopener me">idealog.works</a> is the fuller record.
       </p>
@@ -57,27 +56,52 @@ import { site } from '../lib/site';
       <h2>Her other books</h2>
       <p>
         She illustrated all of these. They are children's books from
-        <a href="https://storywell.in" rel="noopener">StoryWell</a>, and they are on Amazon.
+        <a href="https://storywell.in" rel="noopener">StoryWell</a>, and all of them are on Amazon.
+        Each one carries the things StoryWell puts in every title — word lists, activities, pages
+        to draw on, and notes for the teacher or parent reading it aloud.
       </p>
-      <ul>
-        <li>
-          <a href="https://www.amazon.in/Kalyanis-Ant-Problem-Varna-Raman/dp/9395373156" rel="noopener"
+      <dl class="books">
+        <dt>
+          <a href="https://www.amazon.in/dp/9395373016" rel="noopener"
+            ><em>Bulbuls and the Big Big Breeze</em></a
+          > — by Papri Sri Raman
+        </dt>
+        <dd></dd>
+
+        <dt>
+          <a href="https://www.amazon.in/dp/9395373172" rel="noopener"><em>Happy Lemon</em></a> — by
+          Papri Sri Raman
+        </dt>
+        <dd></dd>
+
+        <dt>
+          <a href="https://www.amazon.in/dp/9395373156" rel="noopener"
             ><em>Kalyani's Ant Problem</em></a
-          > — written with Papri Sri Raman.
-        </li>
-        <li>
-          <a href="https://www.amazon.in/ROAR-Papri-Sri-Raman/dp/9395373059" rel="noopener"
-            ><em>Roar!</em></a
-          > — by Papri Sri Raman.
-        </li>
-        <li>
-          <a href="https://www.amazon.in/Happy-Lemon-Papri-Sri-Raman/dp/9395373172" rel="noopener"
-            ><em>Happy Lemon</em></a
-          > — by Papri Sri Raman.
-        </li>
-        <li><em>Rhythm Taal</em> — by Papri Sri Raman.</li>
-        <li><em>Bulbul and the Big Big Breeze</em> — by Papri Sri Raman.</li>
-      </ul>
+          > — written with Papri Sri Raman
+        </dt>
+        <dd>
+          Geometry taught through kolam. Kalyani and her grandmother chase ants across the
+          threshold and rediscover the shapes in a form that was already doing the maths, with the
+          ecology of the practice explained alongside it. For five to ten.
+        </dd>
+
+        <dt>
+          <a href="https://www.amazon.in/dp/9395373091" rel="noopener"><em>Rhythm Taal</em></a> — by
+          Papri Sri Raman
+        </dt>
+        <dd>
+          Instruments and the sounds they make, from the point of view of a baby who loves music.
+        </dd>
+
+        <dt>
+          <a href="https://www.amazon.in/dp/9395373059" rel="noopener"><em>Roar!</em></a> — by Papri
+          Sri Raman
+        </dt>
+        <dd>
+          A small tiger cub goes through the forest meeting creatures great and small. Sound and
+          movement, for the very young.
+        </dd>
+      </dl>
 
       <h2>This book</h2>
       <p>
@@ -131,6 +155,24 @@ import { site } from '../lib/site';
   .lede,
   .author {
     max-width: 62ch;
+  }
+
+  .books {
+    margin: 0;
+  }
+
+  .books dt {
+    margin-block-start: var(--space-m);
+  }
+
+  .books dd {
+    margin: 0.2rem 0 0;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+
+  .books dd:empty {
+    display: none;
   }
 
   .author h2 {

@@ -126,20 +126,43 @@ export const nav = [
   { href: '/making', label: 'Making the Book' },
 ] as const;
 
-/** Secondary destinations, grouped under "More" in the header. */
-export const navMore = [
-  { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
-  { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
-  { href: '/after', label: 'What Comes After', note: 'The epilogue — spoilers' },
-  { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
-  { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
-  { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
-  { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
-  { href: '/wallpapers', label: 'Wallpapers', note: 'For a phone or a desktop' },
-  { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
-  { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
-  { href: '/author', label: 'The Author', note: 'Who wrote and drew this' },
+/**
+ * Secondary destinations, under "More" in the header. Grouped, because a flat
+ * list of eleven is a wall; alphabetical within each group, so a reader
+ * scanning for a known name does not have to read the whole column.
+ */
+export const navMoreGroups = [
+  {
+    name: 'The world',
+    items: [
+      { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
+      { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
+      { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
+      { href: '/after', label: 'What Comes After', note: 'The epilogue — spoilers' },
+    ],
+  },
+  {
+    name: 'Art and play',
+    items: [
+      { href: '/sigil', label: 'Firebird Sigil', note: 'Make your own wallpaper' },
+      { href: '/illustrations', label: 'Illustrations', note: 'The artwork, printed and not' },
+      { href: '/lamplighter', label: 'Lamplighter', note: 'A memory game' },
+      { href: '/wallpapers', label: 'Wallpapers', note: 'For a phone or a desktop' },
+    ],
+  },
+  {
+    name: 'Beyond the book',
+    items: [
+      { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
+      { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
+      { href: '/author', label: 'The Author', note: 'Who wrote and drew this' },
+    ],
+  },
 ] as const;
+
+/** Flattened, for anything that needs to ask "is one of these current?". */
+export const navMore: readonly { href: string; label: string; note: string }[] =
+  navMoreGroups.flatMap((group) => [...group.items]);
 
 export const footerLinks = [
   { href: '/author', label: 'The Author' },
