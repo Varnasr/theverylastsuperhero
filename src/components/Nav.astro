@@ -48,8 +48,20 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
             <div class="more__menu">
               {
                 navMoreGroups.map((group) => (
-                  <div class="more__group">
-                    <p class="more__head">{group.name}</p>
+                  /* name= makes these an exclusive accordion natively: opening
+                     one closes the others, no JS. Browsers without it just
+                     allow more than one open, which is not a failure. */
+                  <details
+                    class="more__group"
+                    name="more-group"
+                    open={group.items.some((item) => isCurrent(item.href))}
+                  >
+                    <summary class="more__head">
+                      {group.name}
+                      <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false">
+                        <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </summary>
                     <ul class="more__list">
                       {group.items.map((item) => (
                         <li>
@@ -60,7 +72,7 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </details>
                 ))
               }
             </div>
@@ -302,7 +314,7 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
     inset-inline-end: 0;
     inset-block-start: calc(100% + 0.4rem);
     z-index: 20;
-    min-width: 15rem;
+    min-width: 17rem;
     padding: var(--space-xs);
     background: var(--bg-raised);
     border: 1px solid var(--border);
@@ -324,18 +336,51 @@ const moreIsCurrent = navMore.some((item) => isCurrent(item.href));
   }
 
   .more__group + .more__group {
-    padding-block-start: var(--space-2xs);
     border-block-start: 1px solid var(--border);
   }
 
+  /* The group headings are <summary>, so they need the same marker removal and
+     hit area as the "More" summary above. */
   .more__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
     margin: 0;
-    padding: 0.35rem 0.6rem 0.15rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: var(--radius-s);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: 0.68rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-faint);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .more__head::-webkit-details-marker {
+    display: none;
+  }
+
+  .more__head:hover,
+  .more__group[open] .more__head {
+    color: var(--text-muted);
+    background: var(--surface-hover);
+  }
+
+  .more__head svg {
+    width: 0.55rem;
+    height: 0.55rem;
+    flex: none;
+    transition: rotate 0.15s var(--ease);
+  }
+
+  .more__group[open] .more__head svg {
+    rotate: 180deg;
+  }
+
+  .more__group .more__list {
+    padding-block-end: var(--space-2xs);
   }
 
   .more__menu a {
