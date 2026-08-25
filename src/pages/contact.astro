@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+/**
+ * A named, reachable human.
+ *
+ * The site publishes reader submissions and collects names and email addresses,
+ * which under India's Digital Personal Data Protection Act, 2023 makes the
+ * author a Data Fiduciary, and under the 2021 intermediary rules makes a
+ * grievance contact expected of a site hosting third-party content. Neither is
+ * satisfied by a form alone — both assume someone a person can write to.
+ */
+---
+
+<BaseLayout
+  title="Contact"
+  description="How to reach the author about the book, the archive, a reader submission, or your personal information."
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">Reaching a person</p>
+      <h1>Contact</h1>
+      <p class="text-muted lede">
+        One address, read by a person, for everything below.
+      </p>
+    </header>
+
+    <div class="prose stack contact">
+      <p class="address">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <h2>What to write about</h2>
+      <ul>
+        <li>The book, the archive, or anything on this site that looks wrong.</li>
+        <li>
+          A submission to the <a href="/memory">Memory Wall</a> or
+          <a href="/fanfic">Reader Fiction</a> — including asking for your own work to be taken
+          down, which needs no reason and happens on request.
+        </li>
+        <li>
+          Your personal information: what is held, correcting it, deleting it, or coming off the
+          updates list. See the <a href="/privacy">privacy note</a> for what is actually kept, which
+          is very little.
+        </li>
+        <li>Anything you think has been handled badly. This is the address for complaints.</li>
+      </ul>
+
+      <h2>Who you are writing to</h2>
+      <p>
+        {site.author}, the author, who runs this site personally. Published by
+        {site.publisher}.
+      </p>
+
+      <h2>Copyright</h2>
+      <p>
+        The novel and its illustrations are © {site.author}. Reader submissions stay the property of
+        the people who wrote them. If you believe something here infringes your copyright, write to
+        the address above with enough detail to identify the work and it will be looked at.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-block-end: var(--space-xl);
+  }
+
+  .contact {
+    max-width: 60ch;
+  }
+
+  .address {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+  }
+</style>

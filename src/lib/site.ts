@@ -140,6 +140,7 @@ export const navMore = [
 ] as const;
 
 export const footerLinks = [
+  { href: '/contact', label: 'Contact' },
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
   { href: '/rss.xml', label: 'RSS' },
