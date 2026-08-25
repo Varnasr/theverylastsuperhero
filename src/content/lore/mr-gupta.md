@@ -5,6 +5,8 @@ designation: Climate Solutions | Named Alongside the Thakurs
 summary: The man Rohan is travelling to meet about climate solutions for the city — and, by the end, one of the names still out there causing damage.
 order: 11
 related: [rohan-kapoor, waste-to-energy, thakur-greenworks, mr-joshi]
+image: ../../assets/lore/mr-gupta.webp
+imageAlt: A man at a desk of waste-to-energy schematics and a plant model, a river district mapped behind him
 ---
 
 The reason the journey is also a work trip: a meeting to discuss climate change

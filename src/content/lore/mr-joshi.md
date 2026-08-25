@@ -5,6 +5,8 @@ designation: Rohan's Colleague
 summary: The colleague Rohan steps off the train to hand documents to — for two minutes, at a station with only two platforms.
 order: 10
 related: [rohan-kapoor, serenity-junction, waste-to-energy]
+image: ../../assets/lore/mr-joshi.webp
+imageAlt: One man handing a folder to another at a station platform as he steps down from a train
 ---
 
 *We need to get off here for a moment to hand over some important documents to

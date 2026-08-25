@@ -6,7 +6,7 @@ summary: Memory materials — Nitinol and other Shape Memory Materials — blend
 order: 3
 related: [salt-lamps, myaknju, the-treasure-room]
 image: ../../assets/lore/hysterons.webp
-imageAlt: A faceted crystalline polyhedron braced with brass nodes and wire, lit from within
+imageAlt: A lattice of pink halite cubes strung with brass nodes and filament, annotated like a materials plate
 ---
 
 Salt gives a lamp its lattice. Hysterons give it its memory.

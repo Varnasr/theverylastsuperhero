@@ -21,6 +21,8 @@ testimony:
       text: >
         Correction. Queue times were not measured. Correction. The score was
         assigned before the measurement. Thank you for your cooperation.
+image: ../../assets/lore/p-ai-archive.webp
+imageAlt: A luminous figure of light suspended above a circular hall of glowing floor panels, greenery growing through the stone
 ---
 
 Short for Pandemonium AI, and the ethical successor to

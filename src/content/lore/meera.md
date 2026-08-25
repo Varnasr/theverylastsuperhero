@@ -6,7 +6,7 @@ summary: Present most often as a lagging holographic call, and terrifying even i
 order: 8
 related: [sumati, rohan-kapoor, waste-to-energy]
 image: ../../assets/lore/meera.webp
-imageAlt: A woman writing by lantern light beside a small brass-jointed polyhedron, a hazed skyline through the window
+imageAlt: A woman writing in a notebook beside a brass polyhedron and a lantern, a bright city through the window
 ---
 
 Sumati's mother, who could be terrifying even in holographic form. Her voice

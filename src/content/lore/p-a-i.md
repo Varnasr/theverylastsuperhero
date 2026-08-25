@@ -4,8 +4,6 @@ category: System
 designation: Public Access Intelligence
 summary: The name is the joke. It implies public access; in practice it governs the public while remaining entirely inaccessible to them.
 order: 4
-image: ../../assets/lore/pai-surveillance.webp
-imageAlt: A surveillance mast of cameras, speakers and a facial-recognition panel above an empty road
 related: [p-ai, kishore-mehta, the-collapse, the-disclosures-era, the-obedience-index]
 testimony:
   src: /audio/pai-civic-notice.mp3
@@ -28,6 +26,8 @@ testimony:
         Residents without certified cooling are advised to remain indoors. Your
         district compliance score has been updated. Queue times are shorter than
         yesterday. Thank you for your cooperation.
+image: ../../assets/lore/pai-checkpoint.webp
+imageAlt: A civic checkpoint kiosk reading a face against a wall-sized identity display, drones overhead, a queue waiting on marked circles
 ---
 
 The dominant state-managed intelligence of this world, presented publicly as a

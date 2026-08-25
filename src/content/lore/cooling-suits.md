@@ -6,7 +6,7 @@ summary: Not an accessory. Extended exposure without one means heat stroke, dehy
 order: 13
 related: [rohan-kapoor, sumati, the-collapse]
 image: ../../assets/lore/cooling-suits.webp
-imageAlt: A cooling suit seen front and back — perforated fabric, a face wrap, and a backpack heat exchanger
+imageAlt: Two people in cooling suits with backpack units at a misting station, others drinking from steel cups
 ---
 
 Sumati learned in school that before climate change intensified, people used to

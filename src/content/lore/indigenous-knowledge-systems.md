@@ -6,6 +6,8 @@ summary: The curriculum public universities were pushed to adopt — a blend of 
 order: 6
 related: [p-a-i, the-collapse, kishore-mehta, hysterons]
 mapZone: curriculum-office
+image: ../../assets/lore/iks-classroom.webp
+imageAlt: A lecture hall where a teacher presents a flying chariot as engineering, students at glowing terminals beneath a national emblem
 ---
 
 During that time, science was under siege in India.
