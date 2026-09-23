@@ -65,9 +65,25 @@ that broke the button.
 
 **What it does not cover**, and this is not a small gap: a colour written as a
 literal in a component, and a colour composited with opacity, are both invisible
-to it. `scripts/axe.mjs` over the built pages is what catches those. The two are
-not substitutes, and only the first is in CI today, because it needs no browser
-and finishes in under a second.
+to it. The Buy button above is exactly that case, and it was found by hand.
+`scripts/axe.mjs` over the built pages is what catches the class.
+
+The two run in different places on purpose. The contrast check gates pull
+requests, because it reads the token blocks and finishes in under a second. The
+axe walk builds the site, installs Chromium and audits 104 pages at two
+viewports, which took **over ten minutes** here: too long to put in front of
+somebody changing one essay, and a long job in a pull-request gate carries a
+worse property than slowness, because a job cancelled by its own timeout
+cancels the whole run and takes the checks that did work with it. It is
+`accessibility.yml`, daily plus `workflow_dispatch`.
+
+`scripts/axe.mjs` **fails on a run that could not load everything the page
+asks for**, rather than warning. In a sandbox `fonts.googleapis.com` and the
+Supabase origin the memory wall reads are both unreachable, so the audited page
+is not the page a reader gets. The sibling script in `Experiments` printed that
+as a warning above an `OK`, it was ignored, and CI then found a contrast
+failure that only existed once the blocked library had drawn the element. Pass
+`--allow-degraded` to accept a partial result and be told what it is worth.
 
 ## The September 2026 dependency upgrade
 
