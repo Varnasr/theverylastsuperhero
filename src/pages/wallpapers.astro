@@ -81,8 +81,11 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
     margin-block: var(--space-2xs);
   }
 
+  /* No opacity here. --text-faint is already the faintest token the palette
+     has, and 0.7 of it landed under AA. A token that has been measured is not
+     a starting point to take a further 30% off. */
   .paper__size span {
-    opacity: 0.7;
+    color: var(--text-faint);
   }
 
   .page-head {

@@ -1,0 +1,46 @@
+# axe over every built page, daily rather than on every pull request.
+#
+# The contrast check in ci.yml reads the tokens out of global.css and finishes
+# in under a second, so it gates pull requests. This one builds the site,
+# installs Chromium and audits 104 pages at two viewports, and it takes over
+# ten minutes. That is too long to put in front of a contributor for a change
+# to one essay, and a long third-party job in a pull-request gate has a worse
+# property than slowness: a job cancelled by its own timeout cancels the whole
+# workflow run, taking the checks that did work down with it.
+#
+# So it runs on a schedule, where a red run notifies the owner and nobody is
+# waiting on it, plus on demand. The two halves cover different things and
+# neither substitutes for the other: the contrast check sees every token pair
+# including ones no page happens to use, and this sees the literals, the
+# composited opacities and everything that is not a colour at all.
+
+name: Accessibility
+
+on:
+  schedule:
+    - cron: '41 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  axe:
+    name: axe over the built pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # playwright-core ships its own CLI, so the browser matches the lockfile
+      # rather than whatever npx resolves at the time.
+      - run: node node_modules/playwright-core/cli.js install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit
+        run: node scripts/axe.mjs

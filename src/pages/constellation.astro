@@ -49,7 +49,10 @@ const isolated = nodes.filter((n) => n.degree === 0);
     </header>
 
     <figure class="graph">
-      <svg viewBox="0 0 1000 720" role="img" aria-labelledby="c-title c-desc">
+      <!-- role="group", not "img": the nodes below are real links with their own
+           roles and names, and role="img" would hide every one of them while
+           leaving them in the tab order. -->
+      <svg viewBox="0 0 1000 720" role="group" aria-labelledby="c-title c-desc">
         <title id="c-title">Graph of the Resistance Archive</title>
         <desc id="c-desc">
           {nodes.length} lore entries joined by {edges.length} connections. Every entry and its links

@@ -29,9 +29,12 @@ const statuses: ZoneStatus[] = ['active', 'dark', 'lost'];
 
     <div class="map-wrap">
       <figure class="map">
+        <!-- role="group", not "img": the zones below are links with their own
+             roles and names, and role="img" would hide every one of them while
+             leaving them in the tab order. See constellation.astro. -->
         <svg
           viewBox="0 0 100 72"
-          role="img"
+          role="group"
           aria-labelledby="map-title map-desc"
           preserveAspectRatio="xMidYMid meet"
         >
@@ -125,6 +128,9 @@ const statuses: ZoneStatus[] = ['active', 'dark', 'lost'];
     // The SVG node is a shortcut to its card, which holds the readable content.
     node.setAttribute('tabindex', '0');
     node.setAttribute('role', 'link');
+    // Named explicitly rather than left to the <text> inside, so the name
+    // does not change if the label is ever moved out of the group.
+    node.setAttribute('aria-label', `${(node.querySelector('.node__label')?.textContent || id).trim()} — jump to this zone`);
 
     const go = () => {
       const card = document.getElementById(id);

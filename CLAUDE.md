@@ -7,8 +7,11 @@ output, deployed on Netlify. 104 pages, 87 tracked images.
 
 ```bash
 npm ci
-npm run build                   # astro check, then astro build
-node scripts/check-links.mjs    # 4,208 internal references
+node scripts/check-contrast.mjs  # colour tokens, both themes, run by CI
+node scripts/check-contrast.mjs --all   # print the passing pairs too
+npm run build                    # astro check, then astro build
+node scripts/check-links.mjs     # 4,208 internal references
+node scripts/axe.mjs             # accessibility over the built pages
 npm run dev
 ```
 
@@ -27,6 +30,77 @@ runs, and it is stronger than it looks.
 
 When changing anything structural, run all three. A page count that moves
 without a page being added or removed is the signal worth watching.
+
+## The colour tokens were wrong in both themes, and an audit would not have said so
+
+`--text-faint` measured **4.00:1 on `--surface`** and had been checked against
+`--bg` alone, where it passes at 4.67:1. It styles every eyebrow, caption and
+byline on the site. Chasing that one token turned up four more, all of them in
+the light theme, none of them visible to anyone auditing the dark default:
+
+| token | was | on | now |
+|---|---|---|---|
+| `--text-faint` (dark) | 3.56:1 | `--surface-hover` | 4.70:1 |
+| `--text-faint` (light) | 3.71:1 | `--bg-sunken` | 4.84:1 |
+| `--amber` (light) | 4.39:1 | `--bg-sunken` | 5.05:1 |
+| `--amber-dim` (light) | 2.67:1 | `--bg-sunken` | 5.17:1 |
+| `--ember` (light) | 2.63:1 | `--bg-sunken` | 4.60:1 |
+| `--ember` (dark) | 4.49:1 | `--surface-hover` | 4.96:1 |
+
+`--amber-dim` is the meta line on every lore card and `--ember` is the text of
+the corrupted badge, so neither is decorative. `--ember` had **no light value at
+all**: the dark one was inherited onto cream.
+
+**And the Buy button was failing as shipped.** `.buy--primary` wrote
+`color: #131211` as a literal on `background: var(--amber)`. In the dark theme
+that is 12.48:1 and right; in the light theme the amber is itself dark and it
+measured **3.53:1**. Every other amber button on the site already writes
+`color: var(--bg)`, which is correct in both. That is the fix.
+
+That last one is the reason `scripts/check-contrast.mjs` measures **both
+directions**. `--amber` is ink on a light surface *and* a fill under dark ink,
+and those pull opposite ways: darkening it to fix the nav item makes the button
+worse. A check that only walked ink-on-surface would have approved the change
+that broke the button.
+
+**What it does not cover**, and this is not a small gap: a colour written as a
+literal in a component, and a colour composited with opacity, are both invisible
+to it. The Buy button above is exactly that case, and it was found by hand.
+`scripts/axe.mjs` over the built pages is what catches the class.
+
+The two run in different places on purpose. The contrast check gates pull
+requests, because it reads the token blocks and finishes in under a second. The
+axe walk builds the site, installs Chromium and audits 104 pages at two
+viewports, which takes **5m15s** here: too long to put in front of somebody
+changing one essay, and a long job in a pull-request gate carries a worse
+property than slowness, because a job cancelled by its own timeout cancels the
+whole run and takes the checks that did work with it. It is
+`accessibility.yml`, daily plus `workflow_dispatch`.
+
+Its first full walk found three things the contrast check cannot see, which is
+the argument for keeping both:
+
+- **`wallpapers`**: `.paper__size span` took `opacity: 0.7` on top of
+  `--text-faint`. A token that has been measured is not a starting point to
+  take a further 30% off, and the compounded value landed under AA. The same
+  compounding cost the OpenStacks landing pages their tag contrast.
+- **`constellation` and `map`**: both diagrams are `<svg role="img">`, and both
+  then run a script giving their nodes `tabindex="0"` and `role="link"`.
+  `role="img"` means *one image, contents not exposed*, so a keyboard user
+  reached a control a screen reader would not announce. The children were
+  already right; the parent role was the error, and it is `role="group"` now.
+
+Note that a comment cannot go between attributes inside an Astro tag. Putting
+one there fails the build with `Expected \`>\` but found \`<\``, which is at
+least loud.
+
+`scripts/axe.mjs` **fails on a run that could not load everything the page
+asks for**, rather than warning. In a sandbox `fonts.googleapis.com` and the
+Supabase origin the memory wall reads are both unreachable, so the audited page
+is not the page a reader gets. The sibling script in `Experiments` printed that
+as a warning above an `OK`, it was ignored, and CI then found a contrast
+failure that only existed once the blocked library had drawn the element. Pass
+`--allow-degraded` to accept a partial result and be told what it is worth.
 
 ## The September 2026 dependency upgrade
 
