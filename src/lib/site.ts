@@ -37,15 +37,24 @@ export const site = {
   locale: 'en_IN',
   themeColor: '#131211',
   /**
-   * Endpoint for the reader-submission form. GitHub Pages cannot run server
-   * code, so submissions are posted to a third-party form relay. Set this to
-   * your own Formspree (or equivalent) endpoint to switch the form on; while it
-   * is empty the form renders in a clearly-labelled disabled state instead of
-   * silently failing.
+   * Optional third-party relay for the reader-submission forms.
    *
-   * See docs/SUBMISSIONS.md for setup.
+   * This is now an override, not the mechanism. The site moved to Netlify on
+   * 25 August 2026 and every form carries `data-netlify="true"`, so Netlify
+   * accepts the POST itself: no relay, no server code, no endpoint. Leave this
+   * empty unless you deliberately want submissions to go somewhere other than
+   * Netlify, in which case set the relay's URL and it becomes the form action.
+   *
+   * It used to gate whether the form worked at all, which is how `memory-wall`
+   * came to sit registered with Netlify and unable to receive anything for
+   * four weeks. See docs/SUBMISSIONS.md.
    */
   formEndpoint: '' as string,
+  /**
+   * Netlify Forms accepts the POST. True unless the site is moved off Netlify,
+   * in which case set a `formEndpoint` above and turn this off together.
+   */
+  netlifyForms: true,
   /**
    * Analytics, off by default.
    *

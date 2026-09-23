@@ -1,32 +1,47 @@
-# Turning on the Memory Wall form
+# The Memory Wall form
 
-The site is static and hosted on Netlify, which cannot run server code on a page request.
-A submission form therefore needs a third-party relay that accepts the POST and
-emails it on.
+**The form is on, and needs no relay.** Netlify Forms accepts the POST from a
+static page: the `data-netlify="true"` attribute is read at deploy time, Netlify
+registers the form, and submissions arrive in the site's Forms tab. There is no
+server code and no third party in the path.
 
-Until one is configured, `/memory` renders a clearly-labelled fallback pointing
-readers at the contact email. That is intentional — a form that silently drops
-submissions is worse than no form.
+## What went wrong, so it is not repeated
+
+This page used to open by saying Netlify "cannot run server code on a page
+request" and that a third-party relay was therefore required. That is wrong
+about Netlify Forms, and it had a cost.
+
+The site moved to Netlify on 25 August 2026 and Netlify registered all four
+forms that day — `memory-wall`, `fanfic`, `updates`, `corrigenda`. But
+`site.formEndpoint` was empty, `/memory` computed `formLive` from it, and the
+inline fallback script therefore called `preventDefault()` on every submit and
+redirected to `mailto:`. The form was live at Netlify's end and unreachable at
+the reader's, and `memory-wall` sat at **zero submissions for four weeks**.
+
+`formEndpoint` is now an override rather than the switch, and `site.netlifyForms`
+says what is actually true. If you ever move off Netlify, set `formEndpoint` and
+turn `netlifyForms` off together.
 
 ## Setup
 
-1. Create a form at a relay service. [Formspree](https://formspree.io) has a
-   free tier that suits this volume; [Basin](https://usebasin.com) and
-   [Web3Forms](https://web3forms.com) work the same way.
-2. Copy the endpoint URL it gives you (it looks like
-   `https://formspree.io/f/xxxxxxxx`).
-3. Put it in `src/lib/site.ts`:
+None. It is already on. Submissions appear under **Forms** in the Netlify
+dashboard for `postheroic-world`, and Netlify can email them on.
 
-   ```ts
-   formEndpoint: 'https://formspree.io/f/xxxxxxxx',
-   ```
-
-4. Commit and push. The form replaces the fallback on the next deploy.
+If you ever want a third-party relay instead — Formspree, Basin, Web3Forms all
+work the same way — set its endpoint as `formEndpoint` in `src/lib/site.ts` and
+set `netlifyForms: false`. The endpoint then becomes the form's `action`.
 
 ## What the form already handles
 
-- **Spam** — a hidden `_gotcha` honeypot field. Bots fill it in; people never
-  see it. Formspree drops any submission where it is non-empty.
+- **Spam** — a hidden `_gotcha` honeypot field, declared to Netlify with
+  `netlify-honeypot="_gotcha"`. Bots fill it in; people never see it. Netlify
+  drops any submission where it is non-empty, and runs its own spam filtering
+  on top.
+- **Artwork** — the Memory Wall form carries a file input and
+  `enctype="multipart/form-data"`, so a photo of a drawing can be attached
+  directly. It used to ask contributors to host the image somewhere and paste a
+  link, which is a step most people sending a child's crayon drawing will not
+  take.
 - **Consent** — the form states that a submission may be displayed with
   attribution, and links to the Terms.
 - **Validation** — required fields and `type="email"` are enforced by the
