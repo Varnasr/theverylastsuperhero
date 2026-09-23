@@ -71,11 +71,28 @@ to it. The Buy button above is exactly that case, and it was found by hand.
 The two run in different places on purpose. The contrast check gates pull
 requests, because it reads the token blocks and finishes in under a second. The
 axe walk builds the site, installs Chromium and audits 104 pages at two
-viewports, which took **over ten minutes** here: too long to put in front of
-somebody changing one essay, and a long job in a pull-request gate carries a
-worse property than slowness, because a job cancelled by its own timeout
-cancels the whole run and takes the checks that did work with it. It is
+viewports, which takes **5m15s** here: too long to put in front of somebody
+changing one essay, and a long job in a pull-request gate carries a worse
+property than slowness, because a job cancelled by its own timeout cancels the
+whole run and takes the checks that did work with it. It is
 `accessibility.yml`, daily plus `workflow_dispatch`.
+
+Its first full walk found three things the contrast check cannot see, which is
+the argument for keeping both:
+
+- **`wallpapers`**: `.paper__size span` took `opacity: 0.7` on top of
+  `--text-faint`. A token that has been measured is not a starting point to
+  take a further 30% off, and the compounded value landed under AA. The same
+  compounding cost the OpenStacks landing pages their tag contrast.
+- **`constellation` and `map`**: both diagrams are `<svg role="img">`, and both
+  then run a script giving their nodes `tabindex="0"` and `role="link"`.
+  `role="img"` means *one image, contents not exposed*, so a keyboard user
+  reached a control a screen reader would not announce. The children were
+  already right; the parent role was the error, and it is `role="group"` now.
+
+Note that a comment cannot go between attributes inside an Astro tag. Putting
+one there fails the build with `Expected \`>\` but found \`<\``, which is at
+least loud.
 
 `scripts/axe.mjs` **fails on a run that could not load everything the page
 asks for**, rather than warning. In a sandbox `fonts.googleapis.com` and the
