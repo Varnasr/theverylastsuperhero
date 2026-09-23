@@ -9,10 +9,15 @@ const contributions = (await getCollection('memory', ({ data }) => !data.draft))
   (a, b) => b.data.added.valueOf() - a.data.added.valueOf()
 );
 
-// Netlify detects forms at deploy time by scanning the built HTML, so the
-// attributes below are what switch submissions on once the site is on Netlify.
-// Until then the mailto fallback keeps the form working rather than dead.
-const formLive = site.formEndpoint.length > 0;
+// Netlify detects forms at deploy time by scanning the built HTML and accepts
+// the POST itself, so `data-netlify` below is the mechanism and no endpoint is
+// needed. `formEndpoint` is only an override for a third-party relay.
+//
+// This used to read `site.formEndpoint.length > 0`, which was false, so the
+// mailto fallback below intercepted every submit. Netlify registered
+// `memory-wall` on 25 August 2026 and it received nothing for four weeks: the
+// form was live at Netlify's end and unreachable at the reader's.
+const formLive = site.netlifyForms || site.formEndpoint.length > 0;
 const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
 ---
 
@@ -88,6 +93,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         class="form"
         name="memory-wall"
         method="POST"
+        enctype="multipart/form-data"
         action={site.formEndpoint || undefined}
         data-netlify="true"
         netlify-honeypot="_gotcha"
@@ -118,7 +124,15 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
           <label for="message">Your contribution</label>
           <textarea id="message" name="message" rows="7" required></textarea>
           <p class="hint">
-            For artwork, describe it and include a link — please don't paste image data.
+            For artwork, tell us about it. The picture itself goes in the box below.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="artwork">A photo of the artwork, if you have one</label>
+          <input id="artwork" name="artwork" type="file" accept="image/*" />
+          <p class="hint">
+            A photo taken on a phone is perfectly good. Optional — the wall takes writing too.
           </p>
         </div>
 
@@ -274,6 +288,23 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
     resize: vertical;
     min-height: 8rem;
     font-family: inherit;
+  }
+
+  /* A file input will not shrink below the intrinsic width of its own button
+     and filename text, and nothing above sets a width, so adding one pushed
+     the page 37px wide at 390px — measured, and invisible on a desktop. Every
+     field gets the guard rather than just this one: the next control added
+     here would hit the same wall. */
+  .field input,
+  .field select,
+  .field textarea {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .field input[type='file'] {
+    padding: 0.5rem;
+    font-size: var(--step--1);
   }
 
   .field input:focus-visible,

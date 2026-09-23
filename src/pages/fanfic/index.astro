@@ -17,7 +17,11 @@ const stories = (await getCollection('fanfic'))
   .filter((s) => !s.data.draft)
   .sort((a, b) => b.data.added.valueOf() - a.data.added.valueOf());
 
-const formLive = site.formEndpoint.length > 0;
+// Same as /memory: Netlify accepts the POST, so this is true unless a relay
+// override is configured. This page carried `data-fallback="mailto"` with no
+// script reading it, so the attribute was inert and merely misleading — the
+// fanfic form did post correctly. Now it is not emitted at all.
+const formLive = site.netlifyForms || site.formEndpoint.length > 0;
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
