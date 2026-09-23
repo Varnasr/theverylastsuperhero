@@ -20,6 +20,12 @@ jobs:
 
       - run: npm ci
 
+      # No browser and no build: it reads the token blocks out of global.css
+      # and measures them, so it runs in under a second and cannot be skipped
+      # for being slow. It is first for that reason.
+      - name: Colour tokens clear AA in both themes
+        run: node scripts/check-contrast.mjs
+
       - name: Type-check and build
         run: npm run build
 

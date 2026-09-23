@@ -55,7 +55,9 @@
     --amber: #ffcb6b;
     --amber-bright: #ffd894;
     --amber-dim: #c99a3f;
-    --ember: #e2703a;
+    /* #e2703a is 4.49:1 on --surface-hover, two hundredths under AA, and it
+       is the text colour of the "corrupted" badge. */
+    --ember: #e87a46;
 
     /* Dark is the default identity ----------------------------------- */
     --bg: #131211;
@@ -68,7 +70,13 @@
 
     --text: #f2efe9;
     --text-muted: #b3aca3;
-    --text-faint: #857e76;
+    /* #857e76 failed AA on three of the five surfaces above: 4.29:1 on
+       --bg-raised, 4.00:1 on --surface and 3.56:1 on --surface-hover. It was
+       measured only against --bg, where it passes at 4.67:1, and every
+       eyebrow, caption and byline on the site uses it. #9a938b is 4.70:1
+       against the worst of the five and still a clear step below --text-muted,
+       which sits at 6.34:1. */
+    --text-faint: #9a938b;
     --link: var(--amber);
     --link-hover: var(--amber-bright);
 
@@ -124,17 +132,33 @@
 
     --text: #1c1a17;
     --text-muted: #56504a;
-    --text-faint: #7d766e;
-    --link: #9a5b18;
+    /* Same failure in this theme and it has to be fixed here too: #7d766e is
+       4.19:1 on --bg, 3.91:1 on --surface-hover and 3.71:1 on --bg-sunken.
+       #6a645c is 4.84:1 against the worst of the five. */
+    --text-faint: #6a645c;
+    /* The same value as the accent, as in the dark theme, so there is one
+       number to keep right rather than two. */
+    --link: var(--amber);
     --link-hover: #7a4611;
 
     /* The accent has to be redefined here, not just --link. #ffcb6b is tuned
        for a near-black background; on cream it lands at 1.4:1 and the brand
        mark, the current nav item, the Buy button and every amber rule simply
-       vanish. These sit at 5:1 and above while keeping the same hue. */
-    --amber: #a05a12;
+       vanish.
+
+       This comment used to say these sit "at 5:1 and above". They did not:
+       #a05a12 measured 4.39:1 on --bg-sunken and 4.62:1 on --surface-hover,
+       because it had been checked against --bg alone. The whole set is now
+       measured against all five surfaces in this theme, and
+       scripts/check-contrast.mjs keeps it that way. */
+    --amber: #8f5415;
     --amber-bright: #7d430c;
-    --amber-dim: #b8863f;
+    /* --ember had no light value at all, so the dark one was inherited and
+       the "corrupted" badge read at 2.63:1 on cream. */
+    --ember: #b8400c;
+    /* 2.67:1 before, and it is the text of the meta line on every lore
+       card, not a decorative rule. */
+    --amber-dim: #80591a;
 
     color-scheme: light;
     --shadow: 0 1px 2px rgb(60 45 20 / 0.06), 0 8px 24px -10px rgb(60 45 20 / 0.18);
