@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BuyButton from '../components/BuyButton.astro';
 import { Content } from '../content/excerpt/chapter-one.md';
 import { Content as Extras } from '../content/excerpt/extras.md';
-import { Content as Annexure } from '../content/excerpt/annexure.md';
 import { site } from '../lib/site';
 import { getBookPrice, formatRupees } from '../lib/price';
 import cover from '../assets/cover.jpg';
@@ -14,7 +13,7 @@ const { price } = await getBookPrice();
 
 <BaseLayout
   title="Excerpts and extras"
-  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents and a climate annexure."
+  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents."
   readingProgress
 >
   <div class="shell section">
@@ -29,7 +28,6 @@ const { price } = await getBookPrice();
       <ol>
         <li><a href="#chapter-one">Prologue and Chapter 1</a></li>
         <li><a href="#archive">From the archive</a></li>
-        <li><a href="#annexure">Annexure: India 2075 &mdash; The Heat and the Flood</a></li>
       </ol>
     </nav>
 
@@ -64,10 +62,6 @@ const { price } = await getBookPrice();
       <Extras />
     </section>
 
-    <section class="prose read stack" id="annexure" aria-labelledby="annexure-title">
-      <h2 id="annexure-title">Annexure: India 2075 &mdash; The Heat and the Flood</h2>
-      <Annexure />
-    </section>
 
     <section class="buy-band" aria-labelledby="excerpts-buy">
       <Image
