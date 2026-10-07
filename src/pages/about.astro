@@ -129,16 +129,18 @@ import cover from '../assets/cover.jpg';
           loading="lazy"
         />
         <div class="buy-row__actions">
-          <BuyButton />
+          <BuyButton placement="about" />
           <a
             class="button buy-publisher"
             data-buy
+            data-placement="about-publisher"
             href={site.buy.publisher}
             target="_blank"
             rel="noopener"
             data-umami-event="buy-click"
-            data-umami-event-placement="publisher"
+            data-umami-event-placement="about-publisher"
           >Buy direct from the publisher</a>
+          <a class="button" href="/read">Read the first chapter</a>
         </div>
       </div>
 

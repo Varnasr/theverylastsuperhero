@@ -10,11 +10,13 @@ import { site } from '../lib/site';
 interface Props {
   /** 'primary' for the hero and the buy band; 'compact' for the nav. */
   variant?: 'primary' | 'compact';
+  /** Where on the page this button sits, sent with the click so placements can be told apart. */
+  placement?: 'nav' | 'hero' | 'band' | 'about' | 'read' | 'footer' | 'making' | 'author' | 'after';
   label?: string;
   class?: string;
 }
 
-const { variant = 'primary', label, class: className } = Astro.props;
+const { variant = 'primary', placement, label, class: className } = Astro.props;
 
 /**
  * Falls back to an ISBN search rather than hiding the button. An ISBN search on
@@ -35,7 +37,8 @@ const text = label ?? (variant === 'compact' ? 'Buy' : 'Buy the book');
   target="_blank"
   data-buy
   data-umami-event="buy-click"
-  data-umami-event-placement={variant}
+  data-placement={placement}
+  data-umami-event-placement={placement ?? variant}
 >
   <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
     <path

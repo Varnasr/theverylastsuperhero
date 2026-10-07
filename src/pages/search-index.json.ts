@@ -50,6 +50,12 @@ export const GET: APIRoute = async () => {
       d: e.data.summary,
     })),
     // Static pages worth finding by name.
+    {
+      t: 'Read the first chapter',
+      u: '/read',
+      k: 'Page',
+      d: 'The prologue and Chapter 1, free to read.',
+    },
     { t: 'About the book', u: '/about', k: 'Page', d: 'The story, its themes, and its making.' },
     {
       t: 'Memory Wall',

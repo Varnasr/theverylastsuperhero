@@ -91,7 +91,8 @@ const structuredData = {
       <h1>The Very Last Superhero</h1>
       <p class="hero__tagline">{site.tagline}</p>
       <div class="hero__actions">
-        <BuyButton />
+        <BuyButton placement="hero" />
+        <a class="button" href="/read">Read the first chapter</a>
         <a class="button" href="/lore">Enter the Lore Archive</a>
       </div>
     </div>
@@ -195,22 +196,24 @@ const structuredData = {
         <p class="text-muted">
           {site.chapters} chapters, illustrated throughout, published by {site.publisher}.
           Everything on this site is the world around it — the novel itself is where Sumati
-          actually goes.
+          actually goes. <a href="/read">Read the prologue and Chapter 1 free</a> first.
         </p>
         <p class="buy-band__meta">
           {site.edition} &middot; ISBN {site.isbn} &middot; Paperback, {formatRupees(price)}
         </p>
         <div class="buy-band__actions">
-          <BuyButton />
+          <BuyButton placement="band" />
           <a
             class="button buy-publisher"
             data-buy
+            data-placement="band-publisher"
             href={site.buy.publisher}
             target="_blank"
             rel="noopener"
             data-umami-event="buy-click"
-            data-umami-event-placement="publisher"
+            data-umami-event-placement="band-publisher"
           >Buy direct from the publisher</a>
+          <a class="button" href="/read">Read the first chapter</a>
         </div>
       </div>
     </div>
