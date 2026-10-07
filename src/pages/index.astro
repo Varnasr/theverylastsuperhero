@@ -1,12 +1,18 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/Newsletter.astro';
 import LoreCard from '../components/LoreCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import { site } from '../lib/site';
+import { getBookPrice, formatRupees } from '../lib/price';
 import hero from '../assets/wallpapers/on-rooftop.jpg';
+import cover from '../assets/cover.jpg';
+
+const { price, inStock } = await getBookPrice();
+const coverImg = await getImage({ src: cover, width: 600, format: 'jpg' });
+const availability = inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
 
 const lore = await getCollection('lore', ({ data }) => !data.draft);
 
@@ -44,10 +50,29 @@ const structuredData = {
   inLanguage: 'en',
   abstract: site.description,
   url: site.url,
+  image: new URL(coverImg.src, site.url).href,
   isbn: site.isbn,
   bookEdition: site.edition,
   bookFormat: 'https://schema.org/Paperback',
   illustrator: { '@type': 'Person', name: site.author },
+  offers: [
+    {
+      '@type': 'Offer',
+      price,
+      priceCurrency: 'INR',
+      availability,
+      url: site.buy.publisher,
+      seller: { '@type': 'Organization', name: 'StoryWell Books Foundation' },
+    },
+    {
+      '@type': 'Offer',
+      price,
+      priceCurrency: 'INR',
+      availability,
+      url: site.buy.amazon,
+      seller: { '@type': 'Organization', name: 'Amazon.in' },
+    },
+  ],
   about: [
     'Climate change',
     'Memory and oral history',
@@ -164,7 +189,15 @@ const structuredData = {
 
   <section class="section shell">
     <div class="buy-band">
-      <div class="stack">
+      <Image
+        class="buy-band__cover"
+        src={cover}
+        alt="Cover of The Very Last Superhero: a man in a cape holds a child's hand against a red sunset."
+        widths={[240, 400]}
+        sizes="(max-width: 40rem) 200px, 200px"
+        loading="lazy"
+      />
+      <div class="stack buy-band__text">
         <p class="eyebrow">The book</p>
         <h2>Read the whole thing</h2>
         <p class="text-muted">
@@ -172,9 +205,21 @@ const structuredData = {
           Everything on this site is the world around it — the novel itself is where Sumati
           actually goes.
         </p>
-        <p class="buy-band__meta">{site.edition} &middot; ISBN {site.isbn}</p>
+        <p class="buy-band__meta">
+          {site.edition} &middot; ISBN {site.isbn} &middot; Paperback, {formatRupees(price)}
+        </p>
+        <div class="buy-band__actions">
+          <BuyButton />
+          <a
+            class="button"
+            href={site.buy.publisher}
+            target="_blank"
+            rel="noopener"
+            data-umami-event="buy-click"
+            data-umami-event-placement="publisher"
+          >Buy direct from the publisher</a>
+        </div>
       </div>
-      <BuyButton />
     </div>
   </section>
 
@@ -189,8 +234,8 @@ const structuredData = {
         </p>
       </div>
       <a class="button button--primary" href="/memory">Add to the archive</a>
-        <Newsletter />
-  </div>
+      <Newsletter />
+    </div>
   </section>
 </BaseLayout>
 
@@ -385,8 +430,36 @@ const structuredData = {
       var(--bg-raised);
   }
 
-  .buy-band .stack {
+  .buy-band {
+    justify-content: flex-start;
+  }
+
+  .buy-band__cover {
+    flex: none;
+    width: 200px;
+    height: auto;
+    border-radius: var(--radius-s);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  }
+
+  .buy-band__text {
+    flex: 1 1 20rem;
     max-width: 52ch;
+  }
+
+  .buy-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-s);
+  }
+
+  @media (max-width: 40rem) {
+    .buy-band {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--space-l);
+    }
   }
 
   .buy-band__meta {
