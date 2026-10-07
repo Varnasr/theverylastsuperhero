@@ -11,6 +11,13 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# The excerpts page was first published at /read.
+[[redirects]]
+  from = "/read"
+  to = "/excerpts"
+  status = 301
+  force = true
+
 # Astro emits directory-style URLs, so /lore and /lore/ are the same page.
 [[redirects]]
   from = "/index.html"

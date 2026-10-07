@@ -1,0 +1,335 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BuyButton from '../components/BuyButton.astro';
+import { Content } from '../content/excerpt/chapter-one.md';
+import { Content as Extras } from '../content/excerpt/extras.md';
+import { site } from '../lib/site';
+import { getBookPrice, formatRupees } from '../lib/price';
+import cover from '../assets/cover.jpg';
+
+const { price } = await getBookPrice();
+---
+
+<BaseLayout
+  title="Excerpts and extras"
+  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents."
+  readingProgress
+>
+  <div class="shell section">
+    <header class="page-head stack">
+      <p class="eyebrow">From the book</p>
+      <h1>Excerpts and extras</h1>
+      <p class="lede text-muted">The prologue and Chapter 1, as printed in the First Edition, then extras from the longer manuscript.</p>
+    </header>
+
+    <nav class="toc" aria-label="On this page">
+      <p class="toc__title">On this page</p>
+      <ol>
+        <li><a href="#chapter-one">Prologue and Chapter 1</a></li>
+        <li><a href="#archive">From the archive</a></li>
+      </ol>
+    </nav>
+
+    <article class="prose read stack" id="chapter-one">
+      <Content />
+    </article>
+
+    <aside class="buy-row" aria-label="Buy the book">
+      <p class="buy-row__text">Chapter 2, Left Behind, continues in the book.</p>
+      <div class="buy-row__actions">
+        <BuyButton placement="excerpts-mid" />
+        <a
+          class="button buy-publisher"
+          data-buy
+          data-placement="excerpts-mid-publisher"
+          href={site.buy.publisher}
+          target="_blank"
+          rel="noopener"
+          data-umami-event="buy-click"
+          data-umami-event-placement="excerpts-mid-publisher"
+        >Buy direct from the publisher</a>
+      </div>
+    </aside>
+
+    <div class="extras-intro stack">
+      <p class="eyebrow">Extras</p>
+      <p>Some of these pages were cut from the printed edition.</p>
+    </div>
+
+    <section class="prose read stack" id="archive" aria-labelledby="archive-title">
+      <h2 id="archive-title">From the archive</h2>
+      <Extras />
+    </section>
+
+
+    <section class="buy-band" aria-labelledby="excerpts-buy">
+      <Image
+        class="buy-band__cover"
+        src={cover}
+        alt="Cover of The Very Last Superhero: a man in a cape holds a child's hand against a red sunset."
+        widths={[240, 400]}
+        sizes="200px"
+        loading="lazy"
+      />
+      <div class="stack buy-band__text">
+        <p class="eyebrow">Keep reading</p>
+        <h2 id="excerpts-buy">Chapter 2, Left Behind, continues in the book</h2>
+        <p class="buy-band__meta">
+          {site.edition} &middot; ISBN {site.isbn} &middot; Paperback, {formatRupees(price)}
+        </p>
+        <div class="buy-band__actions">
+          <BuyButton placement="excerpts" />
+          <a
+            class="button buy-publisher"
+            data-buy
+            data-placement="excerpts-publisher"
+            href={site.buy.publisher}
+            target="_blank"
+            rel="noopener"
+            data-umami-event="buy-click"
+            data-umami-event-placement="excerpts-publisher"
+          >Buy direct from the publisher</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    max-width: 65ch;
+    margin-inline: auto;
+    margin-block-end: var(--space-xl);
+  }
+
+  .toc {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block-end: var(--space-xl);
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+  }
+
+  .toc__title {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .toc ol {
+    margin: 0;
+    padding-inline-start: 1.25em;
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .toc a {
+    display: inline-block;
+    padding-block: 0.25em;
+  }
+
+  .buy-row {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block: var(--space-xl);
+    padding: var(--space-m);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s) var(--space-m);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+  }
+
+  .buy-row__text {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .buy-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+  }
+
+  .extras-intro {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block-start: var(--space-3xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .extras-intro p {
+    margin: 0;
+  }
+
+  .read {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    font-size: var(--step-0);
+    line-height: 1.8;
+  }
+
+  .read :global(h2) {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .read :global(.chapter-label) {
+    margin-block-end: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .read :global(.chapter-label + h2) {
+    margin-block-start: var(--space-2xs);
+  }
+
+  /* Epigraphs and the memorial line. */
+  .read :global(blockquote) {
+    margin-inline: 0;
+    padding-inline: var(--space-m);
+    border-inline-start: 2px solid var(--amber);
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .read :global(blockquote p) {
+    margin: 0;
+  }
+
+  .read :global(blockquote p + p) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .read :global(cite) {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-style: normal;
+    color: var(--text-faint);
+  }
+
+  /* The declassified debrief: an in-world document, set apart. */
+  .read :global(.document) {
+    padding: var(--space-m);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  .read :global(.document p) {
+    margin: 0;
+  }
+
+  .read :global(.document p + p) {
+    margin-block-start: var(--space-s);
+  }
+
+  .read :global(.document strong) {
+    font-weight: 600;
+  }
+
+  /* Archive cards: each item is its own figure, label on top. */
+  .read :global(.archive-card) {
+    margin-inline: 0;
+  }
+
+  .read :global(.archive-label) {
+    margin-block-end: var(--space-s);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .read :global(.archive-card--epigraph) {
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    line-height: 1.6;
+  }
+
+  .read :global(.archive-card--epigraph .archive-label) {
+    font-family: var(--font-mono);
+  }
+
+  .read :global(.archive-card cite) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .read :global(h3) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .buy-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-l);
+    margin-block-start: var(--space-3xl);
+    padding: var(--space-xl);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(
+        circle at 12% 50%,
+        color-mix(in srgb, var(--amber) 10%, transparent),
+        transparent 60%
+      ),
+      var(--bg-raised);
+  }
+
+  .buy-band__cover {
+    flex: none;
+    width: 200px;
+    height: auto;
+    border-radius: var(--radius-s);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  }
+
+  .buy-band__text {
+    flex: 1 1 20rem;
+    max-width: 52ch;
+  }
+
+  .buy-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-s);
+  }
+
+  .buy-band__meta {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 40rem) {
+    .buy-band {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--space-l);
+    }
+  }
+</style>

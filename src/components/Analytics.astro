@@ -69,7 +69,7 @@ const endpoint = `${supabaseUrl}/rest/v1/postheroic_events`;
           'click',
           function (e) {
             var buy = e.target && e.target.closest && e.target.closest('[data-buy]');
-            if (buy) send('buy_click', { placement: buy.className || null });
+            if (buy) send('buy_click', { placement: buy.dataset.placement || buy.className || null });
           },
           true
         );
