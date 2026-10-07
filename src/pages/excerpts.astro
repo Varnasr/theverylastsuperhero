@@ -11,14 +11,14 @@ const { price } = await getBookPrice();
 ---
 
 <BaseLayout
-  title="Read the first chapter"
+  title="Excerpts and extras"
   description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition. Fourteen-year-old Sumati, a hot Delhi morning, and a father who is about to vanish."
   readingProgress
 >
   <div class="shell section">
     <header class="page-head stack">
-      <p class="eyebrow">Free excerpt</p>
-      <h1>Read the first chapter</h1>
+      <p class="eyebrow">From the book</p>
+      <h1>Excerpts and extras</h1>
       <p class="lede text-muted">The prologue and Chapter 1, as printed in the First Edition.</p>
     </header>
 
@@ -26,7 +26,7 @@ const { price } = await getBookPrice();
       <Content />
     </article>
 
-    <section class="buy-band" aria-labelledby="read-buy">
+    <section class="buy-band" aria-labelledby="excerpts-buy">
       <Image
         class="buy-band__cover"
         src={cover}
@@ -37,21 +37,21 @@ const { price } = await getBookPrice();
       />
       <div class="stack buy-band__text">
         <p class="eyebrow">Keep reading</p>
-        <h2 id="read-buy">Chapter 2, Left Behind, continues in the book</h2>
+        <h2 id="excerpts-buy">Chapter 2, Left Behind, continues in the book</h2>
         <p class="buy-band__meta">
           {site.edition} &middot; ISBN {site.isbn} &middot; Paperback, {formatRupees(price)}
         </p>
         <div class="buy-band__actions">
-          <BuyButton placement="read" />
+          <BuyButton placement="excerpts" />
           <a
             class="button buy-publisher"
             data-buy
-            data-placement="read-publisher"
+            data-placement="excerpts-publisher"
             href={site.buy.publisher}
             target="_blank"
             rel="noopener"
             data-umami-event="buy-click"
-            data-umami-event-placement="read-publisher"
+            data-umami-event-placement="excerpts-publisher"
           >Buy direct from the publisher</a>
         </div>
       </div>

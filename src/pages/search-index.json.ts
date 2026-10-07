@@ -51,8 +51,8 @@ export const GET: APIRoute = async () => {
     })),
     // Static pages worth finding by name.
     {
-      t: 'Read the first chapter',
-      u: '/read',
+      t: 'Excerpts and extras',
+      u: '/excerpts',
       k: 'Page',
       d: 'The prologue and Chapter 1, free to read.',
     },

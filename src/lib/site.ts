@@ -167,7 +167,7 @@ export const navMoreGroups = [
   {
     name: 'Beyond the book',
     items: [
-      { href: '/read', label: 'Read the first chapter', note: 'The prologue and Chapter 1, free' },
+      { href: '/excerpts', label: 'Excerpts and extras', note: 'The prologue and Chapter 1, free' },
       { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
       { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
       { href: '/author', label: 'The Author', note: 'Who wrote and drew this' },
