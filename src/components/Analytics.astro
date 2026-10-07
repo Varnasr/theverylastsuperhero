@@ -23,6 +23,8 @@ const endpoint = `${supabaseUrl}/rest/v1/postheroic_events`;
   on && (
     <script is:inline define:vars={{ endpoint, key: supabaseKey }}>
       (function () {
+        // Production only: the daily accessibility run and local servers load every page from localhost and were 2,830 of 3,121 recorded views.
+        if (location.hostname !== 'www.postheroic.world' && location.hostname !== 'postheroic.world') return;
         if (
           navigator.doNotTrack === '1' ||
           window.doNotTrack === '1' ||
