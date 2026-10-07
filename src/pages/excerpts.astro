@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BuyButton from '../components/BuyButton.astro';
 import { Content } from '../content/excerpt/chapter-one.md';
+import { Content as Extras } from '../content/excerpt/extras.md';
+import { Content as Annexure } from '../content/excerpt/annexure.md';
 import { site } from '../lib/site';
 import { getBookPrice, formatRupees } from '../lib/price';
 import cover from '../assets/cover.jpg';
@@ -12,19 +14,60 @@ const { price } = await getBookPrice();
 
 <BaseLayout
   title="Excerpts and extras"
-  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition. Fourteen-year-old Sumati, a hot Delhi morning, and a father who is about to vanish."
+  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents and a climate annexure."
   readingProgress
 >
   <div class="shell section">
     <header class="page-head stack">
       <p class="eyebrow">From the book</p>
       <h1>Excerpts and extras</h1>
-      <p class="lede text-muted">The prologue and Chapter 1, as printed in the First Edition.</p>
+      <p class="lede text-muted">The prologue and Chapter 1, as printed in the First Edition, then extras from the longer manuscript.</p>
     </header>
 
-    <article class="prose read stack">
+    <nav class="toc" aria-label="On this page">
+      <p class="toc__title">On this page</p>
+      <ol>
+        <li><a href="#chapter-one">Prologue and Chapter 1</a></li>
+        <li><a href="#archive">From the archive</a></li>
+        <li><a href="#annexure">Annexure: India 2075 &mdash; The Heat and the Flood</a></li>
+      </ol>
+    </nav>
+
+    <article class="prose read stack" id="chapter-one">
       <Content />
     </article>
+
+    <aside class="buy-row" aria-label="Buy the book">
+      <p class="buy-row__text">Chapter 2, Left Behind, continues in the book.</p>
+      <div class="buy-row__actions">
+        <BuyButton placement="excerpts-mid" />
+        <a
+          class="button buy-publisher"
+          data-buy
+          data-placement="excerpts-mid-publisher"
+          href={site.buy.publisher}
+          target="_blank"
+          rel="noopener"
+          data-umami-event="buy-click"
+          data-umami-event-placement="excerpts-mid-publisher"
+        >Buy direct from the publisher</a>
+      </div>
+    </aside>
+
+    <div class="extras-intro stack">
+      <p class="eyebrow">Extras</p>
+      <p>Some of these pages were cut from the printed edition.</p>
+    </div>
+
+    <section class="prose read stack" id="archive" aria-labelledby="archive-title">
+      <h2 id="archive-title">From the archive</h2>
+      <Extras />
+    </section>
+
+    <section class="prose read stack" id="annexure" aria-labelledby="annexure-title">
+      <h2 id="annexure-title">Annexure: India 2075 &mdash; The Heat and the Flood</h2>
+      <Annexure />
+    </section>
 
     <section class="buy-band" aria-labelledby="excerpts-buy">
       <Image
@@ -64,6 +107,77 @@ const { price } = await getBookPrice();
     max-width: 65ch;
     margin-inline: auto;
     margin-block-end: var(--space-xl);
+  }
+
+  .toc {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block-end: var(--space-xl);
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+  }
+
+  .toc__title {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .toc ol {
+    margin: 0;
+    padding-inline-start: 1.25em;
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .toc a {
+    display: inline-block;
+    padding-block: 0.25em;
+  }
+
+  .buy-row {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block: var(--space-xl);
+    padding: var(--space-m);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s) var(--space-m);
+    border: 1px solid var(--amber);
+    border-radius: var(--radius-s);
+    background: var(--bg-raised);
+  }
+
+  .buy-row__text {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .buy-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+  }
+
+  .extras-intro {
+    width: min(100%, 65ch);
+    margin-inline: auto;
+    margin-block-start: var(--space-3xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .extras-intro p {
+    margin: 0;
   }
 
   .read {
@@ -139,6 +253,37 @@ const { price } = await getBookPrice();
 
   .read :global(.document strong) {
     font-weight: 600;
+  }
+
+  /* Archive cards: each item is its own figure, label on top. */
+  .read :global(.archive-card) {
+    margin-inline: 0;
+  }
+
+  .read :global(.archive-label) {
+    margin-block-end: var(--space-s);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .read :global(.archive-card--epigraph) {
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    line-height: 1.6;
+  }
+
+  .read :global(.archive-card--epigraph .archive-label) {
+    font-family: var(--font-mono);
+  }
+
+  .read :global(.archive-card cite) {
+    margin-block-start: var(--space-xs);
+  }
+
+  .read :global(h3) {
+    margin-block-start: var(--space-xl);
   }
 
   .buy-band {
