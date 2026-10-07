@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site';
 import BuyButton from '../components/BuyButton.astro';
+import { Image } from 'astro:assets';
+import cover from '../assets/cover.jpg';
 ---
 
 <BaseLayout
@@ -117,7 +119,28 @@ import BuyButton from '../components/BuyButton.astro';
         <div><dt>ISBN</dt><dd>{site.isbn}</dd></div>
         <div><dt>Chapters</dt><dd>{site.chapters}, plus a prologue and an afterword</dd></div>
       </dl>
-      <p class="buy-row"><BuyButton /></p>
+      <div class="buy-row">
+        <Image
+          class="buy-row__cover"
+          src={cover}
+          alt="Cover of The Very Last Superhero: a man in a cape holds a child's hand against a red sunset."
+          widths={[160, 320]}
+          sizes="160px"
+          loading="lazy"
+        />
+        <div class="buy-row__actions">
+          <BuyButton />
+          <a
+            class="button buy-publisher"
+            data-buy
+            href={site.buy.publisher}
+            target="_blank"
+            rel="noopener"
+            data-umami-event="buy-click"
+            data-umami-event-placement="publisher"
+          >Buy direct from the publisher</a>
+        </div>
+      </div>
 
       <h2>Credits</h2>
       <p>
@@ -191,7 +214,24 @@ import BuyButton from '../components/BuyButton.astro';
   }
 
   .buy-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m);
     margin-block-start: var(--space-l);
+  }
+
+  .buy-row__cover {
+    flex: none;
+    width: 160px;
+    height: auto;
+    border-radius: var(--radius-s);
+  }
+
+  .buy-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
   }
 
   cite {

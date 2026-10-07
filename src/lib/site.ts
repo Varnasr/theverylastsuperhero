@@ -21,8 +21,14 @@ export const site = {
    */
   buy: {
     amazon: 'https://amzn.in/d/0dqr7bi1',
-    publisher: 'https://storywell.in',
+    /** The publisher's own page for the book, which sells it direct. */
+    publisher: 'https://storywell.in/book.html?id=the-very-last-superhero',
   },
+  /**
+   * Cover price in INR. Mirrors StoryWell sku 00005, verified 2026-10-07. Used
+   * only when the live catalogue cannot be read at build time (src/lib/price.ts).
+   */
+  price: 699,
   edition: 'First Edition 2026',
   chapters: 17,
   /** Real-world campaign the book is dedicated to. */
