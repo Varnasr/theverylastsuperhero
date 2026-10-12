@@ -7,6 +7,7 @@ import { bookCard, bookJsonLd } from '../lib/seo';
 import { getImage } from 'astro:assets';
 import { Content } from '../content/excerpt/chapter-one.md';
 import { Content as Extras } from '../content/excerpt/extras.md';
+import { Content as Annexure } from '../content/excerpt/annexure.md';
 import { site } from '../lib/site';
 import { getBookPrice, formatRupees } from '../lib/price';
 import cover from '../assets/cover.jpg';
@@ -20,7 +21,7 @@ const shareText =
 
 <BaseLayout
   title="Excerpts and extras"
-  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents."
+  description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents and a sourced note on the climate science behind the novel."
   readingProgress
   ogType="book"
   structuredData={structuredData}
@@ -38,6 +39,7 @@ const shareText =
       <ol>
         <li><a href="#chapter-one">Prologue and Chapter 1</a></li>
         <li><a href="#archive">From the archive</a></li>
+        <li><a href="#annexure">Annexure: India 2075, the heat and the flood</a></li>
       </ol>
     </nav>
 
@@ -71,6 +73,11 @@ const shareText =
     <section class="prose read stack" id="archive" aria-labelledby="archive-title" data-verbatim>
       <h2 id="archive-title">From the archive</h2>
       <Extras />
+    </section>
+
+    <section class="prose read stack" id="annexure" aria-labelledby="annexure-title">
+      <h2 id="annexure-title">Annexure: India 2075, the heat and the flood</h2>
+      <Annexure />
     </section>
 
 
