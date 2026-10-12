@@ -50,23 +50,30 @@ const updated = 'August 2026';
         is written to your device and nothing links one visit to another.
       </p>
       <p>
-        Clicks on the "Buy the book" links are counted the same way, so the author can tell whether
-        the site is doing its job. If your browser sends <em>Do Not Track</em> or Global Privacy
+        Clicks on the "Buy the book" links and on the share buttons are counted the same way, so
+        the author can tell whether the site is doing its job. A share click records only which
+        service you chose and where on the page the button was. What you share, and with whom, is
+        never seen by this site. If your browser sends <em>Do Not Track</em> or Global Privacy
         Control, nothing is recorded at all.
       </p>
 
       <h2>What third parties see</h2>
       <p>
-        The site is hosted on <strong>GitHub Pages</strong>. GitHub receives your IP address and
+        The site is hosted on <strong>Netlify</strong>. Netlify receives your IP address and
         browser user-agent as part of serving the page, and may retain those in server logs. See
-        <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">
-          GitHub's privacy statement</a
-        >.
+        <a href="https://www.netlify.com/privacy/" rel="noopener">Netlify's privacy policy</a>.
       </p>
       <p>
         Typefaces are loaded from <strong>Google Fonts</strong>, which means Google also receives
         your IP address when a page loads. No cookie is set by this request. If you would rather not
         make it, a content blocker will prevent it and the site falls back to your system fonts.
+      </p>
+      <p>
+        The visit counts above, and the Memory Wall, are stored in a database the author runs on
+        <strong>Supabase</strong>. Your browser sends each count to Supabase directly, so Supabase
+        receives your IP address as part of that request, in the same way any web server does. The
+        row it stores has no IP address in it. See
+        <a href="https://supabase.com/privacy" rel="noopener">Supabase's privacy policy</a>.
       </p>
       <p>There are no other third-party requests: no embedded video, no social widgets and no pixels.</p>
 
