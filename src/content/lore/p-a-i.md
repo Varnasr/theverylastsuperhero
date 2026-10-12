@@ -48,8 +48,8 @@ not to walk after dark, and it was right often enough that the question of who
 decided the route stopped being asked.
 
 This is the logical end point of predictive policing and civic scoring: a system
-where dissent is forecast and neutralised before it begins. Cold, utilitarian,
-unaccountable.
+where dissent is forecast and neutralised before it begins. It is cold, utilitarian
+and unaccountable.
 
 It haunts the early chapters. It is why Sumati cannot call for help, why her
 identity fragments, and why her father's disappearance leaves so little behind.

@@ -15,7 +15,7 @@ wasteland.
 
 The Disclosures began with a leak: financial records showing that he had received
 millions in payments from the very corporations causing the environmental
-devastation he claimed to fight. He was not alone on the paperwork — twelve other
+devastation he claimed to fight. He was not alone on the paperwork: twelve other
 heroes had signed too. When accountability came knocking, most fled.
 
 His face is in the museum now, in a glass case beside the contracts.

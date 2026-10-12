@@ -1,5 +1,5 @@
 ---
-title: Virtual Layer Flooring
+title: Virtual layer flooring
 category: Infrastructure
 designation: Sensory Overlays
 summary: Delicate patterned surfaces laid in schools and archives for story-triggered audio playback.

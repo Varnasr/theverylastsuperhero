@@ -25,7 +25,7 @@ for (const w of readings) {
 
 <BaseLayout
   title="On the Making of The Very Last Superhero"
-  description="The author's afterword — why the book was written, what is real in it, and what the illustrations actually are."
+  description="The author's afterword: why the book was written, what is real in it, and what the illustrations actually are."
   readingProgress
 >
   <div class="shell section">
@@ -34,7 +34,7 @@ for (const w of readings) {
       <h1>On the Making of <em>The Very Last Superhero</em></h1>
     </header>
 
-    <div class="prose making stack">
+    <div class="prose making stack" data-verbatim>
       <p class="lede">This is not a story about superheroes. It’s a story about what we believed they could save us from—and what happened when they didn’t.</p>
 
       <p><em>The Very Last Superhero</em> is grounded in Delhi’s actual, ongoing reality. The Okhla Waste-to-Energy plant exists. The heat exists. The failed tech, the air so dense with particulate that memory feels physical—this is not fiction. The book doesn’t imagine a future. It builds a map from the present forward.</p>
@@ -59,9 +59,9 @@ for (const w of readings) {
 
     <section class="reading" id="further-reading">
       <header class="reading__head">
-        <h2>Further Reading</h2>
+        <h2>Further reading</h2>
         <p class="text-muted">
-          The book's annotated bibliography — {works.length} works in {groups.length} groups, each
+          The book's annotated bibliography: {works.length} works in {groups.length} groups, each
           with the author's note on why it matters to the novel.
         </p>
       </header>
@@ -81,11 +81,11 @@ for (const w of readings) {
                       {data.year && `, ${data.year}`}
                     </p>
                   )}
-                  <div class="work__note prose">
+                  <div class="work__note prose" data-verbatim>
                     <Body />
                   </div>
                   {data.relevance && (
-                    <p class="work__rel">
+                    <p class="work__rel" data-verbatim>
                       <span>Relevance</span> {data.relevance}
                     </p>
                   )}

@@ -17,7 +17,7 @@ She was decommissioned.
 The archive holds one line about her and no images, which is itself the record:
 the prototypes who acted on their own judgement were removed early enough that
 there was never much to erase. What survives of her survives because
-[Vikram](/lore/vikram-malhotra) — the obedient one, the one who lasted — was
+[Vikram](/lore/vikram-malhotra), the obedient one, the one who lasted, was
 filed alongside her, and someone kept the comparison.
 
 Her name means hope. The archive notes this without comment.

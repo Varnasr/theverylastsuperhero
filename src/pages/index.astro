@@ -63,7 +63,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
       <div class="hero__actions">
         <BuyButton placement="hero" />
         <a class="button" href="/excerpts">Excerpts and extras</a>
-        <a class="button" href="/lore">Enter the Lore Archive</a>
+        <a class="button" href="/lore">Enter the lore archive</a>
       </div>
     </div>
   </section>
@@ -74,15 +74,14 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
       <h2>Heroism, after the heroes</h2>
       <p>
         <em>The Very Last Superhero</em> is set in a near-future India where climate collapse,
-        authoritarian control, and digital decay have stripped the world of its myths — and its
-        memory. Fourteen-year-old Sumati inherits a Salt Lamp from her missing father: not a relic,
-        but a device that stores oral histories.
+        authoritarian control, and digital decay have stripped the world of its myths and its
+        memory. Fourteen-year-old Sumati inherits a Salt Lamp from her missing father, a device
+        that stores oral histories.
       </p>
       <p>
         In a Delhi buried beneath surveillance and floodwater, she sets out to reboot the Resistance
-        archive and uncover what came before the Collapse. In this world, heroism is not superpowers
-        or spectacle. It is memory, care, and the courage to hold a community together when
-        everything else has fallen apart.
+        archive and uncover what came before the Collapse. In this world, heroism is memory, care, and the
+        courage to hold a community together when everything else has fallen apart.
       </p>
       <p><a href="/about">More about the story and its making →</a></p>
     </div>
@@ -92,7 +91,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
     <header class="section-head">
       <div>
         <p class="eyebrow">The world</p>
-        <h2>Lore Archive</h2>
+        <h2>Lore archive</h2>
       </div>
       <a class="button" href="/lore">All {lore.length} entries</a>
     </header>
@@ -109,7 +108,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
         <p class="text-muted">
           {timeline.length} recorded events spanning {first?.data.yearLabel} to {
             last?.data.yearLabel
-          } — the floods, the Disclosures, the curriculum rewrite, and the two years when no lamp
+          }: the floods, the Disclosures, the curriculum rewrite, and the two years when no lamp
           answered.
         </p>
         <p><a class="button" href="/timeline">Open the timeline</a></p>
@@ -132,17 +131,17 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
     <aside class="better">
       <div class="better__text">
         <p class="eyebrow">Not fiction</p>
-        <h2>Make the World Better</h2>
+        <h2>Make the world better</h2>
         <p>
-          The Okhla waste-to-energy plant exists. The heat exists. The book's answer is not a hero
-          — it is documentation, doubt, and people who keep turning up. Sixteen organisations
+          The Okhla waste-to-energy plant exists. The heat exists. The book's answer is documentation,
+          doubt, and people who keep turning up. Sixteen organisations
           already doing that work, and the campaign this book is dedicated to.
         </p>
       </div>
       <a class="button better__cta" href="/act">See how to help →</a>
     </aside>
 
-    <figure class="epigraph">
+    <figure class="epigraph" data-verbatim>
       <blockquote>
         <p>{site.epigraph.text}</p>
       </blockquote>
@@ -165,7 +164,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
         <h2>Read the whole thing</h2>
         <p class="text-muted">
           {site.chapters} chapters, illustrated throughout, published by {site.publisher}.
-          Everything on this site is the world around it — the novel itself is where Sumati
+          Everything on this site is the world around the book. The novel itself is where Sumati
           actually goes. <a href="/excerpts">Read the prologue and Chapter 1 free in the excerpts</a> first.
         </p>
         <p class="buy-band__meta">
@@ -196,7 +195,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
         <p class="eyebrow">Contribute</p>
         <h2>The Memory Wall</h2>
         <p class="text-muted">
-          The archive was never meant to be read only. Send artwork, or a piece of testimony in your
+          The archive was meant to be added to as well as read. Send artwork, or a piece of testimony in your
           own voice, and it may join the wall.
         </p>
       </div>

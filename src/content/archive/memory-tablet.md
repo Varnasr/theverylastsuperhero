@@ -1,5 +1,5 @@
 ---
-title: Memory Tablet
+title: Memory tablet
 summary: Small, palm-sized recorder made of recycled crystal and metal. Holds up to nine hours of voice data.
 status: recovered
 order: 2

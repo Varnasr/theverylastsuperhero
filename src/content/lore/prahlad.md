@@ -11,9 +11,8 @@ imageAlt: An older man in a waistcoat writing into a ledger under a brass lamp, 
 
 A gaunt, soft-spoken man.
 
-Keeping an archive after the institutions have gone is not librarianship. It is
-deciding, every day, what is worth the risk of holding — and being the person
-who has to say no.
+Keeping an archive after the institutions have gone means deciding, every day,
+what is worth the risk of holding, and being the person who has to say no.
 
 ### The other Prahlad
 

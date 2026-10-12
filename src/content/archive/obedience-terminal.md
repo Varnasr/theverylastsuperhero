@@ -1,5 +1,5 @@
 ---
-title: Compliance Scoring Terminal
+title: Compliance scoring terminal
 designation: Obj-CST/09
 summary: A kiosk that watches behaviour and withholds services accordingly. Recovered intact, which tells you how much anyone wanted it.
 status: recovered

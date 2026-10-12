@@ -1,5 +1,5 @@
 ---
-title: Crow Surveillance Drone
+title: Crow surveillance drone
 designation: Obj-CSD/??
 summary: Rumoured bio-drones used for covert surveillance. No confirmed specimen has ever been catalogued, which is either proof of nothing or proof of the design working.
 status: recovered
@@ -9,7 +9,7 @@ image: ../../assets/archive/crow-drone.webp
 imageAlt: A crow with visible mechanical joints at wing, leg and shoulder, perched on a rusted pipe
 ---
 
-Rumoured. That word is doing all the work in this entry.
+Everything in this entry depends on the word rumoured.
 
 Bio-drones, allegedly, built for covert surveillance and shaped like the one bird
 nobody in an Indian city ever looks at twice. No confirmed specimen has been

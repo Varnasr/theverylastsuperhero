@@ -42,7 +42,7 @@ const structuredData = {
 <BaseLayout title={title} description={summary} structuredData={structuredData} readingProgress ogType="article" {...share}>
   <article class="shell section entry">
     <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/lore">Lore Archive</a>
+      <a href="/lore">Lore archive</a>
       <span aria-hidden="true">/</span>
       <a href={`/lore?kind=${encodeURIComponent(category)}`}>{category}</a>
     </nav>
@@ -78,7 +78,7 @@ const structuredData = {
           <SaltLampPlayer {...testimony} />
           {testimony.kind === 'broadcast' && (
             <p class="no-human">
-              The archive holds no human account of this — only the transmission.
+              The archive holds no human account of this, only the transmission.
               <a href="/memory">Record one</a>.
             </p>
           )}

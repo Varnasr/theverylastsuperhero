@@ -1,5 +1,5 @@
 ---
-title: Compliance Index Chart
+title: Compliance index chart
 summary: AI-generated behaviour sheet used in the 2061 curriculum rewrites.
 status: recovered
 order: 5

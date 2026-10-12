@@ -37,16 +37,16 @@ const sizes = [
 ---
 
 <BaseLayout
-  title="Firebird Sigil"
-  description="Make your own Firebird wallpaper — a sigil, a line from the archive, and a palette, rendered at full phone resolution and free to download."
+  title="Firebird sigil"
+  description="Make your own Firebird wallpaper from a sigil, a line from the archive, and a palette, rendered at full phone resolution and free to download."
 >
   <div class="shell section sigil-page">
     <header class="page-head stack">
       <p class="eyebrow">Make something</p>
-      <h1>Firebird Sigil</h1>
+      <h1>Firebird sigil</h1>
       <p class="text-muted lede">
-        The Firebird has no official form. It is hand-sketched, stitched, sprayed, remembered —
-        which is the point: a symbol that cannot be standardised cannot be catalogued, and a symbol
+        The Firebird has no official form. It is hand-sketched, stitched, sprayed and remembered.
+        That is the point: a symbol that cannot be standardised cannot be catalogued, and a symbol
         that cannot be catalogued cannot be deleted. So make your own.
       </p>
     </header>
@@ -108,7 +108,7 @@ const sizes = [
         <p class="hint">
           Free for personal use under
           <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a>.
-          Nothing is uploaded — the image is made in your browser.
+          Nothing is uploaded. The image is made in your browser.
         </p>
       </div>
     </div>
@@ -305,14 +305,14 @@ const sizes = [
       // Attribution
       ctx.font = `${Math.round(24 * unit)}px "IBM Plex Mono", ui-monospace, monospace`;
       ctx.fillStyle = p.accent + 'cc';
-      ctx.fillText(`— ${q.who}`, cx, startY + lines.length * quoteSize * 1.42 + 34 * unit);
+      ctx.fillText(`${q.who}`, cx, startY + lines.length * quoteSize * 1.42 + 34 * unit);
 
       // Mark
       ctx.font = `${Math.round(22 * unit)}px "IBM Plex Mono", ui-monospace, monospace`;
       ctx.fillStyle = p.ink + '66';
       ctx.fillText('postheroic.world', cx, H - 70 * unit);
 
-      if (attrib) attrib.textContent = `— ${q.who}`;
+      if (attrib) attrib.textContent = q.who;
     };
 
     quoteSel?.addEventListener('change', () => {

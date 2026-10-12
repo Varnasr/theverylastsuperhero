@@ -2,7 +2,7 @@
 title: Kishanganj
 category: Location
 designation: Inadaptable Zone (Category 2)
-summary: The town where Serenity Junction sits. Once lush-green fields, now a Category 2 inadaptable zone — 55.6°C average surface temperature and a population down 43% since 2060.
+summary: The town where Serenity Junction sits. Once lush-green fields, now a Category 2 inadaptable zone, with a 55.6°C average surface temperature and a population down 43% since 2060.
 image: ../../assets/illustrations/arid-land.webp
 imageAlt: Arid patches of land with cracks running deep like veins, townsfolk under wide-brimmed hats and parasols
 order: 18
@@ -12,7 +12,7 @@ related: [serenity-junction, sumati, nandini-maa, the-collapse, the-resistance]
 The sun scorches the dusty streets. Fields that were once lush-green bear the
 brunt of it, turned to arid patches with cracks running deep.
 
-### Environmental snapshot — Kishanganj sector, 2074
+### Environmental snapshot, Kishanganj sector, 2074
 
 | | |
 | --- | --- |

@@ -49,14 +49,14 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         )
       }
 
-      <div class="prose body">
+      <div class="prose body" data-verbatim>
         <Content />
       </div>
     </article>
 
     <footer class="foot">
       <p class="text-muted">
-        Sent in by a reader and published with their permission. It comes down on request — write to
+        Sent in by a reader and published with their permission. It comes down on request. Write to
         <a href={`mailto:${site.email}`}>{site.email}</a>.
       </p>
       <p><a href="/memory#submit">Add your own →</a></p>

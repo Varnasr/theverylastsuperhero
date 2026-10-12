@@ -1,7 +1,7 @@
 ---
 year: 2055
 yearLabel: "2055"
-title: The Great Bangladesh Flood
+title: The great Bangladesh flood
 summary: The Teesta turns eastern India into a marshy wasteland. Captain Indra single-handedly evacuates thousands, and becomes a national figure.
 related: [captain-indra, the-collapse, cooling-suits, the-disclosures-era]
 ---

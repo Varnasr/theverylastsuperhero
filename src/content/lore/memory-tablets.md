@@ -1,5 +1,5 @@
 ---
-title: Memory Tablets
+title: Memory tablets
 category: Object
 designation: Data Storage
 summary: Portable bricks used to capture oral testimony. Activated by Salt Lamps or object tags.
@@ -13,4 +13,4 @@ Portable bricks used to capture oral testimony, activated by Salt Lamps or objec
 tags.
 
 Small, palm-sized, made of recycled crystal and metal. Roughly nine hours of
-voice to a tablet — long enough for a life, if the life is told carefully.
+voice to a tablet, which is long enough for a life if the life is told carefully.

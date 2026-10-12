@@ -21,8 +21,8 @@ interface Props {
 
 const {
   variant = 'band',
-  heading = 'Word when there is word',
-  blurb = 'New archive entries, recovered artwork, and news about the book. Infrequent, and never your address to anyone else.',
+  heading = 'Updates by email',
+  blurb = 'New archive entries, recovered artwork, and news about the book. Infrequent, and your address is never shared.',
 } = Astro.props;
 ---
 
@@ -60,7 +60,7 @@ const {
       <button type="submit">Keep me posted</button>
     </div>
     <p class="fine text-muted">
-      One list, run by the author. Unsubscribe whenever — see the
+      One list, run by the author. Unsubscribe whenever you like. See the
       <a href="/privacy">privacy note</a>.
     </p>
   </form>

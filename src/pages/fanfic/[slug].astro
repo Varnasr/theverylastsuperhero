@@ -24,9 +24,9 @@ const fmt = (dt: Date) =>
 
 <BaseLayout title={d.title} description={d.summary} readingProgress ogType="article">
   <div class="shell section">
-    <p class="back"><a href="/fanfic">← Reader Fiction</a></p>
+    <p class="back"><a href="/fanfic">← Reader fiction</a></p>
 
-    <header class="page-head stack">
+    <header class="page-head stack" data-verbatim>
       <h1>{d.title}</h1>
       <p class="by">
         by {
@@ -46,14 +46,14 @@ const fmt = (dt: Date) =>
 
     {
       d.notes && (
-        <aside class="notes">
+        <aside class="notes" data-verbatim>
           <p class="notes__label">Content notes</p>
           <p>{d.notes}</p>
         </aside>
       )
     }
 
-    <article class="prose story">
+    <article class="prose story" data-verbatim>
       <Content />
     </article>
 

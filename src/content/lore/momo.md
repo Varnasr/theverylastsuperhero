@@ -12,5 +12,5 @@ imageAlt: "A fat ginger cat sitting upright on floorboards beside a potted plant
 Nandini's cat: fat, ginger, and entirely unbothered by new arrivals sniffing
 around the room.
 
-No training. No loyalty. An unblemished record of being in exactly the wrong
-place at exactly the right time.
+She has no training and no loyalty, and an unblemished record of being in exactly the
+wrong place at exactly the right time.

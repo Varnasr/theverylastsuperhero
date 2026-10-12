@@ -35,14 +35,14 @@ in the Treasure Room until he finds the tattered manuscript that explains it.
 
 He is also Axl.
 
-He was eleven when he breached P.A.I.'s first training loop — the system that
+He was eleven when he breached P.A.I.'s first training loop, the system that
 monitored for deviance and punished it. It took five more years to make it
 forget the words *command* and *obedience*. What he built instead trains agents
-for ethical pathing: least destructive, least undemocratic, not the fastest
-route but the rightest one.
+for ethical pathing, which picks the least destructive and least undemocratic
+route even when another is faster.
 
 > Changed the dots. Lowercase. P.A.I. to P.ai. It's not a god anymore. Just a
 > tool that learns.
 
-Kishore Mehta. Rishi. Axl. A man who spends his days explaining crows to
+Kishore Mehta, also called Rishi and Axl, spends his days explaining crows to
 children and, somewhere in between, took a god apart and handed back a tool.

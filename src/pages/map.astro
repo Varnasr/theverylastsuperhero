@@ -13,16 +13,16 @@ const statuses: ZoneStatus[] = ['active', 'dark', 'lost'];
 ---
 
 <BaseLayout
-  title="Resistance Map"
-  description="A schematic of the Resistance network — lamp routes between the Treasure Room, the drowned embankments, the schools and the rooftops of a submerged Delhi."
+  title="Resistance map"
+  description="A schematic of the Resistance network, showing lamp routes between the Treasure Room, the drowned embankments, the schools and the rooftops of a submerged Delhi."
 >
   <div class="shell section">
     <header class="page-head stack">
       <p class="eyebrow">Network schematic</p>
-      <h1>Resistance Map</h1>
+      <h1>Resistance map</h1>
       <p class="text-muted lede">
         Lamp routes between the zones the archive still names. Select a node to read what the
-        archive holds about it. This is a schematic, not a survey — the Resistance never drew a map
+        archive holds about it. This is a schematic. The Resistance never drew a map
         anyone else could use.
       </p>
     </header>
@@ -130,7 +130,7 @@ const statuses: ZoneStatus[] = ['active', 'dark', 'lost'];
     node.setAttribute('role', 'link');
     // Named explicitly rather than left to the <text> inside, so the name
     // does not change if the label is ever moved out of the group.
-    node.setAttribute('aria-label', `${(node.querySelector('.node__label')?.textContent || id).trim()} — jump to this zone`);
+    node.setAttribute('aria-label', `${(node.querySelector('.node__label')?.textContent || id).trim()}, jump to this zone`);
 
     const go = () => {
       const card = document.getElementById(id);

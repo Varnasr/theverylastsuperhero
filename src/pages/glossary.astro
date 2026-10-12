@@ -29,14 +29,14 @@ for (const e of rendered) {
 
 <BaseLayout
   title="Glossary and Notes for the Curious Reader"
-  description="The book's own glossary — where the science is accurate, the politics are plausible, and the failures of humanity are deeply familiar. Hyper-Express, cooling suits, the 2060 Disclosures, waste-to-energy, Pandemonium architecture and more."
+  description="The book's own glossary, where the science is accurate, the politics are plausible, and the failures of humanity are deeply familiar. Hyper-Express, cooling suits, the 2060 Disclosures, waste-to-energy, Pandemonium architecture and more."
   readingProgress
 >
   <div class="shell section">
     <header class="page-head stack">
       <p class="eyebrow">From the book</p>
       <h1>Glossary and Notes for the Curious Reader</h1>
-      <p class="text-muted lede">
+      <p class="text-muted lede" data-verbatim>
         This section is for readers who want to know more about the world of
         <em>The Very Last Superhero</em> — where the science is accurate, the politics are
         plausible, and the dreams and failures of humanity are deeply familiar. If you're wondering
@@ -64,7 +64,8 @@ for (const e of rendered) {
           {section.name === 'From the Extended Edition' && (
             <p class="group__note text-muted">
               Terms the author wrote for a longer edition of the glossary that the printed book
-              does not carry. Included because the world is bigger than the volume it fits into.
+              does not carry. They are included here because the world is larger than the printed
+              volume.
             </p>
           )}
           <dl class="glossary">
@@ -76,7 +77,9 @@ for (const e of rendered) {
                   </a>
                 </dt>
                 <dd class="prose">
-                  <Body />
+                  <div data-verbatim style="display: contents">
+                    <Body />
+                  </div>
                   {data.references.length > 0 && (
                     <aside class="refs">
                       <p class="refs__title">Where this comes from</p>
@@ -86,7 +89,7 @@ for (const e of rendered) {
                             <a href={r.url} rel="noopener">
                               {r.label}
                             </a>
-                            {r.note && <span class="refs__note"> — {r.note}</span>}
+                            {r.note && <span class="refs__note">: {r.note}</span>}
                           </li>
                         ))}
                       </ul>
@@ -100,7 +103,7 @@ for (const e of rendered) {
       ))
     }
 
-    <p class="closing">
+    <p class="closing" data-verbatim>
       This glossary is not exhaustive. It is an invitation. The world of
       <em>The Very Last Superhero</em> is constructed from the sediment of our past and the anxious
       architecture of our present. If some parts feel too real, that is intentional. If others think

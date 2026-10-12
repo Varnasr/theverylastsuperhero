@@ -32,7 +32,7 @@ const statusLabel: Record<string, string> = {
 
 <BaseLayout title={d.title} description={d.summary} ogType="article" {...share}>
   <div class="shell section">
-    <p class="back"><a href="/archive">← Archive Objects</a></p>
+    <p class="back"><a href="/archive">← Archive objects</a></p>
 
     <article class="object">
       {
@@ -75,7 +75,7 @@ const statusLabel: Record<string, string> = {
               {related.map((r) => (
                 <li>
                   <a href={`/lore/${r.id}`}>{r.data.title}</a>
-                  <span class="text-muted"> — {r.data.summary}</span>
+                  <span class="text-muted">: {r.data.summary}</span>
                 </li>
               ))}
             </ul>

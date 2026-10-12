@@ -2,7 +2,7 @@
 title: Myaknju
 category: Character
 designation: Tech Sage of the Early Resistance
-summary: The tech sage who designed the Salt Lamps — combining the old wisdom of stones that remember with acoustic resonance and nanoscale tuning.
+summary: The tech sage who designed the Salt Lamps by combining the old wisdom of stones that remember with acoustic resonance and nanoscale tuning.
 order: 9
 related: [salt-lamps, hysterons, nandini-maa, p-ai, virtual-layer-flooring]
 image: ../../assets/lore/myaknju.webp
@@ -11,14 +11,14 @@ imageAlt: "A thin, wiry man at a workbench, tuning a lattice of salt crystals wi
 
 The tech sage from the early Resistance, and the mind that designed the lamps.
 
-Not pretty pink rock: precision-carved crystalline lattices of halite blended
+The lamps are precision-carved crystalline lattices of halite blended
 with [hysterons](/lore/hysterons). Halite will hold a vibrational pattern if you
 build the lattice precisely enough; Myaknju worked out how precisely, and paired
 it with acoustic resonance and some rather nifty nanoscale tuning.
 
-The result picks up history, not just heat.
+The result picks up history as well as heat.
 
-He is also the Audible Enclave embedded in a lamp's base — which is why a lamp
+He is also the Audible Enclave embedded in a lamp's base, which is why a lamp
 can whisper rather than merely play back, and why it answers the room it is in
 instead of reciting into it.
 

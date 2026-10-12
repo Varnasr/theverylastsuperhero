@@ -30,7 +30,7 @@ testimony:
 ---
 
 For two decades they soared across the skies in plasma suits and gravity-defying
-capes — vigilantes, genetically enhanced defenders, state-funded climate
+capes: vigilantes, genetically enhanced defenders, state-funded climate
 responders. Schoolchildren collected their holograms and traded cards. Ministers
 competed for photographs beside them. Sumati's mother kept a shrine to
 [Vayu](/lore/vayu), the wind hero who promised clean air.
