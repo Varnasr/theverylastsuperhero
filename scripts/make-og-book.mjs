@@ -59,7 +59,7 @@ h1{font:700 78px/1.08 Mer,Georgia,serif;margin-top:28px;letter-spacing:-.01em}
 </style></head><body>
 <div class="rule"></div>
 <div class="copy">
-  <p class="eyebrow">Climate fiction · Delhi, 2075</p>
+  <p class="eyebrow">Speculative fiction · India, 2075</p>
   <h1>The Very Last Superhero</h1>
   <p class="tag">No one flies. But someone stays.</p>
   <p class="by">An illustrated novel by Varna Sri Raman</p>
