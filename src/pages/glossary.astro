@@ -5,11 +5,10 @@ import SecondEdition from '../components/SecondEdition.astro';
 import Newsletter from '../components/Newsletter.astro';
 
 /**
- * Glossary and Notes for the Curious Reader — the book's own back matter,
- * reproduced from the manuscript rather than paraphrased.
- *
- * This is the one part of the site where the author's printed words stand
- * unedited, so entries are rendered straight from the collection.
+ * Glossary and Notes for the Curious Reader, adapted from the book's own back
+ * matter. The entries are edited for the site and follow the writing standards
+ * in CLAUDE.md like everything else the site says in its own voice. Only text
+ * quoted from the book inside an entry would need data-verbatim.
  */
 
 const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - b.data.order);
@@ -29,19 +28,23 @@ for (const e of rendered) {
 
 <BaseLayout
   title="Glossary and Notes for the Curious Reader"
-  description="The book's own glossary, where the science is accurate, the politics are plausible, and the failures of humanity are deeply familiar. Hyper-Express, cooling suits, the 2060 Disclosures, waste-to-energy, Pandemonium architecture and more."
+  description="A glossary for readers of The Very Last Superhero, adapted from the book's own. It covers the real science and politics behind the Hyper-Express, cooling suits, the 2060 Disclosures, waste-to-energy plants, Pandemonium architecture and more."
   readingProgress
 >
   <div class="shell section">
     <header class="page-head stack">
-      <p class="eyebrow">From the book</p>
+      <p class="eyebrow">Adapted from the book</p>
       <h1>Glossary and Notes for the Curious Reader</h1>
-      <p class="text-muted lede" data-verbatim>
+      <p class="text-muted lede">
         This section is for readers who want to know more about the world of
-        <em>The Very Last Superhero</em> — where the science is accurate, the politics are
-        plausible, and the dreams and failures of humanity are deeply familiar. If you're wondering
-        whether the future in this novel could happen, the short answer is that parts of it already
-        have.
+        <em>The Very Last Superhero</em>. The science in it is accurate, the politics are
+        plausible, and the dreams and failures of humanity are deeply familiar. If you wonder
+        whether the future in this novel could happen, the short answer is that parts of it
+        already have.
+      </p>
+      <p class="text-muted lede">
+        This page is adapted from the glossary printed in the book. The entries have been edited
+        for the site, and the facts in them are the same.
       </p>
     </header>
 
@@ -61,11 +64,10 @@ for (const e of rendered) {
       sections.map((section) => (
         <section class="group">
           <h2 class="group__name">{section.name}</h2>
-          {section.name === 'From the Extended Edition' && (
+          {section.name === 'From the extended edition' && (
             <p class="group__note text-muted">
-              Terms the author wrote for a longer edition of the glossary that the printed book
-              does not carry. They are included here because the world is larger than the printed
-              volume.
+              These terms come from a longer edition of the glossary that the printed book does not
+              carry. They are included here because the world is larger than the printed volume.
             </p>
           )}
           <dl class="glossary">
@@ -77,9 +79,7 @@ for (const e of rendered) {
                   </a>
                 </dt>
                 <dd class="prose">
-                  <div data-verbatim style="display: contents">
-                    <Body />
-                  </div>
+                  <Body />
                   {data.references.length > 0 && (
                     <aside class="refs">
                       <p class="refs__title">Where this comes from</p>
@@ -103,11 +103,11 @@ for (const e of rendered) {
       ))
     }
 
-    <p class="closing" data-verbatim>
-      This glossary is not exhaustive. It is an invitation. The world of
-      <em>The Very Last Superhero</em> is constructed from the sediment of our past and the anxious
-      architecture of our present. If some parts feel too real, that is intentional. If others think
-      it is impossible, perhaps that is where we should begin.
+    <p class="closing">
+      This glossary is incomplete, and the author offers it as an invitation. The world of
+      <em>The Very Last Superhero</em> is built from our past and from the anxieties of our
+      present. Some parts may feel too real, and that is intentional. Where a reader finds a part
+      impossible, that may be the place to begin.
     </p>
       <Newsletter />
       <SecondEdition />

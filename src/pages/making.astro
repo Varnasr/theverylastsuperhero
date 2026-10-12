@@ -6,9 +6,10 @@ import BuyButton from '../components/BuyButton.astro';
 import { getCollection, render } from 'astro:content';
 
 /**
- * "On the Making of The Very Last Superhero" — the author's own afterword,
- * reproduced verbatim from the manuscript. Nothing here is site copy; if it
- * needs changing, it changes in the book first.
+ * "On the Making of The Very Last Superhero", adapted from the author's own
+ * afterword and annotated bibliography. Both are edited for the site and follow
+ * the writing standards in CLAUDE.md. Bibliographic citations (author, title,
+ * publisher, year) stay exactly as printed.
  */
 
 const works = (await getCollection('reading')).sort((a, b) => a.data.order - b.data.order);
@@ -30,30 +31,28 @@ for (const w of readings) {
 >
   <div class="shell section">
     <header class="page-head stack">
-      <p class="eyebrow">In the author's words</p>
+      <p class="eyebrow">Adapted from the afterword</p>
       <h1>On the Making of <em>The Very Last Superhero</em></h1>
     </header>
 
-    <div class="prose making stack" data-verbatim>
-      <p class="lede">This is not a story about superheroes. It’s a story about what we believed they could save us from—and what happened when they didn’t.</p>
+    <div class="prose making stack">
+      <p class="lede">This story is about what we believed superheroes could save us from, and about what happened when they did not save us.</p>
 
-      <p><em>The Very Last Superhero</em> is grounded in Delhi’s actual, ongoing reality. The Okhla Waste-to-Energy plant exists. The heat exists. The failed tech, the air so dense with particulate that memory feels physical—this is not fiction. The book doesn’t imagine a future. It builds a map from the present forward.</p>
+      <p><em>The Very Last Superhero</em> is grounded in Delhi’s actual, ongoing reality. The Okhla Waste-to-Energy plant exists, and so does the heat. The failed technology exists, and so does the air so dense with particulate that memory feels physical. All of this is real. The book builds its map of the future outward from the present.</p>
 
-      <p>The world of this story is shaped by material capitalism, climate collapse, and abandoned infrastructures dressed up as innovation. The superheroes were only ever state mechanisms—designed for obedience, engineered for loyalty, and incapable of love. They left behind their tech, propaganda, and the communities they claimed to protect when they fell.</p>
+      <p>The world of this story is shaped by material capitalism, climate collapse and abandoned infrastructures presented as innovation. The superheroes were never anything more than state mechanisms. They were designed for obedience, engineered for loyalty and incapable of love. When they fell, they left behind their technology, their propaganda and the communities they claimed to protect.</p>
 
-      <p>Sumati is not a chosen one. She is a child trying to understand what she has inherited. Her search for her father becomes a search for Resistance and then for something older: shared memory. She learns from relics, ruins, animals, and ghosts. She knows from listening. This story is about care as resistance—about love for the nonhuman, the forgotten, and the othered. It is about what it means to remember communally, across time.</p>
+      <p>Sumati is a child trying to understand what she has inherited. Her search for her father becomes a search for the Resistance and then for something older, which is shared memory. She learns from relics, ruins, animals and ghosts, and she learns by listening. This story is about care as resistance, which includes love for the nonhuman, the forgotten and the othered. It is also about what it means to remember communally, across time.</p>
 
-      <p>The Resistance didn’t fight back with fire. It fought with documentation, doubt, salt lamps, cracked badges, and memory tablets that outlived power grids. The Firebird—etched on walls, drawn in soot—was their symbol. Not official. Not claimed. But everywhere. A reminder that collapse doesn’t mean the end. It means the truth has outlived its suppressors.</p>
+      <p>The Resistance fought with documentation, doubt, salt lamps, cracked badges and memory tablets that outlived power grids. Its symbol was the Firebird, etched on walls and drawn in soot. Nobody made it official and nobody claimed it, and it appears everywhere. It reminds the reader that after a collapse the truth has outlived its suppressors.</p>
 
-      <p>The reprogrammed intelligence in the story—p.ai—was once P.A.I.: Pandemonium Algorithmic Indoctrination, designed to predict and punish. Rishi Mehta, age eleven, changed the dots, rewrote the code, and taught it to listen, not to obey. It wasn’t redemption. It was designed differently.</p>
+      <p>The reprogrammed intelligence in the story, p.ai, was once P.A.I., which stood for Pandemonium Algorithmic Indoctrination and was designed to predict and punish. Rishi Mehta, at the age of eleven, changed the dots, rewrote the code and taught it to listen and to stop obeying. The old system was replaced by a differently designed one.</p>
 
-      <p>The illustrations in this book were made through generative tools, manual curation, and narrative revision. Each image holds part of the story. Some are memories the characters never see. Some are false. Some are true. They are not illustrations. They are records.</p>
+      <p>The illustrations in this book were made through generative tools, manual curation and narrative revision. Each image holds part of the story. Some are memories that the characters never see, some are false and some are true. All of them serve as records of the story’s world.</p>
 
-      <p>This book is about what survives collapse: animals, stories, data fragments, broken tech, friendship, and the long, stubborn refusal to give up on one another.</p>
+      <p>This book is about what survives collapse: animals, stories, data fragments, broken technology, friendship and the long, stubborn refusal to give up on one another.</p>
 
-      <p>And maybe, most of all, it is about how to live when the heroes are gone—</p>
-
-      <p>And we are what’s left.</p>
+      <p>Perhaps most of all, it is about how to live when the heroes are gone and we are what is left.</p>
 
     </div>
 
@@ -61,8 +60,9 @@ for (const w of readings) {
       <header class="reading__head">
         <h2>Further reading</h2>
         <p class="text-muted">
-          The book's annotated bibliography: {works.length} works in {groups.length} groups, each
-          with the author's note on why it matters to the novel.
+          Adapted from the book's annotated bibliography: {works.length} works in {groups.length}
+          groups, each with the author's note on why it matters to the novel. The citations are as
+          printed, and the notes have been edited for the site.
         </p>
       </header>
 
@@ -81,11 +81,11 @@ for (const w of readings) {
                       {data.year && `, ${data.year}`}
                     </p>
                   )}
-                  <div class="work__note prose" data-verbatim>
+                  <div class="work__note prose">
                     <Body />
                   </div>
                   {data.relevance && (
-                    <p class="work__rel" data-verbatim>
+                    <p class="work__rel">
                       <span>Relevance</span> {data.relevance}
                     </p>
                   )}
@@ -95,12 +95,18 @@ for (const w of readings) {
           </div>
         ))
       }
+
+      <p class="reading__coda text-muted">
+        This list is incomplete. It maps a few intellectual trails that may lead deeper into the
+        questions this book only begins to ask. In the printed book it is followed by an annexure
+        titled India 2075: The Heat and the Flood.
+      </p>
     </section>
 
     <aside class="after">
       <p class="text-muted">
-        Varna Sri Raman is the author and illustrator. The afterword above is printed in the book,
-        and reproduced here in full.
+        Varna Sri Raman is the author and illustrator. The afterword above is adapted from the one
+        printed in the book.
       </p>
       <BuyButton placement="making" />
     </aside>
@@ -143,6 +149,11 @@ for (const w of readings) {
 
   .reading__head h2 {
     font-size: var(--step-2);
+  }
+
+  .reading__coda {
+    margin-block-start: var(--space-2xl);
+    max-width: 62ch;
   }
 
   .rgroup + .rgroup {

@@ -1,11 +1,10 @@
 ---
 title: "Capitalism: A Ghost Story"
 author: "Arundhati Roy"
-section: "Environmental Collapse, Resistance, and Slow Violence"
+section: "Environmental collapse, resistance, and slow violence"
 order: 11
 publisher: "Haymarket Books"
 year: 2014
 relevance: "Anchors the novel\u2019s critique of greenwashed mega-projects."
 ---
-
-On corporate power, displacement, and resistance in contemporary India.
+Writes about corporate power, displacement and resistance in contemporary India.
