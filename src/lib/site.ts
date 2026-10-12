@@ -41,6 +41,11 @@ export const site = {
     attribution: 'Resistance slogan, spray-painted near Okhla, 2061',
   },
   locale: 'en_IN',
+  /**
+   * Google Search Console HTML-tag verification token (the `content` value only).
+   * Empty means no tag is rendered.
+   */
+  googleSiteVerification: '' as string,
   themeColor: '#131211',
   /**
    * Optional third-party relay for the reader-submission forms.
@@ -138,7 +143,7 @@ export const nav = [
   { href: '/timeline', label: 'Timeline' },
   { href: '/map', label: 'Map' },
   { href: '/memory', label: 'Testimonials' },
-  { href: '/making', label: 'Making the Book' },
+  { href: '/making', label: 'Making the book' },
 ] as const;
 
 /**
@@ -153,7 +158,7 @@ export const navMoreGroups = [
       { href: '/constellation', label: 'Constellation', note: 'The archive as one graph' },
       { href: '/archive', label: 'Objects', note: 'Catalogued artefacts' },
       { href: '/audio', label: 'Salt Lamp Archive', note: 'Recordings and broadcasts' },
-      { href: '/after', label: 'What Comes After', note: 'The epilogue — spoilers' },
+      { href: '/after', label: 'What comes after', note: 'The epilogue, with spoilers' },
     ],
   },
   {
@@ -168,9 +173,9 @@ export const navMoreGroups = [
     name: 'Beyond the book',
     items: [
       { href: '/excerpts', label: 'Excerpts and extras', note: 'The prologue and Chapter 1, free' },
-      { href: '/act', label: 'Make the World Better', note: 'The parts that are not fiction' },
-      { href: '/fanfic', label: 'Reader Fiction', note: 'Stories written in this world' },
-      { href: '/author', label: 'The Author', note: 'Who wrote and drew this' },
+      { href: '/act', label: 'Make the world better', note: 'The parts that are not fiction' },
+      { href: '/fanfic', label: 'Reader fiction', note: 'Stories written in this world' },
+      { href: '/author', label: 'The author', note: 'Who wrote and drew this' },
     ],
   },
 ] as const;
@@ -180,7 +185,7 @@ export const navMore: readonly { href: string; label: string; note: string }[] =
   navMoreGroups.flatMap((group) => [...group.items]);
 
 export const footerLinks = [
-  { href: '/author', label: 'The Author' },
+  { href: '/author', label: 'The author' },
   { href: '/contact', label: 'Contact' },
   { href: '/contact#second-heading', label: 'Corrections' },
   { href: '/privacy', label: 'Privacy' },

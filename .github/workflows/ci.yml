@@ -32,6 +32,11 @@ jobs:
       - name: Check internal links in the built site
         run: node scripts/check-links.mjs
 
+      # Reads the built pages and fails on an em dash or a listed AI-tell word
+      # in site copy. Book text and reader submissions carry data-verbatim.
+      - name: Check site copy against the writing standards
+        run: node scripts/check-copy.mjs
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:

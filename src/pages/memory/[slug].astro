@@ -3,6 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareBar from '../../components/ShareBar.astro';
+import { ogCard } from '../../lib/seo';
 import { site } from '../../lib/site';
 
 /**
@@ -20,10 +22,11 @@ export const getStaticPaths = (async () => {
 const { item } = Astro.props;
 const { Content } = await render(item);
 const d = item.data;
+const share = d.image ? await ogCard(d.image, d.imageAlt ?? `${d.title}, by ${d.contributor}.`) : undefined;
 const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' });
 ---
 
-<BaseLayout title={d.title} description={`${d.kind === 'artwork' ? 'Artwork' : 'Testimony'} from ${d.contributor} on the Memory Wall.`}>
+<BaseLayout title={d.title} description={`${d.kind === 'artwork' ? 'Artwork' : 'Testimony'} from ${d.contributor} on the Memory Wall.`} ogType="article" {...share}>
   <div class="shell section">
     <p class="back"><a href="/memory">← Testimonials</a></p>
 
@@ -46,17 +49,18 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         )
       }
 
-      <div class="prose body">
+      <div class="prose body" data-verbatim>
         <Content />
       </div>
     </article>
 
     <footer class="foot">
       <p class="text-muted">
-        Sent in by a reader and published with their permission. It comes down on request — write to
+        Sent in by a reader and published with their permission. It comes down on request. Write to
         <a href={`mailto:${site.email}`}>{site.email}</a>.
       </p>
       <p><a href="/memory#submit">Add your own →</a></p>
+      <ShareBar placement="memory-end" text={`${d.title}, from The Very Last Superhero.`} />
     </footer>
   </div>
 </BaseLayout>

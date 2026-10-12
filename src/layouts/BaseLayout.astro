@@ -10,6 +10,13 @@ interface Props {
   description?: string;
   /** Absolute or site-relative path to the social share image. */
   image?: string;
+  /** Pixel size of `image`. Omit when unknown; the default card is 1200x630. */
+  imageWidth?: number;
+  imageHeight?: number;
+  /** What the share image shows, for og:image:alt and twitter:image:alt. */
+  imageAlt?: string;
+  /** 'book' for the pages that sell it, 'article' for entries and essays. */
+  ogType?: 'website' | 'book' | 'article';
   /** Rendered into <head> as JSON-LD. */
   structuredData?: Record<string, unknown>;
   /** Adds the thin reading-progress bar — used on long-form pages. */
@@ -20,14 +27,25 @@ interface Props {
 const {
   title,
   description = site.description,
-  image = '/og-default.jpg',
+  image,
+  imageWidth,
+  imageHeight,
+  imageAlt,
+  ogType = 'website',
   structuredData,
   readingProgress = false,
   noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site ?? site.url);
-const ogImage = new URL(image, Astro.site ?? site.url);
+const usingDefault = !image;
+const ogImage = new URL(image ?? '/og-default.jpg', Astro.site ?? site.url);
+// The default card is 1200x630 and says so; anything else only if the page told us.
+const ogWidth = usingDefault ? 1200 : imageWidth;
+const ogHeight = usingDefault ? 630 : imageHeight;
+const ogAlt = usingDefault
+  ? `${site.title}: ${site.tagline} Sumati on a rooftop above a flooded Delhi at dusk.`
+  : imageAlt;
 const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${title} | ${site.title}`;
 ---
 
@@ -45,12 +63,15 @@ const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${tit
     <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="book" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    {ogWidth && ogHeight && <meta property="og:image:width" content={String(ogWidth)} />}
+    {ogWidth && ogHeight && <meta property="og:image:height" content={String(ogHeight)} />}
+    {ogAlt && <meta property="og:image:alt" content={ogAlt} />}
     <meta property="og:locale" content={site.locale} />
 
     <!-- Twitter/X -->
@@ -58,6 +79,20 @@ const fullTitle = title === site.title ? `${site.title} | ${site.name}` : `${tit
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    {ogAlt && <meta name="twitter:image:alt" content={ogAlt} />}
+    {
+      ogType === 'book' && (
+        <>
+          <meta property="book:isbn" content={site.isbn} />
+          <meta property="book:author" content={`${site.url}/author`} />
+        </>
+      )
+    }
+    {
+      site.googleSiteVerification && (
+        <meta name="google-site-verification" content={site.googleSiteVerification} />
+      )
+    }
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 

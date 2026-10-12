@@ -2,7 +2,7 @@
 title: Mr Joshi
 category: Character
 designation: Rohan's Colleague
-summary: The colleague Rohan steps off the train to hand documents to — for two minutes, at a station with only two platforms.
+summary: The colleague Rohan steps off the train to hand documents to, for two minutes, at a station with only two platforms.
 order: 10
 related: [rohan-kapoor, serenity-junction, waste-to-energy]
 image: ../../assets/lore/mr-joshi.webp

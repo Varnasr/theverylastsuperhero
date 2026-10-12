@@ -1,5 +1,5 @@
 ---
-title: "Water-Sharing Stations"
+title: "Water-sharing stations"
 group: "Practices"
 order: 6
 ---

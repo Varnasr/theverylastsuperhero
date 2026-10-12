@@ -1,5 +1,5 @@
 ---
-title: "Equitable Adaptation Models"
+title: "Equitable adaptation models"
 group: "Institutions"
 order: 4
 ---

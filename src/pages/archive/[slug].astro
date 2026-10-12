@@ -3,6 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { Image } from 'astro:assets';
 import { getCollection, getEntries, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareBar from '../../components/ShareBar.astro';
+import { ogCard } from '../../lib/seo';
 
 /**
  * Object detail. The catalogue cards used to be dead ends — the only links on
@@ -19,6 +21,7 @@ const { object } = Astro.props;
 const { Content } = await render(object);
 const d = object.data;
 const related = await getEntries(d.related ?? []);
+const share = d.image ? await ogCard(d.image, d.imageAlt ?? `${d.title}, an object from the archive.`) : undefined;
 
 const statusLabel: Record<string, string> = {
   recovered: 'Recovered',
@@ -27,9 +30,9 @@ const statusLabel: Record<string, string> = {
 };
 ---
 
-<BaseLayout title={d.title} description={d.summary} image={d.image?.src}>
+<BaseLayout title={d.title} description={d.summary} ogType="article" {...share}>
   <div class="shell section">
-    <p class="back"><a href="/archive">← Archive Objects</a></p>
+    <p class="back"><a href="/archive">← Archive objects</a></p>
 
     <article class="object">
       {
@@ -72,18 +75,28 @@ const statusLabel: Record<string, string> = {
               {related.map((r) => (
                 <li>
                   <a href={`/lore/${r.id}`}>{r.data.title}</a>
-                  <span class="text-muted"> — {r.data.summary}</span>
+                  <span class="text-muted">: {r.data.summary}</span>
                 </li>
               ))}
             </ul>
           </footer>
         )
       }
+
+      <div class="share-end">
+        <ShareBar placement="archive-end" text={`${d.title}, from The Very Last Superhero.`} />
+      </div>
     </article>
   </div>
 </BaseLayout>
 
 <style>
+  .share-end {
+    margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-l);
+    border-block-start: 1px solid var(--border);
+  }
+
   .back {
     font-family: var(--font-mono);
     font-size: 0.78rem;

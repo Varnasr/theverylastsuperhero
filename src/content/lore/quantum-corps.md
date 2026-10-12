@@ -14,7 +14,7 @@ the air with a gesture. They diverted three cyclones away from Mumbai, and for
 twenty years that was the sentence everybody knew about them.
 
 Scientific analysis released during the Disclosures revealed that the diversions
-had *created* the drought patterns — worsening them in the regions least able to
+had *created* the drought patterns, worsening them in the regions least able to
 absorb it. The museum simulation shows the cascade plainly: the southeastern
 states turn blood-red with drought indicators while the coastal regions glow a
 deceptive, reassuring blue.

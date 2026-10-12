@@ -80,7 +80,7 @@ const id = `lamp-${Math.random().toString(36).slice(2, 9)}`;
 
     {
       transcript && (
-        <details class="lamp__transcript">
+        <details class="lamp__transcript" data-verbatim>
           <summary>Read the transcript</summary>
           {segments.map((seg) => <p lang={seg.lang}>{seg.text}</p>)}
         </details>

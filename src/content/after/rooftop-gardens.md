@@ -1,7 +1,7 @@
 ---
-title: "Rooftop Gardens"
+title: "Rooftop gardens"
 group: "Practices"
 order: 5
 ---
 
-Appearing on more buildings every season. Not a programme, not a rollout — a thing enough people did that it became normal.
+Appearing on more buildings every season. It is something enough people did that it became normal.

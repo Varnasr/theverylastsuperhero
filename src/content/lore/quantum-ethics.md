@@ -11,15 +11,16 @@ Introduced in the late 2050s, as part of a global effort to align machine logic
 with human values.
 
 The idea was to replace rigid binary decision trees with weighted,
-context-sensitive protocols — to embed ambiguity tolerance, probabilistic
+context-sensitive protocols, and so to embed ambiguity tolerance, probabilistic
 reasoning and moral pluralism into automated systems. Machines that could hold
 more than one right answer, and say which one they were choosing and why.
 
 It gained early traction in academic and legal circles. Then key governments
 deemed it *too unstable for deployment*, and it was quietly shelved.
 
-Read that phrase carefully. Nothing about it was technically unsound. What was
-unstable was a system that could decline.
+Read that phrase carefully. The framework was technically sound. The system it
+described could decline an instruction, and that was what the governments found
+unstable.
 
 What survives turns up in disused archives, activist manifestos, and the failed
 prototypes of an era that chose obedience instead.

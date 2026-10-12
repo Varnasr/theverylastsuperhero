@@ -1,0 +1,262 @@
+---
+/**
+ * Share buttons. Plain links first: WhatsApp, X, LinkedIn and Telegram work
+ * with no JavaScript. The script adds two things a link cannot do, copying the
+ * address with a visible confirmation and the device's own share sheet, which
+ * only appears where `navigator.share` exists.
+ *
+ * Every control carries data-share and data-placement, and Analytics.astro
+ * records a click on either as a `share` event.
+ *
+ * Colours are the site's own tokens. The buttons are not tinted with each
+ * network's brand colour: a brand green or blue as ink has failed contrast on
+ * other sites in this family, and a row of identical neutral buttons reads as
+ * one control.
+ */
+import { site } from '../lib/site';
+
+interface Props {
+  /** The prefilled message. */
+  text: string;
+  /** Defaults to this page's canonical address. */
+  url?: string;
+  /** Where on the page the bar sits, sent with the click. */
+  placement: string;
+  /** Heading for the group. */
+  label?: string;
+}
+
+const { text, placement, label = 'Share' } = Astro.props;
+const url =
+  Astro.props.url ??
+  new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site ?? site.url).href;
+
+const e = encodeURIComponent;
+const links = [
+  {
+    network: 'whatsapp',
+    name: 'WhatsApp',
+    href: `https://wa.me/?text=${e(`${text}\n${url}`)}`,
+    icon: 'M8 1.8a6.2 6.2 0 0 0-5.3 9.4L1.8 14.2l3.1-.8A6.2 6.2 0 1 0 8 1.8Zm-2.1 3.2c.2 0 .4 0 .5.3l.6 1.4c0 .2 0 .3-.1.4l-.4.5c.5 1 1.3 1.7 2.3 2.200l.5-.6c.1-.1.3-.2.5-.1l1.4.7c.2.1.3.2.2.5-.1.8-.9 1.4-1.7 1.3-2.2-.3-4.1-2.1-4.5-4.3-.1-.800.4-1.6 1.1-2.300Z',
+    fill: true,
+  },
+  {
+    network: 'x',
+    name: 'X',
+    href: `https://twitter.com/intent/tweet?text=${e(text)}&url=${e(url)}`,
+    icon: 'M2.5 2.500l11 11M13.5 2.500l-11 11',
+    fill: false,
+  },
+  {
+    network: 'linkedin',
+    name: 'LinkedIn',
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${e(url)}`,
+    icon: 'M2.5 6.200h2.300v7.300H2.500ZM3.650 2.400a1.350 1.350 0 1 1 0 2.7 1.350 1.350 0 0 1 0-2.700ZM6.4 6.200h2.200v1c.4-.7 1.2-1.2 2.3-1.2 2.2 0 2.7 1.4 2.7 3.300v4.200h-2.300V9.900c0-.9 0-1.9-1.2-1.900s-1.4.9-1.4 1.900v3.600H6.400Z',
+    fill: true,
+  },
+  {
+    network: 'telegram',
+    name: 'Telegram',
+    href: `https://t.me/share/url?url=${e(url)}&text=${e(text)}`,
+    icon: 'M14 2.2 1.7 7l3.3 1.2 1.2 3.9 2-2.3 3.3 2.400ZM5 8.200l6.6-4.2',
+    fill: false,
+  },
+] as const;
+---
+
+<div class="share" role="group" aria-label={label} data-share-bar data-url={url} data-text={text}>
+  <p class="share__label" aria-hidden="true">{label}</p>
+  <ul class="share__list">
+    {
+      links.map((l) => (
+        <li>
+          <a
+            class="share__btn"
+            href={l.href}
+            target="_blank"
+            rel="noopener"
+            data-share={l.network}
+            data-placement={placement}
+            aria-label={`Share on ${l.name}`}
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              {l.fill ? (
+                <path d={l.icon} fill="currentColor" />
+              ) : (
+                <path
+                  d={l.icon}
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              )}
+            </svg>
+            <span>{l.name}</span>
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <button
+        type="button"
+        class="share__btn"
+        data-share="copy"
+        data-placement={placement}
+        aria-label="Copy link"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path d="M10.5 3.500v-.5a1.5 1.5 0 0 0-1.5-1.500H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.500h.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <span data-copy-label>Copy link</span>
+      </button>
+    </li>
+    <li>
+      <button
+        type="button"
+        class="share__btn"
+        data-share="native"
+        data-placement={placement}
+        aria-label="Share using your device"
+        hidden
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 10V2M5 4.5 8 1.500l3 3M3.5 8v5.500h9V8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Share</span>
+      </button>
+    </li>
+  </ul>
+  <p class="share__status visually-hidden" role="status" aria-live="polite" data-share-status></p>
+</div>
+
+<style>
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-s);
+  }
+
+  .share__label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .share__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .share__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.5rem;
+    padding: 0.45em 0.85em;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.15s var(--ease),
+      border-color 0.15s var(--ease);
+  }
+
+  .share__btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--amber);
+    color: var(--text);
+  }
+
+  .share__btn svg {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .share__btn[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  /* Progressive enhancement. Without this the four links still work. */
+  const bars = document.querySelectorAll<HTMLElement>('[data-share-bar]');
+
+  bars.forEach((bar) => {
+    const native = bar.querySelector<HTMLButtonElement>('[data-share="native"]');
+    if (native && typeof navigator.share === 'function') native.hidden = false;
+  });
+
+  const flash = (btn: HTMLElement, message: string) => {
+    const bar = btn.closest<HTMLElement>('[data-share-bar]');
+    const label = btn.querySelector<HTMLElement>('[data-copy-label]');
+    const status = bar?.querySelector<HTMLElement>('[data-share-status]');
+    if (status) status.textContent = message;
+    if (label) {
+      label.textContent = message;
+      window.setTimeout(() => {
+        label.textContent = 'Copy link';
+        if (status) status.textContent = '';
+      }, 2200);
+    }
+  };
+
+  const legacyCopy = (value: string) => {
+    const ta = document.createElement('textarea');
+    ta.value = value;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    ta.remove();
+    return ok;
+  };
+
+  document.addEventListener('click', async (ev) => {
+    const btn = (ev.target as Element | null)?.closest<HTMLElement>('button[data-share]');
+    const bar = btn?.closest<HTMLElement>('[data-share-bar]');
+    if (!btn || !bar) return;
+    const url = bar.dataset.url ?? location.href;
+
+    if (btn.dataset.share === 'copy') {
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(url);
+        ok = true;
+      } catch {
+        ok = legacyCopy(url);
+      }
+      flash(btn, ok ? 'Copied' : 'Copy failed');
+    } else if (btn.dataset.share === 'native') {
+      try {
+        await navigator.share({ title: document.title, text: bar.dataset.text, url });
+      } catch {
+        /* Dismissing the share sheet rejects; nothing to report. */
+      }
+    }
+  });
+</script>

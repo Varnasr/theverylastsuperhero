@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 export const getStaticPaths = (async () => {
   const stories = (await getCollection('fanfic')).filter((s) => !s.data.draft);
@@ -21,11 +22,11 @@ const fmt = (dt: Date) =>
   dt.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={d.title} description={d.summary} readingProgress>
+<BaseLayout title={d.title} description={d.summary} readingProgress ogType="article">
   <div class="shell section">
-    <p class="back"><a href="/fanfic">← Reader Fiction</a></p>
+    <p class="back"><a href="/fanfic">← Reader fiction</a></p>
 
-    <header class="page-head stack">
+    <header class="page-head stack" data-verbatim>
       <h1>{d.title}</h1>
       <p class="by">
         by {
@@ -45,14 +46,14 @@ const fmt = (dt: Date) =>
 
     {
       d.notes && (
-        <aside class="notes">
+        <aside class="notes" data-verbatim>
           <p class="notes__label">Content notes</p>
           <p>{d.notes}</p>
         </aside>
       )
     }
 
-    <article class="prose story">
+    <article class="prose story" data-verbatim>
       <Content />
     </article>
 
@@ -75,6 +76,7 @@ const fmt = (dt: Date) =>
         )
       }
       <p><a href="/fanfic#submit">Send a piece of your own →</a></p>
+      <ShareBar placement="fanfic-end" text={`${d.title}, from The Very Last Superhero.`} />
     </footer>
 
     <Newsletter

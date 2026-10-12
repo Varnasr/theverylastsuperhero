@@ -2,29 +2,35 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ShareBar from '../components/ShareBar.astro';
+import { ogCard } from '../lib/seo';
 
 const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.order - b.data.order);
+const lead = wallpapers[0]?.data;
+const share = lead ? await ogCard(lead.image, lead.imageAlt) : undefined;
 ---
 
 <BaseLayout
   title="Wallpapers"
-  description="Wallpapers from The Very Last Superhero — portrait pieces for a phone, landscape plates for a desktop, free to download for personal use."
+  description="Wallpapers from The Very Last Superhero, with portrait pieces for a phone, landscape plates for a desktop, free to download for personal use."
+  {...share}
 >
   <div class="shell section">
     <header class="page-head stack">
-      <p class="eyebrow">The Sumati Series</p>
+      <p class="eyebrow">The Sumati series</p>
       <h1>Wallpapers</h1>
       <p class="text-muted lede">
-        Portrait plates for a phone, landscape plates for a desktop. Every one downloads at the
-        size printed on its card — the original file, not a resized copy. Free for personal use
+        Portrait plates for a phone, landscape plates for a desktop. Every one downloads as the
+        original file, at the size printed on its card. Free for personal use
         under
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener"
           >CC BY-NC-ND 4.0</a
         >. Open one to view it full size, then save it the way you normally save an image.
       </p>
       <p>
-        <a class="button" href="/sigil">Or make your own with the Firebird Sigil generator →</a>
+        <a class="button" href="/sigil">Or make your own with the Firebird sigil generator →</a>
       </p>
+      <ShareBar placement="wallpapers-top" text="Free wallpapers from The Very Last Superhero, for a phone or a desktop." />
     </header>
 
     <div class="wall-grid">

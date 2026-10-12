@@ -1,8 +1,8 @@
 ---
-title: Waste-to-Energy Systems
+title: Waste-to-energy systems
 category: Technology
 designation: WTE | Emissions Integrity
-summary: The pilot plants Rohan Kapoor reviews — revivals of the old Belgian system that worked at Gazipur in the 2020s, promising to revolutionise Delhi's energy grid if the emissions controls hold.
+summary: The pilot plants Rohan Kapoor reviews are revivals of the old Belgian system that worked at Gazipur in the 2020s, and they promise to revolutionise Delhi's energy grid if the emissions controls hold.
 image: ../../assets/illustrations/fly-ash-fields.webp
 imageAlt: A tall thin man pushing fronds aside to reveal long white fields of fly ash
 order: 2
@@ -26,7 +26,7 @@ Consultations around going back to the old Belgian waste-to-energy system that
 worked in Gazipur in the 2020s. New pilot models, reviewed for emissions
 integrity.
 
-The plants have a name on them. *Waste to Energy by Thakur Green Developers* —
+The plants have a name on them, *Waste to Energy by Thakur Green Developers*,
 on a street sign Rohan passes leaving the station, where it stirs a memory he
 cannot quite reach.
 
@@ -34,7 +34,7 @@ cannot quite reach.
 > controls work as promised.
 
 *If.* The whole book turns on that word. A cleaner, more efficient pilot, a model
-for the whole zone — and a fourteen-year-old who has spent her entire life
+for the whole zone, and a fourteen-year-old who has spent her entire life
 hearing promises like it.
 
 This is the part of the novel that is not speculative. The battle over Delhi's

@@ -35,15 +35,14 @@ const isolated = nodes.filter((n) => n.degree === 0);
 
 <BaseLayout
   title="Constellation"
-  description="Every entry in the Resistance Archive and every connection between them, drawn as a single graph — the shape of the world behind The Very Last Superhero."
+  description="Every entry in the Resistance Archive and every connection between them, drawn as a single graph. It shows the shape of the world behind The Very Last Superhero."
 >
   <div class="shell section">
     <header class="page-head stack">
       <p class="eyebrow">The archive, all at once</p>
       <h1>Constellation</h1>
       <p class="text-muted lede">
-        {nodes.length} entries and {edges.length} connections between them. The novel never draws this
-        — a reader carries it in their head. Hover or focus a point to light up what it touches;
+        {nodes.length} entries and {edges.length} connections between them. The novel never draws this. A reader carries it in their head. Hover or focus a point to light up what it touches;
         select one to open its entry.
       </p>
     </header>
@@ -125,8 +124,7 @@ const isolated = nodes.filter((n) => n.degree === 0);
               <a href={`/lore/${n.id}`}>{n.label}</a>
             </>
           ))}
-          . An entry with no links is not a mistake, but it usually means the archive has not
-          finished thinking about it.
+          . An entry with no links usually means the archive has not finished thinking about it.
         </p>
       )
     }
@@ -221,7 +219,7 @@ const isolated = nodes.filter((n) => n.degree === 0);
     nodes.forEach((node) => {
       node.setAttribute('tabindex', '0');
       node.setAttribute('role', 'link');
-      node.setAttribute('aria-label', `${labelOf(node.dataset.node)} — open entry`);
+      node.setAttribute('aria-label', `${labelOf(node.dataset.node)}, open entry`);
 
       node.addEventListener('mouseenter', () => focus(node));
       node.addEventListener('focus', () => focus(node));

@@ -1,5 +1,5 @@
 ---
-title: Archive Key Disc
+title: Archive key disc
 summary: Legacy authentication disc. Most keys were melted or wiped by AI sweepers.
 status: recovered
 order: 4

@@ -70,6 +70,8 @@ const endpoint = `${supabaseUrl}/rest/v1/postheroic_events`;
           function (e) {
             var buy = e.target && e.target.closest && e.target.closest('[data-buy]');
             if (buy) send('buy_click', { placement: buy.dataset.placement || buy.className || null });
+            var share = e.target && e.target.closest && e.target.closest('[data-share]');
+            if (share) send('share', { network: share.dataset.share, placement: share.dataset.placement || null });
           },
           true
         );

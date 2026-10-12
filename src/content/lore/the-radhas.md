@@ -17,8 +17,7 @@ entries at all.
 
 Their names are etched into the Resistance wall.
 
-That is the whole record, and it is worth noticing what is missing from it. There
-is no account of a decision, no last transmission, nothing that would let a
-reader work out whether they were afraid. Machines built to be expendable are
+That is the whole record. It has no account of a decision, no last transmission,
+and nothing that would let a reader work out whether they were afraid. Machines built to be expendable are
 not usually asked, and the people who would have asked were busy escaping
 through the hole they made.

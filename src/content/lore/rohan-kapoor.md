@@ -26,7 +26,7 @@ testimony:
 ---
 
 Twenty years of research on climate adaptation, and the technology still
-fascinates him — he adjusts the collar of his cooling suit and laughs about
+fascinates him: he adjusts the collar of his cooling suit and laughs about
 Delhi to Kolkata in six hours.
 
 He once worked on the Yamuna Action Plan. His work now is waste-to-energy: pilot

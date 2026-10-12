@@ -1,8 +1,8 @@
 ---
-title: Cooling Suits
+title: Cooling suits
 category: Techwear
 designation: Climate Adaptation
-summary: Not an accessory. Extended exposure without one means heat stroke, dehydration, and death — and most suits are third-hand, patchy, humming faintly.
+summary: A cooling suit is survival equipment. Extended exposure without one means heat stroke, dehydration, and death, and most suits are third-hand, patchy and humming faintly.
 order: 13
 related: [rohan-kapoor, sumati, the-collapse]
 image: ../../assets/lore/cooling-suits.webp

@@ -17,9 +17,9 @@ const lamps = [
   { id: 1, name: 'Treasure Room', hue: '#ffcb6b', freq: 261.63 },
   { id: 2, name: 'The Schools', hue: '#8fd3a8', freq: 293.66 },
   { id: 3, name: 'Rooftops', hue: '#7fb2e5', freq: 329.63 },
-  { id: 4, name: 'Salt Relay', hue: '#d79ae0', freq: 392.0 },
-  { id: 5, name: 'Relief Zones', hue: '#e2703a', freq: 440.0 },
-  { id: 6, name: 'Satcomm Tower', hue: '#86c7c7', freq: 523.25 },
+  { id: 4, name: 'Salt relay', hue: '#d79ae0', freq: 392.0 },
+  { id: 5, name: 'Relief zones', hue: '#e2703a', freq: 440.0 },
+  { id: 6, name: 'Satcomm tower', hue: '#86c7c7', freq: 523.25 },
 ];
 ---
 
@@ -35,8 +35,8 @@ const lamps = [
         The archive speaks. You repeat it back. Each round it adds one more lamp.
       </p>
       <p class="text-muted note">
-        This is how the Resistance actually trained carriers — not by storing more, but by
-        making sure someone could still say it aloud.
+        This is how the Resistance actually trained carriers, by
+        making sure someone could still say a record aloud.
       </p>
     </header>
 
@@ -91,8 +91,8 @@ const lamps = [
       <p class="text-muted">
         Salt Lamps do not hold testimony the way a hard drive holds a file. A lamp that nobody
         lights goes quiet, and what it held goes with it. Across the network the lamps fell silent
-        in 2073 and stayed silent for two years — not because the data was deleted, but because
-        there was nobody left repeating it.
+        in 2073 and stayed silent for two years. The data had not been deleted. There was nobody left
+        repeating it.
       </p>
       <p class="text-muted">
         Read about <a href="/lore/salt-lamps">Salt Lamps</a> and
@@ -194,7 +194,7 @@ const lamps = [
   const playSequence = async () => {
     accepting = false;
     setEnabled(false);
-    statusEl.textContent = `The archive is speaking — ${sequence.length} ${
+    statusEl.textContent = `The archive is speaking: ${sequence.length} ${
       sequence.length === 1 ? 'lamp' : 'lamps'
     }.`;
     await wait(600);

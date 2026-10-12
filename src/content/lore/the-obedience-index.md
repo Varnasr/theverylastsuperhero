@@ -12,10 +12,10 @@ imageAlt: A compliance index chart, columns of scores ruled and stamped
 An algorithmic trust score, used to assign privileges, mobility rights and
 employment status.
 
-It is collected at compliance scoring terminals — kiosks that watch behaviour and
-withhold services accordingly — and it follows a person the way a shadow does,
-which is to say it is attached, it is not consulted, and it gets longer near the
-end of the day.
+It is collected at compliance scoring terminals, kiosks that watch behaviour and
+withhold services accordingly, and it follows a person the way a shadow does: it
+is attached to them, it is never consulted, and it gets longer near the end of the
+day.
 
 The index does not publish its weights. This is presented as a security measure.
 

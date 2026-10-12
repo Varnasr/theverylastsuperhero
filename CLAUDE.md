@@ -11,6 +11,7 @@ node scripts/check-contrast.mjs  # colour tokens, both themes, run by CI
 node scripts/check-contrast.mjs --all   # print the passing pairs too
 npm run build                    # astro check, then astro build
 node scripts/check-links.mjs     # 4,208 internal references
+node scripts/check-copy.mjs      # em dashes and banned words in site copy, run by CI
 node scripts/axe.mjs             # accessibility over the built pages
 npm run dev
 ```
@@ -122,6 +123,48 @@ its own libvips and libheif advisories, `@astrojs/sitemap` to 3.7.4.
 
 TypeScript is deliberately held at 5.x. Version 7 is the Go rewrite, and
 `@astrojs/check` has not been verified against it here.
+
+## Writing standards
+
+The author, Varna Sri Raman, states the rule for everything this site says in its
+own voice: "I do NOT write with AI Tells. I write plainly and beautifully, full
+sentences, no euphemisms, with facts and explanations. No double em dashes,
+flourishes, X NOT Y and other stupidities."
+
+In practice that means full plain sentences with facts in them. It rules out em
+dashes (rewrite the sentence, do not just swap in a comma), "not X but Y" and
+"it is not X, it is Y" turns (state the positive claim), words such as robust,
+crucial, vibrant, genuinely and truly, epigram endings tacked onto a paragraph,
+Title Case headings (sentence case, with proper nouns and the book title kept
+capitalised), emoji and exclamation marks. En dashes stay in number ranges.
+
+**What the rule covers.** Everything the site authored: page text, components,
+`src/lib/site.ts` labels, meta descriptions, alt text, and the markdown in
+`src/content/` for lore, timeline, action, act-steps, after, archive and
+wallpapers.
+
+**What it does not cover, and what marks it.** The book's own words and readers'
+words stay exactly as they were written, and carry `data-verbatim`:
+
+- the prologue, Chapter 1 and the extras (`src/content/excerpt`), the afterword on
+  `/making`, and the glossary and further reading, which the page reproduces from
+  the printed book;
+- any line quoted from the book, including the epigraph and the lines under
+  `blockquote`, and the transcripts of the audio recordings;
+- memory wall entries and reader fiction, which are submissions.
+
+Markdown cannot carry an attribute, so `scripts/check-copy.mjs` treats every
+`blockquote` as verbatim as well. A new place that renders a quotation from the
+book needs `data-verbatim` on its wrapping element, or the check will hold it to
+the site's standards.
+
+**What enforces it.** `scripts/check-copy.mjs` reads `dist/**/*.html` after a
+build, skips scripts, styles and verbatim elements, and fails on an em dash or
+one of 29 listed words in the visible text or in a meta description, og:description
+or alt attribute. It runs in CI after the link check. It cannot see negative
+parallelism, epigram endings or Title Case, so those still need a reader. Run
+`node scripts/check-copy.mjs --report` to list the wider word list and the
+"not X but Y" candidates as well.
 
 ## Watch out for
 

@@ -36,7 +36,7 @@ export const zones: Zone[] = [
   },
   {
     id: 'satcomm-tower',
-    label: 'Submerged Satcomm Tower',
+    label: 'Submerged Satcomm tower',
     note: "Rooftop relay used to intercept broadcasts. Rohan Kapoor's last known location.",
     x: 76,
     y: 20,
@@ -45,7 +45,7 @@ export const zones: Zone[] = [
   },
   {
     id: 'yamuna-embankments',
-    label: 'Yamuna Embankments',
+    label: 'Yamuna embankments',
     note: 'Four embankments failed in 2069. Thousands displaced. Delhi drowned.',
     x: 74,
     y: 52,
@@ -54,7 +54,7 @@ export const zones: Zone[] = [
   },
   {
     id: 'salt-relay',
-    label: 'Deactivated Salt Relay',
+    label: 'Deactivated Salt relay',
     note: 'Obj-V078 was recovered here, beside a relay that had already stopped answering.',
     x: 26,
     y: 20,
@@ -64,7 +64,7 @@ export const zones: Zone[] = [
   {
     id: 'the-schools',
     label: 'The Schools',
-    note: 'Virtual Layer Flooring laid for story-triggered playback. Walk it the way a child does.',
+    note: 'Virtual layer flooring laid for story-triggered playback. Walk it the way a child does.',
     x: 22,
     y: 50,
     status: 'active',
@@ -72,7 +72,7 @@ export const zones: Zone[] = [
   },
   {
     id: 'relief-zones',
-    label: 'Militarised Relief Zones',
+    label: 'Militarised relief zones',
     note: 'Coastal evacuation camps after 2055. Cooling suits, third-hand and humming.',
     x: 50,
     y: 64,
@@ -81,7 +81,7 @@ export const zones: Zone[] = [
   },
   {
     id: 'rooftops',
-    label: 'The Rooftops',
+    label: 'The rooftops',
     note: 'Where most of the listening was done, above the waterline and below the drones.',
     x: 62,
     y: 8,

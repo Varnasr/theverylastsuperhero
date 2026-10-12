@@ -2,19 +2,29 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BuyButton from '../components/BuyButton.astro';
+import ShareBar from '../components/ShareBar.astro';
+import { bookCard, bookJsonLd } from '../lib/seo';
+import { getImage } from 'astro:assets';
 import { Content } from '../content/excerpt/chapter-one.md';
 import { Content as Extras } from '../content/excerpt/extras.md';
 import { site } from '../lib/site';
 import { getBookPrice, formatRupees } from '../lib/price';
 import cover from '../assets/cover.jpg';
 
-const { price } = await getBookPrice();
+const { price, inStock } = await getBookPrice();
+const coverImg = await getImage({ src: cover, width: 600, format: 'jpg' });
+const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.src, site.url).href });
+const shareText =
+  'Read the first chapter of The Very Last Superhero, free: a climate novel set in a flooded Delhi, 2075.';
 ---
 
 <BaseLayout
   title="Excerpts and extras"
   description="Read the prologue and the first chapter of The Very Last Superhero free, as printed in the First Edition, then browse extras from the longer manuscript: archive documents."
   readingProgress
+  ogType="book"
+  structuredData={structuredData}
+  {...bookCard}
 >
   <div class="shell section">
     <header class="page-head stack">
@@ -31,7 +41,7 @@ const { price } = await getBookPrice();
       </ol>
     </nav>
 
-    <article class="prose read stack" id="chapter-one">
+    <article class="prose read stack" id="chapter-one" data-verbatim>
       <Content />
     </article>
 
@@ -50,6 +60,7 @@ const { price } = await getBookPrice();
           data-umami-event-placement="excerpts-mid-publisher"
         >Buy direct from the publisher</a>
       </div>
+      <ShareBar placement="excerpts-mid" text={shareText} />
     </aside>
 
     <div class="extras-intro stack">
@@ -57,7 +68,7 @@ const { price } = await getBookPrice();
       <p>Some of these pages were cut from the printed edition.</p>
     </div>
 
-    <section class="prose read stack" id="archive" aria-labelledby="archive-title">
+    <section class="prose read stack" id="archive" aria-labelledby="archive-title" data-verbatim>
       <h2 id="archive-title">From the archive</h2>
       <Extras />
     </section>
@@ -91,6 +102,7 @@ const { price } = await getBookPrice();
             data-umami-event-placement="excerpts-publisher"
           >Buy direct from the publisher</a>
         </div>
+        <ShareBar placement="excerpts-end" text={shareText} />
       </div>
     </section>
   </div>

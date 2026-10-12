@@ -23,16 +23,16 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
 
 <BaseLayout
   title="The Memory Wall"
-  description="Reader artwork and testimony contributed to the Resistance Archive — and how to add your own."
+  description="Reader artwork and testimony contributed to the Resistance Archive, and how to add your own."
 >
   <div class="shell section">
     <header class="page-head stack">
       <p class="eyebrow">Contribute</p>
       <h1>The Memory Wall</h1>
       <p class="text-muted lede">
-        The archive was never meant to be read only. Send artwork, or a piece of testimony in your
-        own voice, and it may join the wall. Everything here is added by hand after a human has read
-        it — nothing posts itself.
+        The archive was meant to be added to as well as read. Send artwork, or a piece of testimony in
+        your own voice, and it may join the wall. Everything here is added by hand after a human has
+        read it. Nothing posts itself.
       </p>
     </header>
 
@@ -42,8 +42,8 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
       {
         contributions.length === 0 ? (
           <p class="empty">
-            Nothing has been added yet. The first contribution goes here — and the wall is designed
-            to look deliberately empty until it arrives, rather than pretending otherwise.
+            Nothing has been added yet. The first contribution goes here. Until it arrives, the wall is
+            left empty on purpose.
           </p>
         ) : (
           <div class="grid-auto">
@@ -66,7 +66,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
                     {c.data.kind === 'artwork' ? 'Artwork' : 'Testimony'} ·{' '}
                     {dateFmt.format(c.data.added)}
                   </p>
-                  <h3>
+                  <h3 data-verbatim>
                     <a href={`/memory/${c.id}`}>{c.data.title}</a>
                   </h3>
                   <p class="text-muted byline">
@@ -132,7 +132,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
           <label for="artwork">A photo of the artwork, if you have one</label>
           <input id="artwork" name="artwork" type="file" accept="image/*" />
           <p class="hint">
-            A photo taken on a phone is perfectly good. Optional — the wall takes writing too.
+            A photo taken on a phone is perfectly good. Optional. The wall takes writing too.
           </p>
         </div>
 
@@ -175,7 +175,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         data.get('kind')
       ] ?? 'a contribution';
 
-      const subject = `Memory Wall — ${kind} from ${data.get('name')}`;
+      const subject = `Memory Wall: ${kind} from ${data.get('name')}`;
       const body = [
         `Name: ${data.get('name')}`,
         `Email: ${data.get('email')}`,
@@ -183,7 +183,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric
         '',
         data.get('message'),
         '',
-        '— Sent from the Memory Wall at postheroic.world',
+        'Sent from the Memory Wall at postheroic.world',
       ].join('\n');
 
       location.href =

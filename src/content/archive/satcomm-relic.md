@@ -1,5 +1,5 @@
 ---
-title: Satcomm Relic
+title: Satcomm relic
 summary: Rusted rooftop antenna used by the Resistance to intercept broadcasts. Rohan Kapoor was last seen near the submerged Satcomm tower.
 status: recovered
 order: 6

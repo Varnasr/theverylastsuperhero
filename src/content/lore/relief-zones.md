@@ -1,5 +1,5 @@
 ---
-title: Relief Zones
+title: Relief zones
 category: Infrastructure
 designation: Emergency Cooling | Militarised by 2056
 summary: Shade sheets, water, a fan run off a battery, and five people kneeling on hot stone. The state calls them relief. The people running them call it Tuesday.
@@ -16,11 +16,10 @@ The zones were a policy once. After the 2055 flooding, coastal evacuation
 produced relief camps that were militarised within a year, on the reasoning that
 a desperate population is a security question before it is a humanitarian one.
 
-What survives of that policy in 2075 is not the policy. It is the habit —
-neighbours who know where the urn is kept, and which hour of the afternoon kills
+What survives of that policy in 2075 is the habit: neighbours who know where the urn is kept, and which hour of the afternoon kills
 people.
 
 This is the argument the book keeps making in different clothes. Climate
-resilience is not heroism. It is a tea stall, a post office, and strangers who
+resilience is a tea stall, a post office, and strangers who
 turn up. Nobody in this picture has been given a designation, and everybody in
 it knows what they are doing.

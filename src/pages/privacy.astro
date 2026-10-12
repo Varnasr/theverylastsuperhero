@@ -5,19 +5,19 @@ const updated = 'August 2026';
 ---
 
 <BaseLayout
-  title="Privacy Policy"
+  title="Privacy policy"
   description="What this site does and does not collect. No advertising, no tracking cookies, and no analytics that can identify you."
 >
   <div class="shell section legal">
     <header class="page-head stack">
       <p class="eyebrow">Last updated {updated}</p>
-      <h1>Privacy Policy</h1>
+      <h1>Privacy policy</h1>
     </header>
 
     <div class="prose stack">
       <p class="lede">
-        This site sets no cookies at all — not for advertising, not for analytics, not for
-        anything. That is why there is no consent banner asking you to accept them. What follows is
+        This site sets no cookies at all, whether for advertising, analytics or anything else. That
+        is why there is no consent banner asking you to accept them. What follows is
         the complete list of everything that does happen.
       </p>
 
@@ -30,8 +30,7 @@ const updated = 'August 2026';
       </p>
       <p>
         You can ask at any time to see what was kept, to correct it, to have it deleted, or to be
-        taken off the updates list — including work already published, which comes down on request.
-        Write to <a href={`mailto:${site.email}`}>{site.email}</a>, which is also the address for
+        taken off the updates list. Work already published comes down on request too. Write to <a href={`mailto:${site.email}`}>{site.email}</a>, which is also the address for
         any complaint about how your information has been handled.
       </p>
 
@@ -45,31 +44,38 @@ const updated = 'August 2026';
       <h2>Visit counting</h2>
       <p>
         Pages record that they were viewed. This is first-party: the record goes to a database run
-        by the author, not to any analytics company. It stores the page path, the site that referred
+        by the author. No analytics company receives it. It stores the page path, the site that referred
         you (the domain only, never the full address), whether the screen is phone-sized, and the
-        time. It does not store your IP address, and it sets no cookie and no identifier — nothing
+        time. It does not store your IP address, and it sets no cookie and no identifier. Nothing
         is written to your device and nothing links one visit to another.
       </p>
       <p>
-        Clicks on the "Buy the book" links are counted the same way, so the author can tell whether
-        the site is doing its job. If your browser sends <em>Do Not Track</em> or Global Privacy
+        Clicks on the "Buy the book" links and on the share buttons are counted the same way, so
+        the author can tell whether the site is doing its job. A share click records only which
+        service you chose and where on the page the button was. What you share, and with whom, is
+        never seen by this site. If your browser sends <em>Do Not Track</em> or Global Privacy
         Control, nothing is recorded at all.
       </p>
 
       <h2>What third parties see</h2>
       <p>
-        The site is hosted on <strong>GitHub Pages</strong>. GitHub receives your IP address and
+        The site is hosted on <strong>Netlify</strong>. Netlify receives your IP address and
         browser user-agent as part of serving the page, and may retain those in server logs. See
-        <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">
-          GitHub's privacy statement</a
-        >.
+        <a href="https://www.netlify.com/privacy/" rel="noopener">Netlify's privacy policy</a>.
       </p>
       <p>
         Typefaces are loaded from <strong>Google Fonts</strong>, which means Google also receives
         your IP address when a page loads. No cookie is set by this request. If you would rather not
         make it, a content blocker will prevent it and the site falls back to your system fonts.
       </p>
-      <p>There are no other third-party requests. No embedded video, no social widgets, no pixels.</p>
+      <p>
+        The visit counts above, and the Memory Wall, are stored in a database the author runs on
+        <strong>Supabase</strong>. Your browser sends each count to Supabase directly, so Supabase
+        receives your IP address as part of that request, in the same way any web server does. The
+        row it stores has no IP address in it. See
+        <a href="https://supabase.com/privacy" rel="noopener">Supabase's privacy policy</a>.
+      </p>
+      <p>There are no other third-party requests: no embedded video, no social widgets and no pixels.</p>
 
       <h2>If you contact us or submit to the Memory Wall</h2>
       <p>

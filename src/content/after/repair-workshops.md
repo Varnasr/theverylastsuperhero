@@ -1,5 +1,5 @@
 ---
-title: "Neighbourhood Repair Workshops"
+title: "Neighbourhood repair workshops"
 group: "Practices"
 order: 7
 ---

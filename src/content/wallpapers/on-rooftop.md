@@ -1,5 +1,5 @@
 ---
-title: On Rooftop
+title: On rooftop
 summary: The vantage point from which most of the Resistance's listening was done.
 image: ../../assets/wallpapers/on-rooftop.jpg
 imageAlt: A figure seated on a Delhi rooftop above floodwater at dusk

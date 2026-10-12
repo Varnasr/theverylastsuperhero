@@ -3,13 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site';
 import BuyButton from '../components/BuyButton.astro';
 import { Image } from 'astro:assets';
+import ShareBar from '../components/ShareBar.astro';
+import { getBookPrice } from '../lib/price';
+import { bookCard, bookJsonLd } from '../lib/seo';
 import cover from '../assets/cover.jpg';
+import { getImage } from 'astro:assets';
+
+const { price, inStock } = await getBookPrice();
+const coverImg = await getImage({ src: cover, width: 600, format: 'jpg' });
+const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.src, site.url).href });
 ---
 
 <BaseLayout
   title="About"
-  description="The themes, influences and making of The Very Last Superhero — a speculative novel of climate collapse, memory and care set in a near-future India."
+  description="The themes, influences and making of The Very Last Superhero, a speculative novel of climate collapse, memory and care set in a near-future India."
   readingProgress
+  ogType="book"
+  structuredData={structuredData}
+  {...bookCard}
 >
   <div class="shell section about">
     <header class="page-head stack">
@@ -26,17 +37,16 @@ import cover from '../assets/cover.jpg';
 
       <p>
         It begins after the era of superheroes rather than during it. In the 2040s and 50s, state-
-        and corporate-backed heroes publicly tackled crime, pollution and dissent, and surveillance
-        — welcomed at first — became ordinary. What followed was not a villain but a sequence: the
+        and corporate-backed heroes publicly tackled crime, pollution and dissent, and surveillance,
+        which was welcomed at first, became ordinary. What followed was a sequence of events: the
         Bangladesh flood, the Disclosures, an AI-authored National Curriculum, and the failure of
         four embankments on the Yamuna.
       </p>
 
       <p>
-        In the ruins, heroism is not superpowers or spectacle. It is memory, care, and the courage
-        to hold a community together when everything else has fallen apart. The Resistance is not an
-        army. It is librarians, scientists, elders and teenagers running a filing system nobody in
-        power can find.
+        In the ruins, heroism is memory, care, and the courage to hold a community together when
+        everything else has fallen apart. The Resistance is librarians, scientists, elders and
+        teenagers running a filing system nobody in power can find.
       </p>
 
       <h2>Themes</h2>
@@ -52,20 +62,20 @@ import cover from '../assets/cover.jpg';
       <p>
         Two of the book's places are drawn from real ones the author has worked in, and she names
         them in the afterword. Nandini's transformed tea stall echoes the idea of a
-        <em>sarai</em> — the resting places that once sheltered travellers on the trade routes — and
+        <em>sarai</em>, the resting places that once sheltered travellers on the trade routes, and
         more particularly the <a href="/act">CSDS Sarai</a> initiative of the early 2000s, which
-        made liminal spaces where technology, community and critical thought could sit together
+        made spaces where technology, community and critical thought could sit together
         outside institutional control. Mr Mehta's library in Ramnagar builds on her involvement with
         the <a href="/act">Bansa Community Library</a> in rural Uttar Pradesh, and what happens when
         books and ideas reach a place the formal system has given up on.
       </p>
       <blockquote>
-        <p>
+        <p data-verbatim>
           These aren't just theoretical models or distant references — they are living initiatives
           that have shown how the architecture of resistance can be built, maintained, and passed
           forward through generations.
         </p>
-        <cite>— <a href="/making">On the Making</a></cite>
+        <cite>From <a href="/making">On the Making</a></cite>
       </blockquote>
 
       <h2>On the making of it</h2>
@@ -77,33 +87,33 @@ import cover from '../assets/cover.jpg';
         mythologised history rather than preceding it.
       </p>
       <p>
-        Sumati is not a chosen one. She is a child trying to understand what she has inherited, and
-        her search for her father turns into a search for something older — shared memory,
-        collective doubt, and the remnants of reason. She learns from relics, ruins, animals and
+        Sumati is a child with no powers, trying to understand what she has inherited. Her
+        search for her father turns into a search for something older: shared memory, collective
+        doubt, and the remnants of reason. She learns from relics, ruins, animals and
         ghosts. She knows from listening.
       </p>
       <blockquote>
-        <p>
+        <p data-verbatim>
           The Firebird — etched on walls, drawn in soot — was their symbol. Not official. Not
           claimed. But everywhere. A reminder that collapse doesn't mean the end. It means the truth
           has outlived its suppressors.
         </p>
-        <cite>— <a href="/making">On the Making</a></cite>
+        <cite>From <a href="/making">On the Making</a></cite>
       </blockquote>
       <p>
         The illustrations were made with generative tools, manual curation and narrative revision.
-        Some are memories the characters never see. Some are false. Some are true.
+        Some are memories the characters never see, some are false, and some are true.
       </p>
       <blockquote>
-        <p>They are not illustrations. They are records.</p>
-        <cite>— <a href="/making">On the Making</a></cite>
+        <p data-verbatim>They are not illustrations. They are records.</p>
+        <cite>From <a href="/making">On the Making</a></cite>
       </blockquote>
 
       <h2>Why waste-to-energy</h2>
       <p>
         The novel is dedicated in part to Dev, "for being the courageous father he is, battling
-        Delhi's waste-to-energy plants all along." That fight is not fictional, and the book's
-        argument — that the unglamorous, community-based work is the work that counts — comes
+        Delhi's waste-to-energy plants all along." That fight is real, and the book's
+        argument, that the unglamorous, community-based work is the work that counts, comes
         directly out of it.
       </p>
       <p>
@@ -142,6 +152,9 @@ import cover from '../assets/cover.jpg';
           >Buy direct from the publisher</a>
           <a class="button" href="/excerpts">Excerpts and extras</a>
         </div>
+      </div>
+      <div class="share-row">
+          <ShareBar placement="about" text="The Very Last Superhero, an illustrated novel set in a near-future India of heat, floods and surveillance. No one flies. But someone stays." />
       </div>
 
       <h2>Credits</h2>
@@ -213,6 +226,10 @@ import cover from '../assets/cover.jpg';
       grid-template-columns: 1fr;
       gap: var(--space-2xs);
     }
+  }
+
+  .share-row {
+    margin-block: var(--space-m);
   }
 
   .buy-row {
