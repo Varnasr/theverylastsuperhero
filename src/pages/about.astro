@@ -3,13 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site';
 import BuyButton from '../components/BuyButton.astro';
 import { Image } from 'astro:assets';
+import ShareBar from '../components/ShareBar.astro';
+import { getBookPrice } from '../lib/price';
+import { bookCard, bookJsonLd } from '../lib/seo';
 import cover from '../assets/cover.jpg';
+import { getImage } from 'astro:assets';
+
+const { price, inStock } = await getBookPrice();
+const coverImg = await getImage({ src: cover, width: 600, format: 'jpg' });
+const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.src, site.url).href });
 ---
 
 <BaseLayout
   title="About"
   description="The themes, influences and making of The Very Last Superhero — a speculative novel of climate collapse, memory and care set in a near-future India."
   readingProgress
+  ogType="book"
+  structuredData={structuredData}
+  {...bookCard}
 >
   <div class="shell section about">
     <header class="page-head stack">
@@ -143,6 +154,9 @@ import cover from '../assets/cover.jpg';
           <a class="button" href="/excerpts">Excerpts and extras</a>
         </div>
       </div>
+      <div class="share-row">
+          <ShareBar placement="about" text="The Very Last Superhero, an illustrated novel set in a near-future India of heat, floods and surveillance. No one flies. But someone stays." />
+      </div>
 
       <h2>Credits</h2>
       <p>
@@ -213,6 +227,10 @@ import cover from '../assets/cover.jpg';
       grid-template-columns: 1fr;
       gap: var(--space-2xs);
     }
+  }
+
+  .share-row {
+    margin-block: var(--space-m);
   }
 
   .buy-row {

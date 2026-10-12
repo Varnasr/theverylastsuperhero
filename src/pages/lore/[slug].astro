@@ -4,6 +4,9 @@ import { getCollection, getEntries, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SaltLampPlayer from '../../components/SaltLampPlayer.astro';
+import ShareBar from '../../components/ShareBar.astro';
+import { ogCard, bookRef } from '../../lib/seo';
+import { site } from '../../lib/site';
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('lore', ({ data }) => !data.draft);
@@ -22,17 +25,21 @@ const appearsIn = (await getCollection('timeline'))
   .filter((e) => e.data.related.some((r) => r.id === entry.id))
   .sort((a, b) => a.data.year - b.data.year);
 
+const share = image ? await ogCard(image, imageAlt ?? `Illustration for ${title}.`) : undefined;
+const shareImageUrl = new URL(share?.image ?? '/og-default.jpg', site.url).href;
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
   description: summary,
   articleSection: category,
-  isPartOf: { '@type': 'Book', name: 'The Very Last Superhero' },
+  image: shareImageUrl,
+  isPartOf: bookRef,
 };
 ---
 
-<BaseLayout title={title} description={summary} structuredData={structuredData} readingProgress>
+<BaseLayout title={title} description={summary} structuredData={structuredData} readingProgress ogType="article" {...share}>
   <article class="shell section entry">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="/lore">Lore Archive</a>
@@ -122,6 +129,10 @@ const structuredData = {
         </p>
       )
     }
+
+    <div class="entry__section">
+      <ShareBar placement="lore-end" text={`${title}, from the world of The Very Last Superhero.`} />
+    </div>
   </article>
 </BaseLayout>
 

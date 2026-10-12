@@ -1,6 +1,7 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { ogCard } from '../lib/seo';
 
 /**
  * The illustration gallery — including the ones that did not make the book.
@@ -84,13 +85,16 @@ const withLegend = images.filter((i) => i.caption?.legend).length;
 
 // A representative image for the social card.
 const first = images[0]?.src;
-const og = first ? await getImage({ src: first, width: 1200, format: 'jpeg' }) : undefined;
+const firstCaption = images[0]?.caption;
+const share = first
+  ? await ogCard(first, firstCaption ? `${firstCaption.title}. ${firstCaption.note}` : 'An illustration from The Very Last Superhero.')
+  : undefined;
 ---
 
 <BaseLayout
   title="Illustrations"
   description="The artwork behind The Very Last Superhero — the illustrations that made the book, and the ones that did not."
-  image={og?.src}
+  {...share}
 >
   <div class="shell section">
     <header class="page-head stack">

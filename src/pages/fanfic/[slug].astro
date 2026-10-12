@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 export const getStaticPaths = (async () => {
   const stories = (await getCollection('fanfic')).filter((s) => !s.data.draft);
@@ -21,7 +22,7 @@ const fmt = (dt: Date) =>
   dt.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={d.title} description={d.summary} readingProgress>
+<BaseLayout title={d.title} description={d.summary} readingProgress ogType="article">
   <div class="shell section">
     <p class="back"><a href="/fanfic">← Reader Fiction</a></p>
 
@@ -75,6 +76,7 @@ const fmt = (dt: Date) =>
         )
       }
       <p><a href="/fanfic#submit">Send a piece of your own →</a></p>
+      <ShareBar placement="fanfic-end" text={`${d.title}, from The Very Last Superhero.`} />
     </footer>
 
     <Newsletter

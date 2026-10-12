@@ -41,6 +41,11 @@ export const site = {
     attribution: 'Resistance slogan, spray-painted near Okhla, 2061',
   },
   locale: 'en_IN',
+  /**
+   * Google Search Console HTML-tag verification token (the `content` value only).
+   * Empty means no tag is rendered.
+   */
+  googleSiteVerification: '' as string,
   themeColor: '#131211',
   /**
    * Optional third-party relay for the reader-submission forms.

@@ -19,7 +19,7 @@ const SUPABASE_URL = process.env.ANALYTICS_SUPABASE_URL;
 const SUPABASE_KEY = process.env.ANALYTICS_SUPABASE_KEY;
 const SALT = process.env.ANALYTICS_SALT ?? 'postheroic';
 
-const KINDS = new Set(['pageview', 'buy_click', 'form_submit']);
+const KINDS = new Set(['pageview', 'buy_click', 'form_submit', 'share']);
 
 /** Keep only the origin of a referrer: which site sent them, not which page. */
 const sourceOf = (referrer, host) => {

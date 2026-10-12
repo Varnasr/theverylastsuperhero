@@ -2,13 +2,18 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ShareBar from '../components/ShareBar.astro';
+import { ogCard } from '../lib/seo';
 
 const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.order - b.data.order);
+const lead = wallpapers[0]?.data;
+const share = lead ? await ogCard(lead.image, lead.imageAlt) : undefined;
 ---
 
 <BaseLayout
   title="Wallpapers"
   description="Wallpapers from The Very Last Superhero — portrait pieces for a phone, landscape plates for a desktop, free to download for personal use."
+  {...share}
 >
   <div class="shell section">
     <header class="page-head stack">
@@ -25,6 +30,7 @@ const wallpapers = (await getCollection('wallpapers')).sort((a, b) => a.data.ord
       <p>
         <a class="button" href="/sigil">Or make your own with the Firebird Sigil generator →</a>
       </p>
+      <ShareBar placement="wallpapers-top" text="Free wallpapers from The Very Last Superhero, for a phone or a desktop." />
     </header>
 
     <div class="wall-grid">

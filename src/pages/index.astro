@@ -6,13 +6,14 @@ import Newsletter from '../components/Newsletter.astro';
 import LoreCard from '../components/LoreCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import { site } from '../lib/site';
+import ShareBar from '../components/ShareBar.astro';
 import { getBookPrice, formatRupees } from '../lib/price';
+import { bookCard, bookJsonLd } from '../lib/seo';
 import hero from '../assets/wallpapers/on-rooftop.jpg';
 import cover from '../assets/cover.jpg';
 
 const { price, inStock } = await getBookPrice();
 const coverImg = await getImage({ src: cover, width: 600, format: 'jpg' });
-const availability = inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
 
 const lore = await getCollection('lore', ({ data }) => !data.draft);
 
@@ -40,41 +41,10 @@ const timeline = (await getCollection('timeline')).sort((a, b) => a.data.year - 
 const first = timeline.at(0);
 const last = timeline.at(-1);
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'Book',
-  name: site.title,
-  author: { '@type': 'Person', name: site.author },
-  publisher: { '@type': 'Organization', name: site.publisher },
-  genre: ['Speculative fiction', 'Climate fiction', 'Young adult'],
-  inLanguage: 'en',
-  abstract: site.description,
-  url: site.url,
-  image: new URL(coverImg.src, site.url).href,
-  isbn: site.isbn,
-  bookEdition: site.edition,
-  bookFormat: 'https://schema.org/Paperback',
-  illustrator: { '@type': 'Person', name: site.author },
-  offers: [
-    {
-      '@type': 'Offer',
-      price,
-      priceCurrency: 'INR',
-      availability,
-      url: site.buy.publisher,
-      seller: { '@type': 'Organization', name: 'StoryWell Books Foundation' },
-    },
-  ],
-  about: [
-    'Climate change',
-    'Memory and oral history',
-    'Artificial intelligence ethics',
-    'India',
-  ],
-};
+const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.src, site.url).href });
 ---
 
-<BaseLayout title={site.title} structuredData={structuredData}>
+<BaseLayout title={site.title} structuredData={structuredData} ogType="book" {...bookCard}>
   <section class="hero">
     <Image
       class="hero__img"
@@ -215,6 +185,7 @@ const structuredData = {
           >Buy direct from the publisher</a>
           <a class="button" href="/excerpts">Excerpts and extras</a>
         </div>
+        <ShareBar placement="home-band" text="The Very Last Superhero, an illustrated novel set in a near-future India of heat, floods and surveillance. No one flies. But someone stays." />
       </div>
     </div>
   </section>
