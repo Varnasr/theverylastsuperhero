@@ -23,6 +23,10 @@ export const site = {
     amazon: 'https://amzn.in/d/0dqr7bi1',
     /** The publisher's own page for the book, which sells it direct. */
     publisher: 'https://storywell.in/book.html?id=the-very-last-superhero',
+    /** Shown beside every direct-purchase link. WELCOME10 is live in StoryWell's promos.json (10% off a first order, minimum Rs 200). */
+    /** Hover and focus pop-up on every direct-purchase link, in the author's words. */
+    publisherTip: 'Support a small, women-led publisher',
+    publisherOffer: 'On the publisher\'s site, the code WELCOME10 takes 10% off your first order.',
   },
   /**
    * Cover price in INR. Mirrors StoryWell sku 00005, verified 2026-10-07. Used

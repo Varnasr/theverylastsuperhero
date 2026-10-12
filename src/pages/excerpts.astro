@@ -53,6 +53,7 @@ const shareText =
         <BuyButton placement="excerpts-mid" />
         <a
           class="button buy-publisher"
+            data-tip={site.buy.publisherTip}
           data-buy
           data-placement="excerpts-mid-publisher"
           href={site.buy.publisher}
@@ -60,8 +61,9 @@ const shareText =
           rel="noopener"
           data-umami-event="buy-click"
           data-umami-event-placement="excerpts-mid-publisher"
-        >Buy direct from the publisher</a>
+        >Buy direct from the publisher<span class="visually-hidden">. {site.buy.publisherTip}.</span></a>
       </div>
+      <p class="publisher-offer">{site.buy.publisherOffer}</p>
       <ShareBar placement="excerpts-mid" text={shareText} />
     </aside>
 
@@ -100,6 +102,7 @@ const shareText =
           <BuyButton placement="excerpts" />
           <a
             class="button buy-publisher"
+            data-tip={site.buy.publisherTip}
             data-buy
             data-placement="excerpts-publisher"
             href={site.buy.publisher}
@@ -107,8 +110,9 @@ const shareText =
             rel="noopener"
             data-umami-event="buy-click"
             data-umami-event-placement="excerpts-publisher"
-          >Buy direct from the publisher</a>
+          >Buy direct from the publisher<span class="visually-hidden">. {site.buy.publisherTip}.</span></a>
         </div>
+        <p class="publisher-offer">{site.buy.publisherOffer}</p>
         <ShareBar placement="excerpts-end" text={shareText} />
       </div>
     </section>

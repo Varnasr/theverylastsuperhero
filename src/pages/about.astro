@@ -142,6 +142,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
           <BuyButton placement="about" />
           <a
             class="button buy-publisher"
+            data-tip={site.buy.publisherTip}
             data-buy
             data-placement="about-publisher"
             href={site.buy.publisher}
@@ -149,9 +150,10 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
             rel="noopener"
             data-umami-event="buy-click"
             data-umami-event-placement="about-publisher"
-          >Buy direct from the publisher</a>
+          >Buy direct from the publisher<span class="visually-hidden">. {site.buy.publisherTip}.</span></a>
           <a class="button" href="/excerpts">Excerpts and extras</a>
         </div>
+        <p class="publisher-offer">{site.buy.publisherOffer}</p>
       </div>
       <div class="share-row">
           <ShareBar placement="about" text="The Very Last Superhero, an illustrated novel set in a near-future India of heat, floods and surveillance. No one flies. But someone stays." />
