@@ -75,7 +75,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
           that have shown how the architecture of resistance can be built, maintained, and passed
           forward through generations.
         </p>
-        <cite>From <a href="/making">On the Making</a></cite>
+        <cite>From the printed afterword, adapted at <a href="/making">On the Making</a></cite>
       </blockquote>
 
       <h2>On the making of it</h2>
@@ -98,7 +98,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
           claimed. But everywhere. A reminder that collapse doesn't mean the end. It means the truth
           has outlived its suppressors.
         </p>
-        <cite>From <a href="/making">On the Making</a></cite>
+        <cite>From the printed afterword, adapted at <a href="/making">On the Making</a></cite>
       </blockquote>
       <p>
         The illustrations were made with generative tools, manual curation and narrative revision.
@@ -106,7 +106,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
       </p>
       <blockquote>
         <p data-verbatim>They are not illustrations. They are records.</p>
-        <cite>From <a href="/making">On the Making</a></cite>
+        <cite>From the printed afterword, adapted at <a href="/making">On the Making</a></cite>
       </blockquote>
 
       <h2>Why waste-to-energy</h2>
@@ -142,6 +142,7 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
           <BuyButton placement="about" />
           <a
             class="button buy-publisher"
+            data-tip={site.buy.publisherTip}
             data-buy
             data-placement="about-publisher"
             href={site.buy.publisher}
@@ -149,9 +150,10 @@ const structuredData = bookJsonLd({ price, inStock, imageUrl: new URL(coverImg.s
             rel="noopener"
             data-umami-event="buy-click"
             data-umami-event-placement="about-publisher"
-          >Buy direct from the publisher</a>
+          >Buy direct from the publisher<span class="visually-hidden">. {site.buy.publisherTip}.</span></a>
           <a class="button" href="/excerpts">Excerpts and extras</a>
         </div>
+        <p class="publisher-offer">{site.buy.publisherOffer}</p>
       </div>
       <div class="share-row">
           <ShareBar placement="about" text="The Very Last Superhero, an illustrated novel set in a near-future India of heat, floods and surveillance. No one flies. But someone stays." />

@@ -585,3 +585,49 @@
     page-break-inside: avoid;
   }
 }
+
+/* The WELCOME10 line under the direct-purchase link. Measured tokens only. */
+.publisher-offer {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+/* "Support a small, women-led publisher": shown on hover and keyboard focus.
+   Touch screens have no hover, so the visible WELCOME10 line carries the offer
+   there, and the same words are in the link text for screen readers. */
+.buy-publisher[data-tip] {
+  position: relative;
+}
+.buy-publisher[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(22rem, 80vw);
+  padding: 0.4rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.3;
+  white-space: normal;
+  text-align: center;
+  color: var(--bg);
+  background: var(--text);
+  border-radius: var(--radius-s);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s var(--ease);
+  z-index: 5;
+}
+.buy-publisher[data-tip]:hover::after,
+.buy-publisher[data-tip]:focus-visible::after {
+  opacity: 1;
+}
+@media (hover: none) {
+  .buy-publisher[data-tip]::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .buy-publisher[data-tip]::after { transition: none; }
+}
