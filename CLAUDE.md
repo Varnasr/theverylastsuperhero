@@ -138,20 +138,24 @@ crucial, vibrant, genuinely and truly, epigram endings tacked onto a paragraph,
 Title Case headings (sentence case, with proper nouns and the book title kept
 capitalised), emoji and exclamation marks. En dashes stay in number ranges.
 
-**What the rule covers.** Everything the site authored: page text, components,
-`src/lib/site.ts` labels, meta descriptions, alt text, and the markdown in
-`src/content/` for lore, timeline, action, act-steps, after, archive and
-wallpapers.
+**What the rule covers.** The rule is site wide. It covers everything the site
+says, including page text, components, `src/lib/site.ts` labels, meta descriptions,
+alt text and the markdown in `src/content/` for lore, timeline, action, act-steps,
+after, archive and wallpapers. It also covers the glossary (`src/pages/glossary.astro`
+and `src/content/glossary`), the further-reading notes and the afterword on `/making`,
+which are adapted from the printed book for the site and say so on the page. In the
+further-reading list only the bibliographic citation (author, title, publisher, year)
+stays exactly as printed, and the annotation prose follows the rule.
 
-**What it does not cover, and what marks it.** The book's own words and readers'
-words stay exactly as they were written, and carry `data-verbatim`:
+**What it does not cover, and what marks it.** Only three things stay exactly as
+they were written, and each carries `data-verbatim`:
 
-- the prologue, Chapter 1 and the extras (`src/content/excerpt`), the afterword on
-  `/making`, and the glossary and further reading, which the page reproduces from
-  the printed book;
-- any line quoted from the book, including the epigraph and the lines under
-  `blockquote`, and the transcripts of the audio recordings;
-- memory wall entries and reader fiction, which are submissions.
+- the prologue, Chapter 1 and the extras (`src/content/excerpt`), which are
+  presented as printed;
+- any line quoted directly from the book, including the epigraph, the lines under
+  `blockquote`, the sigil quote list and the transcripts of in-world audio
+  recordings;
+- reader submissions, meaning memory wall entries and reader fiction.
 
 Markdown cannot carry an attribute, so `scripts/check-copy.mjs` treats every
 `blockquote` as verbatim as well. A new place that renders a quotation from the

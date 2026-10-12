@@ -1,10 +1,10 @@
 ---
-term: "Compliance Scoring Terminals"
-section: "AI Systems and Surveillance Technologies"
+term: "Compliance scoring terminals"
+section: "AI systems and surveillance technologies"
 order: 8
 ---
-These kiosks are publicly placed devices that update, display, and enforce an individual’s Obedience Index score. Found in transit stations, ration shops, and even schools, they serve as both infrastructure and intimidation. In The Very Last Superhero, these terminals physically gatekeep access to essentials—Sumati is denied entry to public services, while others in line perform compliance rituals to raise their scores.
+These kiosks are publicly placed devices that update, display and enforce an individual’s Obedience Index score. They stand in transit stations, ration shops and even schools, and they serve as both infrastructure and intimidation. In The Very Last Superhero the terminals physically gatekeep access to essentials. Sumati is denied entry to public services while others in line perform compliance rituals to raise their scores.
 
-Some terminals record mood, body language, and even facial micro-expressions to detect “latent noncooperation.” The terminals often appear innocuous: sleek, well-lit, and robotic voiced. But they represent how control is embedded into the everyday. The Resistance graffiti on some terminals—hacked messages, memory fragments, corrupted images—suggests they’ve been sites of both oppression and rebellion. Their presence critiques how behavioural tech shifts accountability from systems to individuals, creating a world where survival requires performance rather than honesty.
+Some terminals record mood, body language and even facial micro-expressions to detect “latent noncooperation.” They often look harmless: sleek, well lit and robotic-voiced. They show how control is embedded in everyday life. The Resistance has left graffiti on some terminals, in the form of hacked messages, memory fragments and corrupted images, which suggests that they have been sites of both oppression and rebellion. They critique how behavioural technology shifts accountability from systems to individuals, creating a world where survival requires performance and honesty goes unrewarded.
 
-In real-world terms, they’re not far off from biometric kiosks, AI proctoring systems, or facial recognition gates. In the novel, they form the algorithmic fences enclosing Sumati’s journey, the first signs that tech alone cannot hold back memory.
+In real-world terms they are close to biometric kiosks, AI proctoring systems and facial recognition gates. In the novel they form the algorithmic fences that enclose Sumati’s path, and they are the first sign that technology alone cannot hold back memory.

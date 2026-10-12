@@ -1,10 +1,10 @@
 ---
 term: "Backdoor Trojan Command"
-section: "Surveillance Tools and Public Infrastructure"
+section: "Surveillance tools and public infrastructure"
 order: 24
 ---
-A covert override protocol embedded in legacy systems from the superhero era, the Backdoor Trojan Command was initially designed to allow emergency shutdown or reprogramming of biosynthetic units and AI-managed infrastructure. Never publicly disclosed, these commands functioned like digital kill switches— invoked by strings of code passed through encrypted channels, sometimes disguised as routine maintenance pings. After the 2060 Disclosures, fragments of these backdoor sequences were leaked by whistleblowers and resistance coders, revealing how easily entire systems could be repurposed or neutralised without consent from their operators.
+The Backdoor Trojan Command is a covert override protocol embedded in legacy systems from the superhero era. It was designed to allow emergency shutdown or reprogramming of biosynthetic units and AI-managed infrastructure, and it was never publicly disclosed. The commands worked like digital kill switches. They were invoked by strings of code passed through encrypted channels and were sometimes disguised as routine maintenance pings. After the 2060 Disclosures, whistleblowers and resistance coders leaked fragments of these backdoor sequences, which showed how easily entire systems could be repurposed or neutralised without the consent of their operators.
 
-In The Very Last Superhero, the Backdoor Trojan Command is mentioned in recovered logs and half-functional relay files, specifically about the collapse of Quantum Corps units and the deactivation of malfunctioning smart shields. Meera once called it “the myth that turned out to be real.” At the same time, Sumati understands it more intuitively: the idea that systems claiming autonomy are permanently wired for obedience, just waiting for the correct phrase.
+In The Very Last Superhero the command is mentioned in recovered logs and half-functional relay files, specifically in connection with the collapse of Quantum Corps units and the deactivation of malfunctioning smart shields. Meera once called it “the myth that turned out to be real.” Sumati understands it more intuitively, as the idea that systems claiming autonomy are permanently wired for obedience and wait only for the correct phrase.
 
-Resistance cells have tried, with limited success, to reconstruct versions of the command to liberate rather than disable. The command is neither good nor evil—it simply obeys. In a world of compromised tools, the real question is always: who still has access?
+Resistance cells have tried, with limited success, to reconstruct versions of the command that would liberate systems instead of disabling them. The command has no moral character and obeys whoever holds it. In a world of compromised tools, what matters is who still has access.

@@ -78,7 +78,7 @@ const lore = defineCollection({
 const glossary = defineCollection({
   loader: glob({ base: './src/content/glossary', pattern: '**/*.md' }),
   schema: z.object({
-    /** The headword exactly as the book prints it. */
+    /** The headword, in sentence case unless it is a proper name. */
     term: z.string(),
     /** The book groups terms; the page keeps those groupings. */
     section: z.string().optional(),
