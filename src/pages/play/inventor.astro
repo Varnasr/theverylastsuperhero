@@ -94,7 +94,7 @@ const banks = { prefixes, cores, classes, purposes, twists, fates };
     <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
   </div>
 
-  <script type="application/json" id="inv-data" set:html={JSON.stringify(banks)} />
+  <script is:inline type="application/json" id="inv-data" set:html={JSON.stringify(banks)} />
 </BaseLayout>
 
 <script>

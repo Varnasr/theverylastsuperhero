@@ -3,7 +3,7 @@
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
 Companion site for *The Very Last Superhero*, at postheroic.world. Astro, static
-output, deployed on Netlify. 104 pages, 87 tracked images.
+output, deployed on Netlify. 105 pages, 90 tracked images.
 
 ## Commands
 
@@ -12,7 +12,7 @@ npm ci
 node scripts/check-contrast.mjs  # colour tokens, both themes, run by CI
 node scripts/check-contrast.mjs --all   # print the passing pairs too
 npm run build                    # astro check, then astro build
-node scripts/check-links.mjs     # 4,208 internal references
+node scripts/check-links.mjs     # 4,349 internal references
 node scripts/check-copy.mjs      # em dashes and banned words in site copy, run by CI
 node scripts/axe.mjs             # accessibility over the built pages
 npm run dev
@@ -25,11 +25,12 @@ content plus layouts. What stands in for tests is the combination CI already
 runs, and it is stronger than it looks.
 
 - `astro check` type-checks every component and content-collection entry. It
-  reports 0 errors and 0 warnings, with 106 hints.
-- `astro build` renders all 104 pages. A broken frontmatter reference or a
+  reports 0 errors, 0 warnings and 1 hint (the `execCommand` copy fallback
+  in `ShareBar.astro`, kept on purpose for browsers without the Clipboard API).
+- `astro build` renders all 105 pages. A broken frontmatter reference or a
   missing collection entry fails here rather than in a browser.
 - `scripts/check-links.mjs` walks the built output and resolves every internal
-  reference, 4,208 of them, against the files actually emitted.
+  reference, 4,349 of them, against the files actually emitted.
 
 When changing anything structural, run all three. A page count that moves
 without a page being added or removed is the signal worth watching.
@@ -73,7 +74,7 @@ to it. The Buy button above is exactly that case, and it was found by hand.
 
 The two run in different places on purpose. The contrast check gates pull
 requests, because it reads the token blocks and finishes in under a second. The
-axe walk builds the site, installs Chromium and audits 104 pages at two
+axe walk builds the site, installs Chromium and audits 105 pages at two
 viewports, which takes **5m15s** here: too long to put in front of somebody
 changing one essay, and a long job in a pull-request gate carries a worse
 property than slowness, because a job cancelled by its own timeout cancels the
@@ -92,6 +93,12 @@ the argument for keeping both:
   `role="img"` means *one image, contents not exposed*, so a keyboard user
   reached a control a screen reader would not announce. The children were
   already right; the parent role was the error, and it is `role="group"` now.
+- **`lamplighter`**: axe-core 4.14 (October 2026) reported
+  `label-content-name-mismatch` on the lamp buttons, which carried an
+  `aria-label` that 4.13 had accepted. A speech-input user says what they see,
+  so the visible name has to start the spoken one. The buttons now take their
+  name from their own text, with "Lamp 1, " in a visually hidden span, and
+  carry no `aria-label`.
 
 Note that a comment cannot go between attributes inside an Astro tag. Putting
 one there fails the build with `Expected \`>\` but found \`<\``, which is at
@@ -122,6 +129,12 @@ Verified rather than assumed, on the same machine before and after: 104 pages
 both times, 4,208 internal references and 0 broken both times, `astro check`
 clean, and `npm audit` from 4 vulnerabilities to 0. `sharp` went to 0.35.4 for
 its own libvips and libheif advisories, `@astrojs/sitemap` to 3.7.4.
+
+Astro moved again on 2026-10-19, 7.3.3 to 7.4.0, a minor release, with
+`axe-core` 4.14.0 and `playwright-core` 1.64.1. Content schemas import `z` from
+`astro/zod` and write URLs as `z.url()`; the `astro:content` export and
+`z.string().url()` are deprecated, and clearing them with four explicit
+`is:inline` data scripts took `astro check` from 110 hints to 1.
 
 TypeScript is deliberately held at 5.x. Version 7 is the Go rewrite, and
 `@astrojs/check` has not been verified against it here.

@@ -14,9 +14,8 @@
  * Run it from the repository root. Committed output, not a build step: change
  * the copy or the cover, run it again, commit the JPEG.
  */
-import { readFile, readdir, stat, writeFile, mkdtemp } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { chromium } from 'playwright-core';
 import sharp from 'sharp';

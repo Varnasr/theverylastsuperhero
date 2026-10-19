@@ -85,7 +85,7 @@ const payload = {
     <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
   </div>
 
-  <script type="application/json" id="ws-data" set:html={JSON.stringify(payload)} />
+  <script is:inline type="application/json" id="ws-data" set:html={JSON.stringify(payload)} />
 </BaseLayout>
 
 <script>

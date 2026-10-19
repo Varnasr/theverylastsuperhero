@@ -78,7 +78,7 @@ const pictures = await Promise.all(
     <p class="text-muted more-play"><a href="/play">More from the play archive →</a></p>
   </div>
 
-  <script type="application/json" id="jig-data" set:html={JSON.stringify(pictures.map(({ id, label, url }) => ({ id, label, url })))} />
+  <script is:inline type="application/json" id="jig-data" set:html={JSON.stringify(pictures.map(({ id, label, url }) => ({ id, label, url })))} />
 </BaseLayout>
 
 <script>
