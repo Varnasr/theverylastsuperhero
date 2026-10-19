@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 /**
@@ -88,7 +89,7 @@ const glossary = defineCollection({
      * reference out of a novel's glossary.
      */
     references: z
-      .array(z.object({ label: z.string(), url: z.string().url(), note: z.string().optional() }))
+      .array(z.object({ label: z.string(), url: z.url(), note: z.string().optional() }))
       .default([]),
     order: z.number().default(100),
     /** Lore entries this term explains, for cross-linking back into the archive. */
@@ -102,7 +103,7 @@ const actSteps = defineCollection({
     title: z.string(),
     /** Five minutes / An afternoon / Ongoing — sorted by what it costs the reader. */
     group: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     linkLabel: z.string(),
     order: z.number().default(100),
   }),
@@ -122,7 +123,7 @@ const action = defineCollection({
   loader: glob({ base: './src/content/action', pattern: '**/*.md' }),
   schema: z.object({
     name: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     /** Section heading on the page. */
     group: z.string(),
     order: z.number().default(100),
@@ -204,7 +205,7 @@ const fanfic = defineCollection({
     title: z.string(),
     author: z.string(),
     /** Optional link the writer wants readers to follow — their blog, AO3, wherever. */
-    authorUrl: z.string().url().optional(),
+    authorUrl: z.url().optional(),
     /** One-line hook shown on the index. */
     summary: z.string(),
     /**

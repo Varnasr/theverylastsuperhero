@@ -49,12 +49,12 @@ const lamps = [
               type="button"
               data-lamp={l.id}
               style={`--hue:${l.hue}`}
-              aria-label={`Lamp ${l.id}, ${l.name}`}
               disabled
             >
               <span class="lamp__glyph" aria-hidden="true">
                 {l.id}
               </span>
+              <span class="visually-hidden">{`Lamp ${l.id}, `}</span>
               <span class="lamp__name">{l.name}</span>
             </button>
           ))
