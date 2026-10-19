@@ -21,6 +21,10 @@ on:
     - cron: '41 6 * * *'
   workflow_dispatch:
 
+# Read-only: this workflow checks the repository and writes nothing back to it.
+permissions:
+  contents: read
+
 jobs:
   axe:
     name: axe over the built pages
